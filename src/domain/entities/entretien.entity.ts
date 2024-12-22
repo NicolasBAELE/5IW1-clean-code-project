@@ -1,11 +1,14 @@
 export class Entretien {
-    constructor(
-      public id: string,
-      public motoId: string,
-      public type: 'préventif' | 'curatif',
-      public date: Date,
-      public kilometrage: number,
-      public description: string
-    ) {}
+  constructor(
+    public id: number,
+    public motoClientId: number, // Association avec MotoClient
+    public type: 'Préventif' | 'Curatif',
+    public date: Date,
+    public kilometrage: number,
+  ) {}
+
+  // Exemple de méthode métier
+  public estEntretienPreventif(): boolean {
+    return this.type === 'Préventif';
   }
-  
+}

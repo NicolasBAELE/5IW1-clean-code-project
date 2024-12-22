@@ -1,17 +1,15 @@
 import express from 'express';
 import { maintenanceRoutes } from './routes';
-import sequelize from '../../config/database';
+import { initializeDatabase } from '../../config/database';
 import path from 'path'; // Import de path pour accéder aux fichiers statiques
+import dotenv from 'dotenv';
 
-async function initializeDatabase() {
-  try {
-    // Synchroniser tous les modèles avec la base de données (création des tables)
-    await sequelize.sync({ force: true }); // Utilisez `force: true` pour recréer les tables à chaque démarrage, à utiliser en développement
-    console.log('Base de données synchronisée!');
-  } catch (error) {
-    console.error('Erreur lors de la synchronisation de la base de données:', error);
-  }
-}
+dotenv.config();
+console.log("DB_HOST: ", process.env.DB_HOST);
+console.log("DB_PORT: ", process.env.DB_PORT);
+console.log("DB_USER: ", process.env.DB_USER);
+console.log("DB_PASSWORD: ", process.env.DB_PASSWORD);
+console.log("DB_NAME: ", process.env.DB_NAME);
 
 initializeDatabase();
 
