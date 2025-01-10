@@ -1,23 +1,42 @@
-# Utiliser l'image de base Node.js
-FROM node:16
+# Étape 1 : Construction de l'application
+FROM node:18 AS builder
 
-# Créer un répertoire de travail dans le conteneur
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json pour installer les dépendances
+# Copier package.json et package-lock.json (si présents)
 COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier le reste du code source dans le conteneur
+# Copier tout le code source, y compris le dossier prisma
 COPY . .
 
-# Créer le fichier CSS avec Tailwind
-RUN npx tailwindcss -i ./src/styles/tailwind.css -o ./public/styles.css --minify
+# Générer le client Prisma
+RUN npx prisma generate
 
-# Exposer le port 3000
-EXPOSE 3000
+# Construire l'application
+RUN npm run build
 
-# Commande pour démarrer l'application en mode développement avec nodemon
-CMD ["npm", "run", "dev"]
+# Étape 2 : Lancer l'application
+FROM node:18
+
+WORKDIR /app
+
+# Copier les fichiers générés lors de la construction
+COPY --from=builder /app/dist ./dist
+
+# Copier uniquement les fichiers nécessaires à l'exécution de l'application
+COPY package*.json ./
+
+# Copier le dossier prisma nécessaire pour prisma client
+COPY --from=builder /app/prisma /app/prisma
+
+# Installer les dépendances de production (skip dev dependencies)
+RUN npm install --only=production
+
+# Exposer le port de l'application
+EXPOSE 4000
+
+# Lancer l'application
+CMD ["npm", "run", "start"]

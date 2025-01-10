@@ -1,42 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page d'Accueil - Gestion de Flotte de Motos</title>
-  <link href="./styles.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 font-sans">
-
-  <header class="bg-blue-600 text-white p-6">
-    <div class="max-w-7xl mx-auto">
-      <h1 class="text-3xl font-bold">Bienvenue sur Triumph Fleet Management</h1>
-      <p class="mt-2 text-xl">Gérez votre flotte de motos de manière optimale.</p>
-    </div>
-  </header>
-
-  <main class="mt-12">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold text-blue-600">Gestion des Entretiens</h2>
-          <p class="mt-4 text-gray-700">Planifiez, suivez et gérez les entretiens de votre flotte de motos.</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold text-blue-600">Suivi des Pannes</h2>
-          <p class="mt-4 text-gray-700">Enregistrez et suivez les pannes et les réparations associées.</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-2xl font-semibold text-blue-600">Gestion des Pièces Détachées</h2>
-          <p class="mt-4 text-gray-700">Surveillez les stocks de pièces détachées et gérez les commandes.</p>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraphQL Users</title>
+    <link href="/dist/output.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100 font-sans antialiased">
+    <div class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold mb-4">Users</h1>
+      <div id="users" class="space-y-4">
+        <!-- Les utilisateurs seront affichés ici -->
       </div>
     </div>
-  </main>
 
-  <footer class="bg-blue-600 text-white text-center p-4 mt-12">
-    <p>&copy; 2024 Triumph Motorcycles - Tous droits réservés</p>
-  </footer>
+    <script>
+      async function fetchUsers() {
+        const response = await fetch('http://localhost:4000', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: `
+              query {
+                users {
+                  id
+                  name
+                  email
+                  createdAt
+                }
+              }
+            `,
+          }),
+        });
 
-</body>
+        const { data } = await response.json();
+        const usersContainer = document.getElementById('users');
+        data.users.forEach((user) => {
+          const userElement = document.createElement('div');
+          userElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md');
+          userElement.innerHTML = `
+            <p class="font-semibold">${user.name}</p>
+            <p class="text-gray-600">${user.email}</p>
+            <p class="text-sm text-gray-400">Created at: ${new Date(user.createdAt).toLocaleDateString()}</p>
+          `;
+          usersContainer.appendChild(userElement);
+        });
+      }
+
+      fetchUsers();
+    </script>
+  </body>
 </html>
