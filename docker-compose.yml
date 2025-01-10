@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - "4000:4000"
+      - "3000:3000"
     environment:
       # Utiliser la variable d'environnement pour la connexion à la BDD
       DATABASE_URL: ${DATABASE_URL}
