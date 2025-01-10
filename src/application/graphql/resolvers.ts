@@ -1,6 +1,6 @@
-import { GetUsersUseCase } from '../../domain/usecases/GetUsersUseCase';
-import { UserRepository } from '../../infrastructure/repositories/UserRepository';
-import { prismaClient } from '../../infrastructure/prisma/prismaClient';
+import { GetUsersUseCase } from "../../domain/usecases/GetUsersUseCase";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { prismaClient } from "../../../infrastructure/prisma/prismaClient";
 
 // Création de l'instance de UserRepository
 const userRepository = new UserRepository(prismaClient);
@@ -8,9 +8,9 @@ const userRepository = new UserRepository(prismaClient);
 const getUsersUseCase = new GetUsersUseCase(userRepository);
 
 export const resolvers = {
-  Query: {
-    users: async () => {
-      return await getUsersUseCase.execute();
+    Query: {
+        users: async () => {
+            return await getUsersUseCase.execute();
+        },
     },
-  },
 };

@@ -1,18 +1,16 @@
 version: '3.8'
 services:
-  app:
-    build: .
+  prisma:
+    build: ./infrastructure/prisma
     ports:
-      - "4000:4000"
-      - "3000:3000"
+      - "5555:5555"
     environment:
       # Utiliser la variable d'environnement pour la connexion à la BDD
       DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - ./infrastructure/prisma:/app/prisma
     depends_on:
       - db
-    networks:
-      - app-network
-    command: bash -c "npx prisma generate && npm run start"
 
   db:
     image: postgres:15
@@ -24,17 +22,12 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
-    networks:
-      - app-network
+
 
   adminer:
     image: adminer
     restart: always
     ports:
       - "8080:8080"
-    networks:
-      - app-network
 
-networks:
-  app-network:
-    driver: bridge
+
