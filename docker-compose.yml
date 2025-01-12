@@ -1,16 +1,26 @@
 version: '3.8'
 services:
   prisma:
-    build: ./infrastructure/prisma
+    build: ./infrastructure/adapters/repositories/prisma
     ports:
       - "5555:5555"
     environment:
-      # Utiliser la variable d'environnement pour la connexion à la BDD
       DATABASE_URL: ${DATABASE_URL}
     volumes:
-      - ./infrastructure/prisma:/app/prisma
+      - ./infrastructure/adapters/repositories/prisma:/app/infrastructure/adapters/repositories/prisma
     depends_on:
       - db
+
+  graphql:
+      build: ./infrastructure/platforms/graphql
+      ports:
+        - "4000:4000"
+      environment:
+        DATABASE_URL: ${DATABASE_URL}
+      volumes:
+        - ./infrastructure/platforms/graphql:/app/infrastructure/platforms/graphql
+      depends_on:
+        - db
 
   db:
     image: postgres:15
