@@ -1,4 +1,4 @@
-import { User } from "../../../../../domain/entities/User";
+import { User } from "@projet-clean/domain/entities/User";
 
 export interface UserRepository {
     getAllUsers(): Promise<User[]>;

@@ -1,18 +1,23 @@
 {
-  "name": "prisma",
+  "name": "@projet-clean/prisma",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx src/index.ts",
+    "generate": "prisma generate --schema=./src/schema.prisma",
+    "migrate": "prisma migrate dev --schema=./src/schema.prisma"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@types/node": "^22.10.5",
-    "prisma": "^6.2.1",
+    "express": "^4.21.2",
+    "prisma": "^6.2.1"
+  },
+  "devDependencies": {
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
   }

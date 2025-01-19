@@ -1,28 +1,47 @@
 version: '3.8'
 services:
   prisma:
-    build: ./infrastructure/adapters/repositories/prisma
+    container_name: prisma
+    build:
+      context: .
+      dockerfile: ./infrastructure/adapters/repositories/prisma/Dockerfile
     ports:
-      - "5555:5555"
+      - "3000:3000"
     environment:
       DATABASE_URL: ${DATABASE_URL}
     volumes:
       - ./infrastructure/adapters/repositories/prisma:/app/infrastructure/adapters/repositories/prisma
+      - ./domain:/app/domain
+      - ./application:/app/application
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./tsconfig.json:/app/tsconfig.json
     depends_on:
       - db
 
+
   graphql:
-      build: ./infrastructure/platforms/graphql
-      ports:
-        - "4000:4000"
-      environment:
-        DATABASE_URL: ${DATABASE_URL}
-      volumes:
-        - ./infrastructure/platforms/graphql:/app/infrastructure/platforms/graphql
-      depends_on:
-        - db
+    container_name: graphql
+    build:
+      context: .
+      dockerfile: ./infrastructure/platforms/graphql/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    volumes:
+      - ./infrastructure/platforms/graphql:/app/infrastructure/platforms/graphql
+      - ./domain:/app/domain
+      - ./application:/app/application
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./tsconfig.json:/app/tsconfig.json
+    depends_on:
+      - db
+    restart: always
 
   db:
+    container_name: postgres
     image: postgres:15
     restart: always
     environment:
@@ -33,11 +52,23 @@ services:
     ports:
       - "5432:5432"
 
-
   adminer:
+    container_name: adminer
     image: adminer
     restart: always
     ports:
       - "8080:8080"
 
-
+  react:
+    container_name: react
+    build:
+      context: .
+      dockerfile: ./infrastructure/platforms/react/Dockerfile
+    ports:
+      - "2000:2000"
+    volumes:
+      - ./infrastructure/platforms/react:/app/infrastructure/platforms/react
+      - ./domain:/app/domain
+      - ./application:/app/application
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
