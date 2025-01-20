@@ -12,7 +12,7 @@ COPY ./package-lock.json /app/package-lock.json
 COPY ./tsconfig.json /app/tsconfig.json
 
 # On initialise
-RUN npm install --include=dev
+RUN npm install
 
 # Générer le client Prisma
 RUN npm run generate -w @projet-clean/prisma
