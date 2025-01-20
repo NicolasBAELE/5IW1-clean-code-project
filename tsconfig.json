@@ -1,14 +1,13 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "outDir": "./dist",  // C'est ici que les fichiers compilés seront mis
-    "rootDir": "./src",
+    "compilerOptions": {
+    "forceConsistentCasingInFileNames":true,
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "NodeNext",
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src/**/*", "infrastructure/prisma/prismaClient.ts"],
-  "exclude": ["node_modules"]
+    "esModuleInterop": true,
+    "moduleResolution": "node16"
+    }
 }
+  
