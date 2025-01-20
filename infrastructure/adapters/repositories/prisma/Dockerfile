@@ -14,6 +14,9 @@ COPY ./tsconfig.json /app/tsconfig.json
 # On initialise
 RUN npm install
 
+# On installe PostgreSQL pour pourvoir utiliser psql
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Générer le client Prisma
 RUN npm run generate -w @projet-clean/prisma
 
