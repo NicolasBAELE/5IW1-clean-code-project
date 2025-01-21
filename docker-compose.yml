@@ -14,7 +14,7 @@ services:
       - ./domain:/app/domain
       - ./application:/app/application
       - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
+      # - ./package-lock.json:/app/package-lock.json
       - ./tsconfig.json:/app/tsconfig.json
     depends_on:
       - db

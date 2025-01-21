@@ -8,7 +8,7 @@ COPY ./infrastructure/adapters/repositories/prisma /app/infrastructure/adapters/
 COPY ./domain /app/domain
 COPY ./application /app/application
 COPY ./package.json /app/package.json
-COPY ./package-lock.json /app/package-lock.json
+# COPY ./package-lock.json /app/package-lock.json
 COPY ./tsconfig.json /app/tsconfig.json
 
 # On initialise
