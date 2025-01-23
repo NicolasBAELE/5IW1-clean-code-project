@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "generate": "prisma generate --schema=./src/schema.prisma",
     "migrate": "prisma migrate dev --schema=./src/schema.prisma",
     "terminate-locks-before-migrations": "psql -h db -U postgres -d hello_world -c \"SELECT pg_terminate_backend(PSA.pid) FROM pg_locks AS PL INNER JOIN pg_stat_activity AS PSA ON PSA.pid = PL.pid WHERE PSA.state LIKE 'idle' AND PL.objid IN (72707369);\""
