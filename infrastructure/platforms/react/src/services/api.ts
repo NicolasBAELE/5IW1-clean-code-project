@@ -3,7 +3,7 @@ export interface Moto {
     kilometrage: number;
 }
 
-const API_URL = 'https://api.triumph-motos.com';
+const API_URL = "http://graphql:4000";
 
 // Mock de la donnée
 export const mockMotos = {
@@ -33,7 +33,12 @@ export const mockMotos = {
                 licenseNumber: 'AB123456',
                 experienceYears: 5,
                 incidentHistory: [
-                    { date: '2023-12-01', type: 'Accident mineur', description: 'Collision avec un véhicule', severity: 'Moyenne' },
+                    {
+                        date: '2023-12-01',
+                        type: 'Accident mineur',
+                        description: 'Collision avec un véhicule',
+                        severity: 'Moyenne'
+                    },
                 ],
             },
         },
@@ -62,7 +67,7 @@ export const mockMotos = {
                 licenseNumber: 'CD789012',
                 experienceYears: 8,
                 incidentHistory: [
-                    { date: '2022-05-15', type: 'Infraction', description: 'Excès de vitesse', severity: 'Mineure' },
+                    {date: '2022-05-15', type: 'Infraction', description: 'Excès de vitesse', severity: 'Mineure'},
                 ],
             },
         },
@@ -91,9 +96,15 @@ export const mockMotos = {
 };
 
 
-// Fonction pour récupérer les motos depuis l'API
 export const fetchMotos = async () => {
-    // const response = await fetch(`${API_URL}/motos`);
-    return mockMotos
-    // return response.json();
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "x-apollo-operation-name": "test"
+        },
+        body: JSON.stringify({payload: {"name": "popozao"}})
+    });
+    return response
 };

@@ -1,7 +1,20 @@
-import { GetUsers } from "@projet-clean/domain/useCases/getUsers.js";
+import {User} from "@projet-clean/domain/entities/User"
 
 export const Query = {
-    users: async () => {
-        return "lol";
+    getUsers: async (parent, {payloadUser}, context, info) => {
+        try {
+            const response = await fetch("http://prisma:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payloadUser)
+            });
+            const users: [User] = await response.json();
+            return users;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de récupérer les utilisateurs");
+        }
     },
 };

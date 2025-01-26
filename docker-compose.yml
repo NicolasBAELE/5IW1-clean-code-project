@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   prisma:
     container_name: prisma
@@ -18,6 +17,7 @@ services:
       - ./tsconfig.json:/app/tsconfig.json
     depends_on:
       - db
+    restart: always
 
 
   graphql:
@@ -45,12 +45,13 @@ services:
     image: postgres:15
     restart: always
     environment:
-      # Utiliser les variables d'environnement pour la configuration PostgreSQL
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
 
   adminer:
     container_name: adminer

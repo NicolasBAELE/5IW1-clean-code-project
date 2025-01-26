@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "prisma": {
+    "schema": "./src/schema.prisma"
+  },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "generate": "prisma generate --schema=./src/schema.prisma",
