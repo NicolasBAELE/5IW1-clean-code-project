@@ -3,7 +3,7 @@ export interface Moto {
     kilometrage: number;
 }
 
-const API_URL = "http://graphql:4000";
+const API_URL = "http://localhost:4000";
 
 // Mock de la donnée
 export const mockMotos = {
@@ -101,10 +101,19 @@ export const fetchMotos = async () => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "x-apollo-operation-name": "test"
         },
-        body: JSON.stringify({payload: {"name": "popozao"}})
+        body: JSON.stringify({ query: `
+       query($payload:UserFilterInput) {
+    getUsers (payloadUser: $payload) {
+      id
+        name
+        email
+    }
+}
+      `,
+        variables: {
+            payloadUser: {}
+        }})
     });
-    return response
+    return response.json()
 };
