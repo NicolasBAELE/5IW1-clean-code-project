@@ -3,8 +3,12 @@ const typeDefs = `
     id: ID!
     name: String!
     email: String!
-    role: String
-    tati: Int
+    password: String!
+    role: String!
+    phone: String
+    motos: [Moto]
+    createdAt: String
+    UpdatedAt: String
   }
   
   input UserFilterInput {
@@ -16,10 +20,28 @@ const typeDefs = `
   type Query {
       getUsers(payloadUser: UserFilterInput): [User]
     }
+    
+  type AuthPayload {
+  user: User
+  token: String
+  message: String!
+  status: String!
+}
 
   type Mutation {
-    createUser(name: String!, email: String!): User!
-  }
+    createUser(name: String! email: String!, password: String!):AuthPayload
+      }
+      
+  type Moto {
+  id:String     
+  model:String
+  registrationNumber: String     
+  mileage:Int
+  ownerId:String
+  owner:User
+  createdAt:String     
+  updatedAt:String     
+}
 `;
 
 export default typeDefs;

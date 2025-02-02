@@ -1,7 +1,7 @@
 datasource db {
-  provider      = "postgresql"
-  url           = env("DATABASE_URL")
-  relationMode  = "prisma"
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 generator client {
@@ -9,65 +9,66 @@ generator client {
 }
 
 model Moto {
-  id                 String      @id @default(cuid())
+  id                 String        @id @default(cuid())
   model              String
-  registrationNumber String      @unique
+  registrationNumber String        @unique
   mileage            Int
   ownerId            String
-  owner              User        @relation(fields: [ownerId], references: [id])
+  owner              User          @relation(fields: [ownerId], references: [id])
   maintenances       Maintenance[]
   breakdowns         Breakdown[]
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 }
 
 model Maintenance {
-  id                 String      @id @default(cuid())
-  motoId             String
-  moto               Moto        @relation(fields: [motoId], references: [id])
-  type               MaintenanceType
-  scheduledDate      DateTime?
-  completedDate      DateTime?
-  mileageAtService   Int?
-  cost               Float?
-  notes              String?
-  reminders          Reminder[]
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  id               String          @id @default(cuid())
+  motoId           String
+  moto             Moto            @relation(fields: [motoId], references: [id])
+  type             MaintenanceType
+  scheduledDate    DateTime?
+  completedDate    DateTime?
+  mileageAtService Int?
+  cost             Float?
+  notes            String?
+  reminders        Reminder[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 }
 
 model Reminder {
-  id                 String      @id @default(cuid())
-  maintenanceId      String
-  maintenance        Maintenance @relation(fields: [maintenanceId], references: [id])
-  reminderDate       DateTime
-  sent               Boolean     @default(false)
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  id            String      @id @default(cuid())
+  maintenanceId String
+  maintenance   Maintenance @relation(fields: [maintenanceId], references: [id])
+  reminderDate  DateTime
+  sent          Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model Breakdown {
-  id                 String      @id @default(cuid())
-  motoId             String
-  moto               Moto        @relation(fields: [motoId], references: [id])
-  description        String
-  warranty           Boolean
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  id          String   @id @default(cuid())
+  motoId      String
+  moto        Moto     @relation(fields: [motoId], references: [id])
+  description String
+  warranty    Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model User {
-  id                 String      @id @default(cuid())
-  name               String
-  email              String      @unique
-  phone              String?
-  motos              Moto[]
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER")
+  phone     String?
+  motos     Moto[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum MaintenanceType {
   PREVENTIVE
   CURATIVE
 }
-

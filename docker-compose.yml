@@ -8,12 +8,13 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY_JWT: ${SECRET_KEY_JWT}
     volumes:
       - ./infrastructure/adapters/repositories/prisma:/app/infrastructure/adapters/repositories/prisma
       - ./domain:/app/domain
       - ./application:/app/application
       - ./package.json:/app/package.json
-       - ./package-lock.json:/app/package-lock.json
+      - ./package-lock.json:/app/package-lock.json
       - ./tsconfig.json:/app/tsconfig.json
     depends_on:
       - db
