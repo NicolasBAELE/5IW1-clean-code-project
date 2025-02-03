@@ -11,13 +11,12 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         const verifyToken = async () => {
-            console.log('AuthToken en action')
             const token = localStorage.getItem("token");
             if (!token) {
+                setIsAuthenticated(false)
                 setLoading(false);
                 return;
             }
-
             try {
                 const response = await fetch("http://localhost:3000/verify-token", {
                     method: "GET",
@@ -30,10 +29,9 @@ export const AuthProvider = ({children}) => {
                 if (user) {
                     setUser(user);
                     setIsAuthenticated(true);
+                } else {
+                    logout();
                 }
-                // } else {
-                //     logout();
-                // }
             } catch (error) {
                 console.error("Error verifying token:", error);
             } finally {

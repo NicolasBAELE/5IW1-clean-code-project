@@ -70,7 +70,7 @@ export const loginUser = async (formData) => {
             query: `mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     token,
-    user{name},
+    user {name},
   }
 }`,
             variables: {

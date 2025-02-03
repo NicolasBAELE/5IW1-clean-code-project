@@ -8,6 +8,7 @@ import {AuthProvider, useAuth} from "./context/AuthContext.tsx";
 
 const AppRoutes = () => {
     const {isAuthenticated} = useAuth();
+    console.log(isAuthenticated)
     return (
         <Routes>
             <Route path="/" element={<App/>}/>
