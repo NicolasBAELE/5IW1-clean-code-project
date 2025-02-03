@@ -97,7 +97,7 @@ export const mockMotos = {
 
 
 export const fetchMotos = async () => {
-    return "implement"
+    return "fetchMotos function used"
 };
 
 export const fetchUsers = async () => {

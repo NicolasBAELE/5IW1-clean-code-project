@@ -39,7 +39,7 @@ export const createUser = async (req, res, next, prisma) => {
         }
     });
     const token = jwt.sign(
-        {userId: user.id, email: user.email, role: user.role},
+        {id: user.id, name: user.name, email: user.email, role: user.role},
         SECRET_KEY_JWT,
         {expiresIn: '24h'}
     );

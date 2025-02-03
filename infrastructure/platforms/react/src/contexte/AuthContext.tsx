@@ -1,57 +1,71 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import {createContext, useContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router";
 
 export const AuthContext = createContext({});
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+export const AuthProvider = ({children}) => {
+    const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch("http:localhost:3000/verify-token", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.user) {
-            setUser(data.user);
-            setIsAuthenticated(true);
-          } else {
-            logout();
-          }
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    useEffect(() => {
+        const verifyToken = async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                setLoading(false);
+                return;
+            }
 
-  const login = (token, user) => {
-    localStorage.setItem("token", token);
-    setUser(user);
-    setIsAuthenticated(true);
-  };
+            try {
+                const response = await fetch("http://localhost:3000/verify-token", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const user = await response.json();
+                if (user) {
+                    setUser(user);
+                    setIsAuthenticated(true);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    setIsAuthenticated(false);
-  };
+                } else {
+                    logout();
+                }
+            } catch (error) {
+                console.error("Error verifying token:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        verifyToken();
+    }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const login = (token, user) => {
+        localStorage.setItem("token", token);
+        setUser(user);
+        setIsAuthenticated(true);
+        navigate("/")
+        navigate(0)
+    };
+
+    const logout = () => {
+        localStorage.removeItem("token");
+        setUser(null);
+        setIsAuthenticated(false);
+        navigate("/")
+        navigate(0)
+    };
+
+    return (
+        <AuthContext.Provider value={{user, isAuthenticated, login, logout, loading}}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 // Hook personnalisé pour accéder au contexte correctement
 export const useAuth = () => {
-  return useContext(AuthContext);
+    return useContext(AuthContext);
 };

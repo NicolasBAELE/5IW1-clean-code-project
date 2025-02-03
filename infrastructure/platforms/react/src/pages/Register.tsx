@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {register} from "../services/api.ts";
 import {useAuth} from "../contexte/AuthContext.tsx";
-import {useNavigate} from "react-router";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -17,20 +16,16 @@ const Register = () => {
         )
     }
     const {user, isAuthenticated, login, logout, loading} = useAuth()
-    const navigate = useNavigate(); // Hook pour la redirection
 
     const submit = async (e) => {
         e.preventDefault()
         try {
             const {data} = await register(formData)
             if (!data) {
-                return console.log('Error bro')
+                return console.error('Error durant la soumission du formulaire')
             }
             const {token, user} = data.createUser
             login(token, user)
-            console.log('redirection')
-            navigate("/")
-
         } catch (e) {
             console.log(e)
         }
@@ -55,7 +50,7 @@ const Register = () => {
                        onChange={handleChange}
                        className={"shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline invalid:border-pink-500 invalid:text-pink-600"}
                        required
-                       pattern={"[\\w]{3,30}@[\\w]{3,30}\\.[a-z]{2,3}"}
+                       pattern={"[\\w]{3,60}@[\\w]{3,60}\\.[a-z]{2,3}"}
                 />
                 <input id="password"
                        type={'password'}
