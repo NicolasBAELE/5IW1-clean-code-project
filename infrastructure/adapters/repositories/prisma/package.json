@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "generate": "prisma generate --schema=./src/schema.prisma",
-    "migrate": "prisma migrate dev --schema=./src/schema.prisma"
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev"
   },
   "author": "",
   "license": "ISC",

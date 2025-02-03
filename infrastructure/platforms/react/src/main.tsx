@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import {BrowserRouter, Route, Routes} from "react-router";
 import Register from "./pages/Register.tsx";
-import {AuthProvider, useAuth} from "./contexte/AuthContext.tsx";
+import {AuthProvider, useAuth} from "./context/AuthContext.tsx";
 
 const AppRoutes = () => {
     const {isAuthenticated} = useAuth();

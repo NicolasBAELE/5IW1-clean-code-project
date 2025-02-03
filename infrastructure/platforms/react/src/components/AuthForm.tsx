@@ -1,7 +1,10 @@
 import {useState} from "react";
 import {Link} from "react-router";
+import {loginUser} from "../services/api.ts";
+import {useAuth} from "../context/AuthContext.tsx";
 
 const AuthForm = () => {
+    const {login} = useAuth()
     const [formData, setFormData] = useState({
         login: "",
         password: "",
@@ -13,18 +16,20 @@ const AuthForm = () => {
             }
         )
     }
-    const login = async (e) => {
+    const loginForm = async (e) => {
         e.preventDefault()
         try {
-            // const response = await loginOrRegister()
-            console.log(response)
+            const response = await loginUser(formData)
+            const data = await response.json()
+            const {token, user} = data.login
+            login(token, user)
         } catch (e) {
             console.log(e)
         }
     }
     return (
         <>
-            <form onSubmit={login} className={"d-flex flex-direction-column"}>
+            <form onSubmit={loginForm} className={"d-flex flex-direction-column"}>
                 <input id="login" type={'text'} placeholder={"Email"} value={formData.login} onChange={handleChange}
                        className={"shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}/>
                 <input id="password" type={'password'} placeholder={"Mot de passe"} value={formData.password}

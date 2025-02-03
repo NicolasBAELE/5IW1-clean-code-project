@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import {fetchMotos, Moto} from './services/api';
-import {useAuth} from "./contexte/AuthContext.tsx";
+import {useAuth} from "./context/AuthContext.tsx";
 
 const App = () => {
     const [motos, setMotos] = useState<Moto[]>([]);

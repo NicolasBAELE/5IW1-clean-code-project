@@ -14,6 +14,22 @@ export const Mutation = {
             console.error(error);
             throw new Error("Impossible de récupérer les utilisateurs");
         }
+    },
+    login: async (parent, {email, password}) => {
+        const _method = "POST_LOGIN"
+        try {
+            const response = await fetch("http://prisma:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({email, password, _method})
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de récupérer les utilisateurs");
+        }
     }
 
 };

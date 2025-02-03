@@ -11,6 +11,7 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         const verifyToken = async () => {
+            console.log('AuthToken en action')
             const token = localStorage.getItem("token");
             if (!token) {
                 setLoading(false);
@@ -29,10 +30,10 @@ export const AuthProvider = ({children}) => {
                 if (user) {
                     setUser(user);
                     setIsAuthenticated(true);
-
-                } else {
-                    logout();
                 }
+                // } else {
+                //     logout();
+                // }
             } catch (error) {
                 console.error("Error verifying token:", error);
             } finally {
@@ -65,7 +66,7 @@ export const AuthProvider = ({children}) => {
     );
 };
 
-// Hook personnalisé pour accéder au contexte correctement
+// Hook personnalisé pour accéder au context correctement
 export const useAuth = () => {
     return useContext(AuthContext);
 };

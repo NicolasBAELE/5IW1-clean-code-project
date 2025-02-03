@@ -8,7 +8,7 @@ const typeDefs = `
     phone: String
     motos: [Moto]
     createdAt: String
-    UpdatedAt: String
+    updatedAt: String
   }
   
   input UserFilterInput {
@@ -30,6 +30,7 @@ const typeDefs = `
 
   type Mutation {
     createUser(name: String! email: String!, password: String!):AuthPayload
+    login(email: String!, password: String!): AuthPayload
       }
       
   type Moto {

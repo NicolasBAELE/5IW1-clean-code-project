@@ -15,4 +15,4 @@ COPY ./tsconfig.json /app/tsconfig.json
 RUN npm install
 
 # Générer les migrations (Génère le client en même temps) et run le serveur en dev
-CMD npm run migrate -w @projet-clean/prisma && npm run dev -w @projet-clean/prisma
+CMD npm run generate -w @projet-clean/prisma && npm run dev -w @projet-clean/prisma

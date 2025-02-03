@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {register} from "../services/api.ts";
-import {useAuth} from "../contexte/AuthContext.tsx";
+import {useAuth} from "../context/AuthContext.tsx";
 
 const Register = () => {
     const [formData, setFormData] = useState({

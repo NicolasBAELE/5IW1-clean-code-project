@@ -41,7 +41,7 @@ export const createUser = async (req, res, next, prisma) => {
     const token = jwt.sign(
         {id: user.id, name: user.name, email: user.email, role: user.role},
         SECRET_KEY_JWT,
-        {expiresIn: '24h'}
+        {expiresIn: '1h'}
     );
 
     res.status(201).json({
@@ -70,23 +70,30 @@ export const loginUser = async (req, res, next, prisma) => {
         where: {email}
     });
 
-    let user;
-    let status = "success";
-    let message;
-
-    if (existingUser) {
-        // LOGIN
-        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-
-        if (!isPasswordValid) {
-            return res.status(401).json({
-                status: "error",
-                message: "Email ou mot de passe incorrect"
-            });
-        }
-
-        user = existingUser;
-        message = "Connexion réussie";
-    } else {
+    if (!existingUser) {
+        return res.status(400).json({
+            status: "error",
+            message: "Email et mot de passe invalides"
+        });
     }
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+    if (!isPasswordValid) {
+        return res.status(401).json({
+            status: "error",
+            message: "Email ou mot de passe incorrect"
+        });
+    }
+    const token = jwt.sign(
+        {id: existingUser.id, name: existingUser.name, email: existingUser.email, role: existingUser.role},
+        SECRET_KEY_JWT,
+        {expiresIn: '1h'}
+    );
+    return res.status(200).json({
+        user: {
+            name: existingUser.name,
+        },
+        token: token,
+        status: "connected",
+        message: "Authentification réussie"
+    });
 }
