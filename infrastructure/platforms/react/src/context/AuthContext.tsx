@@ -1,19 +1,33 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState, ReactNode} from "react";
 import {useNavigate} from "react-router";
+import {User} from "@projet-clean/domain/entities/User.ts";
 
-export const AuthContext = createContext({});
 
-export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate()
+interface AuthContextType {
+    user: User | null;
+    isAuthenticated: boolean;
+    login: (token: string, user: User) => void;
+    logout: () => void;
+    loading: boolean;
+}
+
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const verifyToken = async () => {
             const token = localStorage.getItem("token");
             if (!token) {
-                setIsAuthenticated(false)
+                setIsAuthenticated(false);
                 setLoading(false);
                 return;
             }
@@ -25,12 +39,12 @@ export const AuthProvider = ({children}) => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                const user = await response.json();
-                if (user) {
-                    setUser(user);
-                    setIsAuthenticated(true);
-                } else {
+                const userData: User | null = await response.json();
+                if (response.status === 401) {
                     logout();
+                } else if (userData) {
+                    setUser(userData);
+                    setIsAuthenticated(true);
                 }
             } catch (error) {
                 console.error("Error verifying token:", error);
@@ -41,20 +55,20 @@ export const AuthProvider = ({children}) => {
         verifyToken();
     }, []);
 
-    const login = (token, user) => {
+    const login = (token: string, user: User) => {
         localStorage.setItem("token", token);
         setUser(user);
         setIsAuthenticated(true);
-        navigate("/")
-        navigate(0)
+        navigate("/");
+        navigate(0);
     };
 
     const logout = () => {
         localStorage.removeItem("token");
         setUser(null);
         setIsAuthenticated(false);
-        navigate("/")
-        navigate(0)
+        navigate("/");
+        navigate(0);
     };
 
     return (
@@ -64,7 +78,11 @@ export const AuthProvider = ({children}) => {
     );
 };
 
-// Hook personnalisé pour accéder au context correctement
-export const useAuth = () => {
-    return useContext(AuthContext);
+// Hook personnalisé pour accéder au contexte correctement
+export const useAuth = (): AuthContextType => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
 };

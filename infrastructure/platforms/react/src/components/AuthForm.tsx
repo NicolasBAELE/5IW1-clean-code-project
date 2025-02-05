@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {Link} from "react-router";
 import {loginUser} from "../services/api.ts";
 import {useAuth} from "../context/AuthContext.tsx";
@@ -9,24 +9,27 @@ const AuthForm = () => {
         login: "",
         password: "",
     })
-    const handleChange = (e) => {
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({
                 ...formData,
                 [e.target.id]: e.target.value
             }
         )
     }
-    const loginForm = async (e) => {
+
+    const loginForm = async (e:  FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             const response = await loginUser(formData)
-            const data = await response.json()
-            const {token, user} = data.login
+            console.log(response, formData)
+            const {token, user} = response.data.login
             login(token, user)
         } catch (e) {
             console.log(e)
         }
     }
+
     return (
         <>
             <form onSubmit={loginForm} className={"d-flex flex-direction-column"}>

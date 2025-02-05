@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {register} from "../services/api.ts";
 import {useAuth} from "../context/AuthContext.tsx";
 
@@ -8,16 +8,17 @@ const Register = () => {
         email: "",
         password: "",
     })
-    const handleChange = (e) => {
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({
                 ...formData,
                 [e.target.id]: e.target.value
             }
         )
     }
-    const {user, isAuthenticated, login, logout, loading} = useAuth()
+    const {login} = useAuth()
 
-    const submit = async (e) => {
+    const submit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             const {data} = await register(formData)
@@ -31,6 +32,7 @@ const Register = () => {
             console.log(e)
         }
     }
+
     return (
         <>
             <h2 className={"text-center text-2xl p-2 underline"}>Inscrivez-vous 🏍️ Vroum Vroum </h2>
