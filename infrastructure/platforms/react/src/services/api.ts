@@ -119,8 +119,6 @@ export const createMoto = async (formData: {
 };
 
 export const getAllMotos = async (motoId?: string) => {
-    console.log("📌 Appel API avec motoId:", motoId);
-
     try {
         const response = await fetch(API_URL, {
             method: "POST",
@@ -136,12 +134,23 @@ export const getAllMotos = async (motoId?: string) => {
                         registrationNumber,
                         mileage,
                         ownerId,
+                        owner {
+                            id,
+                            email
+                        }
                         createdAt,
-                        updatedAt
+                        updatedAt,
+                        maintenances {
+                          id,
+                          scheduledDate,
+                          completedDate,
+                          mileageAtService,
+                          type,
+                        },
                       }
                     }
                 `,
-                variables: motoId ? { motoId } : {},
+                variables: motoId ? {motoId} : {},
             }),
         });
 
@@ -152,6 +161,97 @@ export const getAllMotos = async (motoId?: string) => {
         const result = await response.json();
         return result.data.getAllMotos;
     } catch (error) {
+        console.error("❌ Erreur API:", error);
+        throw new Error("Impossible de récupérer les motos");
+    }
+};
+
+export const createMaintenance = async (
+    {
+        year,
+        type,
+        motoId,
+        mileage,
+    }: {
+        year: string;
+        type: "PREVENTIVE" | "CURATIVE";
+        motoId: string;
+        mileage: number
+    }) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                query: `
+                    mutation CreateMaintenance($motoId: String!, $year: String!, $type: MaintenanceType!, $mileage: Int!) {
+                      createMaintenance(motoId: $motoId, year: $year, type: $type, mileage: $mileage) {
+                        id,
+                        motoId,
+                        mileageAtService,
+                        scheduledDate,
+                        completedDate,
+                        type
+                      }
+                    }
+                    `
+                ,
+                variables: {
+                    motoId: motoId,
+                    year: year,
+                    type: type,
+                    mileage: mileage,
+                },
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result.data.getAllMotos;
+    } catch
+        (error) {
+        console.error("❌ Erreur API:", error);
+        throw new Error("Impossible de récupérer les motos");
+    }
+};
+
+export const validateMaintenance = async (maintenanceId: string, mileage: number) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                query: `
+                    mutation ValidateMaintenance($maintenanceId: String!, $mileage: Int!) {
+                      validateMaintenance(maintenanceId: $maintenanceId, mileage: $mileage) {
+                        id,
+                        motoId,
+                        mileageAtService,
+                        scheduledDate,
+                        completedDate,
+                        type
+                      }
+                    }
+                    `
+                ,
+                variables: {
+                    maintenanceId: maintenanceId,
+                    mileage: mileage
+                },
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result.data.getAllMotos;
+    } catch
+        (error) {
         console.error("❌ Erreur API:", error);
         throw new Error("Impossible de récupérer les motos");
     }

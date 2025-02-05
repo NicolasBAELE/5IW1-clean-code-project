@@ -33,19 +33,21 @@ const typeDefs = `
     createUser(name: String! email: String!, password: String!):AuthPayload
     login(email: String!, password: String!): AuthPayload
     createMoto(model: String!, registrationNumber: String!, mileage: Int!, ownerId: String): Moto
-      }
+    createMaintenance(motoId: String!, year: String!, type:MaintenanceType!, mileage: Int!): Maintenance
+    validateMaintenance(maintenanceId: String!, mileage: Int!): Maintenance
+  }
       
   type Moto {
-  id:String     
-  model:String
-  registrationNumber: String     
-  mileage:Int
-  ownerId:String
-  owner:User
-  createdAt:String     
-  updatedAt:String   
-  maintenance:Maintenance  
-}
+      id:String     
+      model:String
+      registrationNumber: String     
+      mileage:Int
+      ownerId:String
+      owner:User
+      createdAt:String     
+      updatedAt:String   
+      maintenances:[Maintenance]  
+    }
 
 enum MaintenanceType {
     PREVENTIVE

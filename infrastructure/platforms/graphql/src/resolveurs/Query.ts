@@ -47,6 +47,7 @@ export const Query = {
             }
 
             const result = await response.json();
+            // console.log(result)
             return result;
         } catch (error) {
             console.error("❌ Erreur dans getAllMotos:", error);
