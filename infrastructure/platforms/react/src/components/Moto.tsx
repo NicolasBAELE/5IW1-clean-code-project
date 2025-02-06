@@ -1,58 +1,107 @@
-import React, { useEffect, useState } from "react";
-import { getAllMotos } from "../services/api";  // Assurez-vous que getAllMotos est correctement importé
+import {useState} from "react";
+import {useMoto} from "../hooks/useMoto";
 
-export const Moto = ({ motoId }: { motoId: string }) => {
-    const [moto, setMoto] = useState<any>(null); // Pour stocker la moto
-    const [loading, setLoading] = useState<boolean>(true); // Pour gérer l'état de chargement
-    const [error, setError] = useState<string | null>(null); // Pour gérer les erreurs
+export const Moto = ({motoId}: { motoId: string }) => {
+    const [year, setYear] = useState<string>("");
+    const [type, setType] = useState<"PREVENTIVE" | "CURATIVE">("PREVENTIVE");
+    const [mileageFirstMaintenance, setMileageFirstMaintenance] = useState<number>(0);
 
-    // Effect qui se déclenche lorsque le motoId change
-    useEffect(() => {
-        const fetchMoto = async () => {
-            setLoading(true); // Commence à charger les données
-            setError(null); // Réinitialise l'erreur à chaque nouvelle requête
+    const {
+        moto,
+        loading,
+        error,
+        lastMaintenance,
+        nextMaintenanceScheduled,
+        nextMaintenanceDatas,
+        handleCreateMaintenance,
+        handleCompleteMaintenance
+    } = useMoto(motoId);
 
-            try {
-                const response = await getAllMotos(motoId);
-                console.log(response)// Appel API pour récupérer les détails de la moto
-                if (response) {
-                    setMoto(response[0]);  // Supposons que la réponse contienne un tableau
-                } else {
-                    setError("Moto non trouvée");
-                }
-            } catch (error) {
-                setError("Erreur de récupération des données.");
-            } finally {
-                setLoading(false); // Fin du chargement
-            }
-        };
+    if (loading) return <div>Chargement...</div>;
+    if (error) return <div>{error}</div>;
+    if (!moto) return <div>Pas de données à afficher.</div>;
 
-        if (motoId) {
-            fetchMoto();
-        }
-    }, [motoId]);  // L'effet se déclenche chaque fois que motoId change
+    return (
+        <div className="mt-4">
+            {!nextMaintenanceScheduled && (
+                <>
+                    <input
+                        type="date"
+                        onChange={(e) => setYear(e.target.value)}
+                        placeholder="Date dernière maintenance"
+                    />
+                    {!lastMaintenance?.id && (
+                        <input
+                            type="number"
+                            onChange={(e) => setMileageFirstMaintenance(parseInt(e.target.value))}
+                            placeholder="Kilométrage à la dernière maintenance"
+                        />
+                    )}
+                    <select onChange={(e) => setType(e.target.value as "PREVENTIVE" | "CURATIVE")}>
+                        <option value="PREVENTIVE">Préventif</option>
+                        <option value="CURATIVE">Curatif</option>
+                    </select>
+                    <button
+                        onClick={() => handleCreateMaintenance(year, type, mileageFirstMaintenance, setMileageFirstMaintenance)}>
+                        {lastMaintenance?.id ? "Ajouter un entretien" : "Renseigner le dernier entretien en date"}
+                    </button>
+                </>
+            )}
 
-    // Affichage en fonction de l'état
-    if (loading) {
-        return <div>Chargement...</div>;  // Affiche un message pendant le chargement
-    }
+            <h3>Détails de la moto:</h3>
+            <p><strong>Modèle:</strong> {moto.model}</p>
+            <p><strong>Immatriculation:</strong> {moto.registrationNumber}</p>
+            <p><strong>KM:</strong> {moto.mileage}</p>
 
-    if (error) {
-        return <div>{error}</div>;  // Affiche une erreur si la récupération a échoué
-    }
+            <br/>
+            <strong>Maintenances:</strong>
+            {moto.maintenances.map((maintenance, index) => (
+                <div key={index}>
+                    Prévue: {maintenance.scheduledDate || "Pas prévue"} ||||||
+                    effectué: {maintenance.completedDate || "Pas effectué"} ||||||
+                    kilométrage: {maintenance.mileageAtService} ||||||
+                    type: {maintenance.type === "CURATIVE" ? "Curatif" : "Préventif"}
+                </div>
+            ))}
 
-    // Si moto est disponible, afficher les détails
-    if (moto) {
-        return (
-            <div className="mt-4">
-                <h3>Détails de la moto:</h3>
-                <p><strong>Modèle:</strong> {moto.model}</p>
-                <p><strong>Immatriculation:</strong> {moto.registrationNumber}</p>
-                <p><strong>KM:</strong> {moto.mileage}</p>
-            </div>
-        );
-    }
+            <br/>
+            {lastMaintenance && (
+                <div>
+                    Dernier
+                    entretien: {lastMaintenance.completedDate} kilométrage: {lastMaintenance.mileageAtService} type: {lastMaintenance.type === "CURATIVE" ? "Curatif" : "Préventif"}
+                </div>
+            )}
 
-    // Si aucune moto n'est trouvée ou autre cas
-    return <div>Pas de données à afficher.</div>;
+            {nextMaintenanceScheduled && (
+                <div>
+                    Prochain
+                    entretien: {nextMaintenanceScheduled.scheduledDate} type: {nextMaintenanceScheduled.type === "CURATIVE" ? "Curatif" : "Préventif"} ||||||
+                    <button onClick={() => {
+                        const mileageInput = window.prompt("Veuillez entrer le kilométrage actuel :");
+                        if (mileageInput) {
+                            const mileage = parseInt(mileageInput, 10);
+                            if (!isNaN(mileage) && mileage > 0) {
+                                handleCompleteMaintenance(nextMaintenanceScheduled.id, mileage);
+                            } else {
+                                alert("Veuillez entrer un kilométrage valide.");
+                            }
+                        }
+                    }}>
+                        Entretien effectué ce jour
+                    </button>
+                </div>
+            )}
+
+            <br/>
+            {nextMaintenanceDatas && (
+                <>
+                    <div>{nextMaintenanceDatas.message}</div>
+                    {nextMaintenanceDatas.nextScheduledMileage &&
+                        <div>Au kilométrage: {nextMaintenanceDatas.nextScheduledMileage}</div>}
+                    {nextMaintenanceDatas.nextScheduledDate &&
+                        <div>Ou à la date: {nextMaintenanceDatas.nextScheduledDate}</div>}
+                </>
+            )}
+        </div>
+    );
 };

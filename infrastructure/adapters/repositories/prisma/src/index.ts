@@ -4,7 +4,7 @@ import {withPrisma} from "../utils/handlePrisma.js";
 import {createUser, getUsers, loginUser} from "../routes/users.js";
 import {authMiddleware} from "./middleware/verifyToken.js";
 import cors from "cors";
-import {createScheduleMaintenance} from "../routes/maintenance.js";
+import {createMaintenance, validateMaintenance} from "../routes/maintenance.js";
 import {createMoto, getAllMotos} from "../routes/moto.js";
 
 const app = express();
@@ -45,6 +45,14 @@ app.post('/moto', async (req, res, next) => {
         return withPrisma(prisma, createMoto, req, res, next);
     else if (_method === 'GET_MOTOS')
         return withPrisma(prisma, getAllMotos, req, res, next);
+});
+
+app.post('/maintenance', async (req, res, next) => {
+    const {_method} = req.body;
+    if (_method === 'CREATE_MAINTENANCE')
+        return withPrisma(prisma, createMaintenance, req, res, next);
+    if (_method === 'VALIDATE_MAINTENANCE')
+        return withPrisma(prisma, validateMaintenance, req, res, next);
 });
 
 app.listen(port, () => {

@@ -26,7 +26,6 @@ const Register = () => {
                 return console.error('Error durant la soumission du formulaire')
             }
             const {token, user} = data.createUser
-            console.log(data.createUser)
             login(token, user)
         } catch (e) {
             console.log(e)

@@ -9,7 +9,6 @@ const App = () => {
     const { user } = useAuth();
     const [motos, setMotos] = useState<any[]>([]);
     const [motoId, setMotoId] = useState<string>("");
-    console.log({motoId})
 
     // Fonction pour récupérer les motos
     const fetchMotos = async () => {
@@ -43,6 +42,8 @@ const App = () => {
             )}
             <main className="bg-gray-50 p-4">
                 {user && <CreateMotoForm onMotoCreated={onMotoCreated} />}
+                {/* Si motoId est sélectionné, afficher les détails de la moto */}
+                {motoId && <Moto motoId={motoId} />}
                 <h2 className="text-lg font-bold mt-4">Motos disponibles:</h2>
                 {motos.length > 0 ? (
                     motos.map((moto) => (
@@ -57,8 +58,6 @@ const App = () => {
                 ) : (
                     <p>Aucune moto disponible.</p>
                 )}
-                {/* Si motoId est sélectionné, afficher les détails de la moto */}
-                {motoId && <Moto motoId={motoId} />}
             </main>
         </div>
     );
