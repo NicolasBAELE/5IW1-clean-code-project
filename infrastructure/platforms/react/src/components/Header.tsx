@@ -1,7 +1,7 @@
 import AuthForm from "./AuthForm.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
 
-const Header = () => {
+const Header = ({setPage}) => {
   const { logout, isAuthenticated } = useAuth();
 
   return (
@@ -23,7 +23,7 @@ const Header = () => {
             <ul className="flex items-center space-x-8">
               <li>
                 <a
-                  href="#motos"
+                  onClick={() => setPage('motos')}
                   className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                 >
                   Motos
@@ -31,7 +31,7 @@ const Header = () => {
               </li>
               <li>
                 <a
-                  href="#entretien"
+                  onClick={() => setPage('maintenances')}
                   className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                 >
                   Entretiens
@@ -39,7 +39,7 @@ const Header = () => {
               </li>
               <li>
                 <a
-                  href="#pieces"
+                  onClick={() => setPage('stocks')}
                   className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                 >
                   Pièces Détachées

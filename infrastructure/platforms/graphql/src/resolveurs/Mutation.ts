@@ -1,4 +1,4 @@
-import { User } from "@projet-clean/domain/entities/User.js";
+import {User} from "@projet-clean/domain/entities/User.js";
 import {Moto} from "@projet-clean/react/src/types/Moto.js";
 import {Maintenance} from "@projet-clean/react/src/types/Moto.js";
 
@@ -11,7 +11,7 @@ interface LoginResponse {
 export const Mutation = {
     createUser: async (
         parent: any,
-        { name, email, password }: { name: string; email: string; password: string }
+        {name, email, password}: { name: string; email: string; password: string }
     ): Promise<User> => {
         const _method = "POST_REGISTER";
         try {
@@ -20,7 +20,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ name, email, password, _method }),
+                body: JSON.stringify({name, email, password, _method}),
             });
 
             if (!response.ok) {
@@ -41,7 +41,7 @@ export const Mutation = {
 
     login: async (
         parent: any,
-        { email, password }: { email: string; password: string }
+        {email, password}: { email: string; password: string }
     ): Promise<LoginResponse> => {
         const _method = "POST_LOGIN";
         try {
@@ -50,7 +50,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password, _method }),
+                body: JSON.stringify({email, password, _method}),
             });
 
             if (!response.ok) {
@@ -71,7 +71,12 @@ export const Mutation = {
 
     createMoto: async (
         parent: any,
-        { model, registrationNumber, mileage, ownerId }: { model: string; registrationNumber: string; mileage: number; ownerId: string }
+        {model, registrationNumber, mileage, ownerId}: {
+            model: string;
+            registrationNumber: string;
+            mileage: number;
+            ownerId: string
+        }
     ): Promise<Moto> => {
         const _method = "CREATE_MOTO";
         try {
@@ -80,7 +85,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ model, registrationNumber, mileage, ownerId, _method }),
+                body: JSON.stringify({model, registrationNumber, mileage, ownerId, _method}),
             });
 
             if (!response.ok) {
@@ -101,7 +106,7 @@ export const Mutation = {
 
     createMaintenance: async (
         parent: any,
-        { year, motoId, type, mileage }: { motoId: string; year: Date; type: string; mileage: number }
+        {year, motoId, type, mileage}: { motoId: string; year: Date; type: string; mileage: number }
     ): Promise<Maintenance> => {
         const _method = "CREATE_MAINTENANCE";
         try {
@@ -110,7 +115,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ year, motoId, type, mileage, _method }),
+                body: JSON.stringify({year, motoId, type, mileage, _method}),
             });
 
             if (!response.ok) {
@@ -131,7 +136,7 @@ export const Mutation = {
 
     validateMaintenance: async (
         parent: any,
-        { maintenanceId, mileage }: { maintenanceId: string; mileage: number }
+        {maintenanceId, mileage}: { maintenanceId: string; mileage: number }
     ): Promise<Maintenance> => {
         const _method = "VALIDATE_MAINTENANCE";
         try {
@@ -140,7 +145,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ maintenanceId, mileage, _method }),
+                body: JSON.stringify({maintenanceId, mileage, _method}),
             });
 
             if (!response.ok) {
@@ -156,6 +161,40 @@ export const Mutation = {
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de valider la maintenance");
+        }
+    },
+
+    createStock: async (
+        parent: any,
+        {
+            name,
+            cost,
+            quantity,
+        }: {
+            name: string
+            cost: number
+            quantity: number
+        }
+    ): Promise<any> => {
+        const _method = "CREATE_STOCK";
+        try {
+            const response = await fetch("http://prisma:3000/stock", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({name, cost, quantity, _method}),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+
+            const result: unknown = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de créer le produit");
         }
     },
 };
