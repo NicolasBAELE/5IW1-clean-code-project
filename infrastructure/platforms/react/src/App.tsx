@@ -6,61 +6,78 @@ import CreateMotoForm from "./components/CreateMotoForm.tsx";
 import { Moto } from "./components/Moto.tsx";
 
 const App = () => {
-    const { user } = useAuth();
-    const [motos, setMotos] = useState<any[]>([]);
-    const [motoId, setMotoId] = useState<string>("");
+  const { user } = useAuth();
+  const [motos, setMotos] = useState<any[]>([]);
+  const [motoId, setMotoId] = useState<string>("");
 
-    // Fonction pour récupérer les motos
-    const fetchMotos = async () => {
-        try {
-            const data = await getAllMotos();
-            setMotos(data);  // Assurer que "data" est un tableau ici
-        } catch (error) {
-            console.error("Erreur lors de la récupération des motos:", error);
-        }
-    };
+  const fetchMotos = async () => {
+    try {
+      const data = await getAllMotos();
+      setMotos(data); 
+    } catch (error) {
+      console.error("Erreur lors de la récupération des motos:", error);
+    }
+  };
 
-    // Effect pour récupérer les motos au chargement de l'app
-    useEffect(() => {
-        fetchMotos();
-    }, []);  // Ce useEffect est exécuté une seule fois lors du chargement initial de la page
+  useEffect(() => {
+    fetchMotos();
+  }, []);
 
-    // Fonction pour actualiser la liste des motos après la création
-    const onMotoCreated = () => {
-        fetchMotos();
-    };
+  const onMotoCreated = () => {
+    fetchMotos();
+  };
 
-    return (
-        <div className="min-h-screen bg-gray-100">
-            <Header />
-            {user && (
-                <>
-                    <h2>Bienvenue à toi jeune {user?.name}</h2>
-                    <h2>{user?.email}</h2>
-                    <h2>{user?.role}</h2>
-                </>
-            )}
-            <main className="bg-gray-50 p-4">
-                {user && <CreateMotoForm onMotoCreated={onMotoCreated} />}
-                {/* Si motoId est sélectionné, afficher les détails de la moto */}
-                {motoId && <Moto motoId={motoId} />}
-                <h2 className="text-lg font-bold mt-4">Motos disponibles:</h2>
-                {motos.length > 0 ? (
-                    motos.map((moto) => (
-                        <div
-                            key={moto.id}
-                            className="p-2 border-b"
-                            onClick={() => setMotoId(moto.id)}  // Set motoId onClick
-                        >
-                            <strong>Modèle:</strong> {moto.model} - <strong>Immatriculation:</strong> {moto.registrationNumber} - <strong>KM:</strong> {moto.mileage}
-                        </div>
-                    ))
-                ) : (
-                    <p>Aucune moto disponible.</p>
-                )}
-            </main>
-        </div>
-    );
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        {user && (
+          <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold text-gray-800">Bienvenue {user.name} !</h2>
+            <p className="text-gray-600">{user.email}</p>
+            <span className="inline-block mt-2 px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
+              {user.role}
+            </span>
+          </div>
+        )}
+        <main className="bg-white p-6 rounded-lg shadow-md">
+          {user && <CreateMotoForm onMotoCreated={onMotoCreated} />}
+          
+          {/* Affichage du détail de la moto sélectionnée */}
+          {motoId && (
+            <div className="mt-6">
+              <Moto motoId={motoId} onClose={() => setMotoId("")} />
+            </div>
+          )}
+
+          <h2 className="text-xl font-bold mt-6 mb-4 border-b pb-2 text-gray-800">
+            Motos disponibles :
+          </h2>
+          {motos.length > 0 ? (
+            motos.map((moto) => (
+              <div
+                key={moto.id}
+                className="p-4 border border-gray-200 rounded-lg mb-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                onClick={() => setMotoId(moto.id)}
+              >
+                <p>
+                  <span className="font-semibold">Modèle :</span> {moto.model}
+                </p>
+                <p>
+                  <span className="font-semibold">Immatriculation :</span> {moto.registrationNumber}
+                </p>
+                <p>
+                  <span className="font-semibold">KM :</span> {moto.mileage}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-600">Aucune moto disponible.</p>
+          )}
+        </main>
+      </div>
+    </div>
+  );
 };
 
 export default App;
