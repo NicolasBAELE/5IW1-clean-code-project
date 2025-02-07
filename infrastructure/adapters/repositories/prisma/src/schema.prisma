@@ -16,7 +16,6 @@ model Moto {
   ownerId            String
   owner              User          @relation(fields: [ownerId], references: [id])
   maintenances       Maintenance[]
-  breakdowns         Breakdown[]
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
@@ -33,29 +32,17 @@ model Maintenance {
   mileageAtService Int?
   cost             Float?
   notes            String?
-  reminders        Reminder[]
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
 }
 
-model Reminder {
+model Stock {
   id            String      @id @default(cuid())
-  maintenanceId String
-  maintenance   Maintenance @relation(fields: [maintenanceId], references: [id])
-  reminderDate  DateTime
-  sent          Boolean     @default(false)
+  name          String
+  quantity      Int
+  cost          Float
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-}
-
-model Breakdown {
-  id          String   @id @default(cuid())
-  motoId      String
-  moto        Moto     @relation(fields: [motoId], references: [id])
-  description String
-  warranty    Boolean
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model User {

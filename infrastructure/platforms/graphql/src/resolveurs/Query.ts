@@ -53,7 +53,32 @@ export const Query = {
             console.error("❌ Erreur dans getAllMotos:", error);
             throw new Error("Impossible de récupérer les motos");
         }
-    }
+    },
+    getAllStocks: async (
+        parent: any,
+        {}: {}
+    ): Promise<any> => {
+        const _method = "GET_STOCKS";
+        try {
+            const response = await fetch("http://prisma:3000/stock", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({_method}),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+
+            const result: unknown = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de récupérer les produits");
+        }
+    },
 };
 
 function isValidUser(user: any): user is User {

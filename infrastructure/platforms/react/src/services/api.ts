@@ -210,7 +210,7 @@ export const createMaintenance = async (
         }
 
         const result = await response.json();
-        return result.data.getAllMotos;
+        return result
     } catch
         (error) {
         console.error("❌ Erreur API:", error);
@@ -254,6 +254,87 @@ export const validateMaintenance = async (maintenanceId: string, mileage: number
         (error) {
         console.error("❌ Erreur API:", error);
         throw new Error("Impossible de récupérer les motos");
+    }
+};
+
+export const createStock = async (
+    {
+        name,
+        cost,
+        quantity,
+    }: {
+        name: string;
+        cost: string;
+        quantity: string;
+    }) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                query: `
+                    mutation CreateStock($name: String!, $cost: Float!, $quantity: Int!) {
+                      createStock(name: $name, cost: $cost, quantity: $quantity) {
+                        id,
+                        name,
+                        cost,
+                        quantity
+                      }
+                    }
+                    `
+                ,
+                variables: {
+                    name: name,
+                    cost: parseFloat(cost),
+                    quantity: parseInt(quantity),
+                },
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result
+    } catch
+        (error) {
+        console.error("❌ Erreur API:", error);
+        throw new Error("Impossible de créer le produit");
+    }
+};
+
+export const getAllStocks = async () => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                query: `
+                    query GetAllStocks {
+                      getAllStocks {
+                        id,
+                        name,
+                        cost,
+                        quantity
+                      }
+                    }
+                    `
+                ,
+                variables: {},
+            })
+        })
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result.data.getAllStocks
+    } catch
+        (error) {
+        console.error("❌ Erreur API:", error);
+        throw new Error("Impossible de créer le produit");
     }
 };
 

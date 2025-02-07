@@ -133,28 +133,30 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
           <h4 className="text-lg font-semibold text-gray-800 mb-2">
             Historique des maintenances
           </h4>
-          {moto.maintenances.map((maintenance, index) => (
-            <div
-              key={index}
-              className="border border-gray-200 rounded-md p-2 mb-2"
-            >
-              <p className="text-gray-700">
-                <strong>Prévue :</strong>{" "}
-                {maintenance.scheduledDate || "Pas prévue"}
-              </p>
-              <p className="text-gray-700">
-                <strong>Effectué :</strong>{" "}
-                {maintenance.completedDate || "Pas effectué"}
-              </p>
-              <p className="text-gray-700">
-                <strong>Kilométrage :</strong> {maintenance.mileageAtService}
-              </p>
-              <p className="text-gray-700">
-                <strong>Type :</strong>{" "}
-                {maintenance.type === "CURATIVE" ? "Curatif" : "Préventif"}
-              </p>
-            </div>
-          ))}
+            <div className="h-60 overflow-auto">
+              {moto.maintenances.map((maintenance, index) => (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-md p-2 mb-2"
+                >
+                  <p className="text-gray-700">
+                    <strong>Prévue :</strong>{" "}
+                    {maintenance.scheduledDate || "Pas prévue"}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Effectué :</strong>{" "}
+                    {maintenance.completedDate || "Pas effectué"}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Kilométrage :</strong> {maintenance.mileageAtService}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Type :</strong>{" "}
+                    {maintenance.type === "CURATIVE" ? "Curatif" : "Préventif"}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
 
         {/* Dernier entretien */}

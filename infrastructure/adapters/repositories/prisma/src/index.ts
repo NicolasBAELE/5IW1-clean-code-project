@@ -6,6 +6,7 @@ import {authMiddleware} from "./middleware/verifyToken.js";
 import cors from "cors";
 import {createMaintenance, validateMaintenance} from "../routes/maintenance.js";
 import {createMoto, getAllMotos} from "../routes/moto.js";
+import {createStock, getAllStocks} from "../routes/stock.js";
 
 const app = express();
 app.use(express.json());
@@ -45,6 +46,14 @@ app.post('/moto', async (req, res, next) => {
         return withPrisma(prisma, createMoto, req, res, next);
     else if (_method === 'GET_MOTOS')
         return withPrisma(prisma, getAllMotos, req, res, next);
+});
+
+app.post('/stock', async (req, res, next) => {
+    const {_method} = req.body;
+    if (_method === 'CREATE_STOCK')
+        return withPrisma(prisma, createStock, req, res, next);
+    else if (_method == 'GET_STOCKS')
+        return withPrisma(prisma, getAllStocks, req, res, next);
 });
 
 app.post('/maintenance', async (req, res, next) => {
