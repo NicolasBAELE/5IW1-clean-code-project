@@ -4,6 +4,8 @@ export interface Maintenance {
     completedDate: string;
     scheduledDate: string;
     type: "PREVENTIVE" | "CURATIVE";
+    cost: number;
+    notes: string;
 }
 
 export interface Moto {
@@ -18,4 +20,11 @@ export interface NextMaintenanceDatas {
     message: string;
     nextScheduledDate?: string;
     nextScheduledMileage?: number;
+}
+
+export interface Stock {
+    id: string;
+    name: string;
+    quantity: number;
+    cost: number;
 }

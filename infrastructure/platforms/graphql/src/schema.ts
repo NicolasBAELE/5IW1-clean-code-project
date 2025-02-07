@@ -24,17 +24,21 @@ const typeDefs = `
     }
     
   type AuthPayload {
-  user: User
-  token: String
-  message: String!
-  status: String!
-}
+      user: User
+      token: String
+      message: String!
+      status: String!
+    }
+    input ProductInput {
+        id: String!
+        quantity: Int!
+    }
 
   type Mutation {
     createUser(name: String! email: String!, password: String!):AuthPayload
     login(email: String!, password: String!): AuthPayload
     createMoto(model: String!, registrationNumber: String!, mileage: Int!, ownerId: String): Moto
-    createMaintenance(motoId: String!, year: String!, type:MaintenanceType!, mileage: Int!): Maintenance
+    createMaintenance(motoId: String!, year: String!, type:MaintenanceType!, mileage: Int!, products: [ProductInput!]!): Maintenance
     validateMaintenance(maintenanceId: String!, mileage: Int!): Maintenance
     createStock(name: String!, cost: Float!, quantity: Int!): Stock
   }

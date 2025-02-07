@@ -106,7 +106,19 @@ export const Mutation = {
 
     createMaintenance: async (
         parent: any,
-        {year, motoId, type, mileage}: { motoId: string; year: Date; type: string; mileage: number }
+        {
+            year, 
+            motoId, 
+            type,
+            mileage,
+            products,
+        }: { 
+            motoId: string;
+            year: Date; 
+            type: string;
+            mileage: number
+            products: { id: string, quantity: number }[]
+        }
     ): Promise<Maintenance> => {
         const _method = "CREATE_MAINTENANCE";
         try {
@@ -115,7 +127,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({year, motoId, type, mileage, _method}),
+                body: JSON.stringify({year, motoId, type, mileage, products, _method}),
             });
 
             if (!response.ok) {
@@ -213,5 +225,5 @@ function isMoto(data: any): data is Moto {
 }
 
 function isMaintenance(data: any): data is Maintenance {
-    return typeof data.id === 'string' && data.year instanceof Date && typeof data.motoId === 'string' && typeof data.type === 'string' && typeof data.mileage === 'number';
+    return typeof data.id === 'string' && typeof data.scheduledDate === 'string' && typeof data.motoId === 'string' && typeof data.type === 'string';
 }

@@ -21,7 +21,6 @@ const AuthForm = () => {
     e.preventDefault();
     try {
       const response = await loginUser(formData);
-      console.log(response, formData);
       const { token, user } = response.data.login;
       login(token, user);
     } catch (e) {

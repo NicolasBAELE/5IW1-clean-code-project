@@ -146,6 +146,8 @@ export const getAllMotos = async (motoId?: string) => {
                           completedDate,
                           mileageAtService,
                           type,
+                          cost,
+                          notes
                         },
                       }
                     }
@@ -172,11 +174,13 @@ export const createMaintenance = async (
         type,
         motoId,
         mileage,
+        products,
     }: {
         year: string;
         type: "PREVENTIVE" | "CURATIVE";
         motoId: string;
-        mileage: number
+        mileage: number,
+        products: { id: string, quantity: number }[],
     }) => {
     try {
         const response = await fetch(API_URL, {
@@ -184,8 +188,8 @@ export const createMaintenance = async (
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 query: `
-                    mutation CreateMaintenance($motoId: String!, $year: String!, $type: MaintenanceType!, $mileage: Int!) {
-                      createMaintenance(motoId: $motoId, year: $year, type: $type, mileage: $mileage) {
+                    mutation CreateMaintenance($motoId: String!, $year: String!, $type: MaintenanceType!, $mileage: Int!, $products: [ProductInput!]!) {
+                      createMaintenance(motoId: $motoId, year: $year, type: $type, mileage: $mileage, products: $products) {
                         id,
                         motoId,
                         mileageAtService,
@@ -201,6 +205,7 @@ export const createMaintenance = async (
                     year: year,
                     type: type,
                     mileage: mileage,
+                    products: products,
                 },
             })
         })

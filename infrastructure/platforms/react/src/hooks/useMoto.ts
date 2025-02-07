@@ -63,19 +63,16 @@ export const useMoto = (motoId: string) => {
         year: string,
         type: "PREVENTIVE" | "CURATIVE",
         mileageFirstMaintenance: number,
-        setMileageFirstMaintenance: Dispatch<SetStateAction<number>>
+        setMileageFirstMaintenance: Dispatch<SetStateAction<number>>,
+        products: { id: string, quantity: number }[],
     ) => {
-        if (!year || !type) {
-            alert("Veuillez remplir tous les champs.");
-            return;
-        }
-
         try {
             await createMaintenance({
                 motoId,
                 year: new Date(year).toISOString(),
                 type,
-                mileage: mileageFirstMaintenance
+                mileage: mileageFirstMaintenance,
+                products: products,
             });
             setMileageFirstMaintenance(0)
             fetchMoto();
