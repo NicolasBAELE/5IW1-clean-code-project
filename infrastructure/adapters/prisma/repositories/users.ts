@@ -45,10 +45,6 @@ export const createUser = async (req, res, next, prisma) => {
     );
 
     res.status(201).json({
-        user: {
-            name: user.name,
-            email: user.email,
-        },
         token,
         message: "Compte créé avec succès",
         status: "created",

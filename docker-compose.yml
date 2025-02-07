@@ -3,14 +3,14 @@ services:
     container_name: prisma
     build:
       context: .
-      dockerfile: ./infrastructure/adapters/repositories/prisma/Dockerfile
+      dockerfile: infrastructure/adapters/prisma/Dockerfile
     ports:
       - "3000:3000"
     environment:
       DATABASE_URL: ${DATABASE_URL}
       SECRET_KEY_JWT: ${SECRET_KEY_JWT}
     volumes:
-      - ./infrastructure/adapters/repositories/prisma:/app/infrastructure/adapters/repositories/prisma
+      - ./infrastructure/adapters/prisma:/app/infrastructure/adapters/prisma
       - ./domain:/app/domain
       - ./application:/app/application
       - ./package.json:/app/package.json

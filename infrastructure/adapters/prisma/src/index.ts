@@ -1,12 +1,12 @@
 import express from "express";
 import {PrismaClient} from '@prisma/client'
-import {withPrisma} from "../utils/handlePrisma.js";
-import {createUser, getUsers, loginUser} from "../routes/users.js";
-import {authMiddleware} from "./middleware/verifyToken.js";
+import {withPrisma} from "../utils/handlePrisma";
+import {createUser, getUsers, loginUser} from "../repositories/users";
+import {authMiddleware} from "./middleware/verifyToken";
 import cors from "cors";
-import {createMaintenance, validateMaintenance} from "../routes/maintenance.js";
-import {createMoto, getAllMotos} from "../routes/moto.js";
-import {createStock, getAllStocks} from "../routes/stock.js";
+import {createMaintenance, validateMaintenance} from "../repositories/maintenance";
+import {createMoto, getAllMotos} from "../repositories/moto";
+import {createStock, getAllStocks} from "../repositories/stock";
 
 const app = express();
 app.use(express.json());

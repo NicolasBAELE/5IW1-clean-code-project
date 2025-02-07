@@ -11,7 +11,7 @@
   "workspaces": [
     "domain",
     "application",
-    "infrastructure/adapters/repositories/prisma",
+    "infrastructure/adapters/prisma",
     "infrastructure/platforms/graphql",
     "infrastructure/platforms/react"
   ]

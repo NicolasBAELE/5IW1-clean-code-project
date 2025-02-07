@@ -41,9 +41,6 @@ export const register = async (formData: { name: string, email: string, password
         body: JSON.stringify({
             query: `mutation ($name: String!, $email: String!, $password: String!) {
   createUser(name: $name, email: $email, password: $password) {
-    user {
-      email
-    },
     token,
     message,
     status,

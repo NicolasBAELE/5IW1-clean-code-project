@@ -27,12 +27,8 @@ export const Mutation = {
                 throw new Error(`Erreur HTTP : ${response.status}`);
             }
 
-            const result: unknown = await response.json();
-            if (isUser(result)) {
-                return result;
-            } else {
-                throw new Error("Les données retournées ne sont pas dans le format attendu.");
-            }
+            return await response.json();
+
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de créer l'utilisateur");
@@ -214,10 +210,6 @@ export const Mutation = {
 // Gardes de type pour vérifier les structures des objets
 function isLoginResponse(data: any): data is LoginResponse {
     return typeof data.token === 'string' && data.user && typeof data.user === 'object';
-}
-
-function isUser(data: any): data is User {
-    return typeof data.id === 'string' && typeof data.name === 'string' && typeof data.email === 'string';
 }
 
 function isMoto(data: any): data is Moto {

@@ -6,7 +6,7 @@ import {User} from "@projet-clean/domain/entities/User.ts";
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
-    login: (token: string, user: User) => void;
+    login: (token: string) => void;
     logout: () => void;
     loading: boolean;
 }
@@ -39,11 +39,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                const userData: User | null = await response.json();
+                const decodedToken: User | null = await response.json();
                 if (response.status === 401) {
                     logout();
-                } else if (userData) {
-                    setUser(userData);
+                } else if (decodedToken) {
+                    setUser(decodedToken);
                     setIsAuthenticated(true);
                 }
             } catch (error) {
@@ -55,10 +55,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         verifyToken();
     }, []);
 
-    const login = (token: string, user: User) => {
+    const login = (token: string) => {
         localStorage.setItem("token", token);
-        setUser(user);
-        setIsAuthenticated(true);
         navigate("/");
         navigate(0);
     };
@@ -78,7 +76,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     );
 };
 
-// Hook personnalisé pour accéder au contexte correctement
 export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);
     if (!context) {
