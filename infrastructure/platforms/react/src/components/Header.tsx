@@ -1,7 +1,8 @@
 import AuthForm from "./AuthForm.tsx";
 import { useAuth } from "../context/AuthContext.tsx";
+import {Dispatch, SetStateAction} from "react";
 
-const Header = ({setPage}) => {
+const Header = ({setPage}: {setPage: Dispatch<SetStateAction<string>>}) => {
   const { logout, isAuthenticated } = useAuth();
 
   return (

@@ -12,7 +12,6 @@ export const authMiddleware = (req: any, res: any, next: any) => {
     const token = authHeader.split(" ")[1]; // Extraction du token
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        console.log(decoded)
         req.user = decoded; // Ajoute l'utilisateur décodé à la requête
         next(); // Passe à la suite
     } catch (error) {

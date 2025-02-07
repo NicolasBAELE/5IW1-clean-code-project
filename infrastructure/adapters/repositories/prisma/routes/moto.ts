@@ -47,8 +47,6 @@ export const createMoto = async (req: Request, res: Response, next: NextFunction
 export const getAllMotos = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
     try {
         const { motoId } = req.body as GetAllMotosRequestBody;
-        console.log("📌 Fetching moto(s) with ID:", motoId);
-
         let motos;
 
         if (motoId) {

@@ -5,7 +5,7 @@ import {getAllStocks} from "../services/api.ts";
 export const Stocks = () => {
     const [stocks, setStocks] = useState<any[]>([])
 
-    const fetchMotos = async () => {
+    const fetchStocks = async () => {
         try {
             const data = await getAllStocks();
             setStocks(data);
@@ -15,11 +15,11 @@ export const Stocks = () => {
     };
 
     useEffect(() => {
-        fetchMotos();
+        fetchStocks();
     }, []);
 
     const onStockCreated = () => {
-        fetchMotos();
+        fetchStocks();
     };
 
     return <>

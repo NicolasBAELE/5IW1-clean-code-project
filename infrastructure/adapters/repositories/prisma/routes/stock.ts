@@ -18,8 +18,6 @@ export const createStock = async (req: Request, res: Response, next: NextFunctio
                 quantity: quantity,
             }
         });
-        console.log(stock)
-
         res.json(stock);
     } catch (error) {
         console.error("❌ Erreur lors de la création du stock :", error);
@@ -30,8 +28,6 @@ export const createStock = async (req: Request, res: Response, next: NextFunctio
 export const getAllStocks = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
     try {
         const stock = await prisma.stock.findMany();
-        console.log(stock)
-
         res.json(stock);
     } catch (error) {
         console.error("❌ Erreur lors de la création du stock :", error);

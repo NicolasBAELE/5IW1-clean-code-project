@@ -28,8 +28,6 @@ export const Query = {
         }
     },
     getAllMotos: async (parent: any, args: { motoId?: string }) => {
-        console.log("📌 Query GraphQL - MotoId:", args.motoId);
-
         try {
             const response = await fetch("http://prisma:3000/moto", {
                 method: "POST",
@@ -47,7 +45,6 @@ export const Query = {
             }
 
             const result = await response.json();
-            // console.log(result)
             return result;
         } catch (error) {
             console.error("❌ Erreur dans getAllMotos:", error);
