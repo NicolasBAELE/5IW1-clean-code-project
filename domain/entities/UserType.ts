@@ -1,6 +1,6 @@
 import {MotoType} from "./MotoType.js";
 
-export interface User {
+export interface UserType {
   id: string;
   name: string;
   email: string;
@@ -8,6 +8,4 @@ export interface User {
   role: string;
   phone?: string;
   motos: MotoType[];
-  createdAt: Date;
-  updatedAt: Date;
 }

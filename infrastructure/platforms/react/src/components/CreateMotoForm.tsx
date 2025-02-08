@@ -1,7 +1,7 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {createMoto, getAllUsers} from "../services/api.ts";
 import {motoModels} from "../utils/motoUtils.ts";
-import {User} from "@projet-clean/domain/entities/User.ts";
+import {UserType} from "@projet-clean/domain/entities/UserType.ts";
 
 interface CreateMotoFormProps {
     onMotoCreated: () => void;
@@ -17,14 +17,14 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [users, setUsers] = useState<User[]>([])
+    const [users, setUsers] = useState<UserType[]>([])
 
     const fetchUsers = async () => {
         try {
             const data = await getAllUsers();
             setUsers(data);
         } catch (error) {
-            console.error("Erreur lors de la récupération des motos:", error);
+            console.error("Erreur lors de la récupération des users:", error);
         }
     };
 

@@ -1,6 +1,6 @@
 import express from "express";
 import {PrismaClient} from '@prisma/client'
-import {createUser, getUsers, loginUser} from "../repositories/users";
+import {createUser, getUsers, loginUser, resetPassword} from "../repositories/users";
 import {authMiddleware} from "./middleware/verifyToken";
 import cors from "cors";
 import {createMaintenance, validateMaintenance} from "../repositories/maintenance";
@@ -35,6 +35,8 @@ app.post('/users', async (req, res, next) => {
         return withPrisma(prisma, createUser, req, res, next);
     } else if (_method === 'DELETE') {
         // return deleteUser(req, res, data);
+    } else if (_method === 'RESET_PASSWORD') {
+        return withPrisma(prisma, resetPassword, req, res, next);
     } else {
         return res.status(400).json({message: 'Méthode invalide'});
     }

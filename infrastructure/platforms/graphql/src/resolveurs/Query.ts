@@ -1,7 +1,7 @@
-import {User} from "@projet-clean/domain/entities/User.js";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
 
 export const Query = {
-    getUsers: async (parent: any, args: { userId?: string }, context: any, info: any): Promise<User[]> => {
+    getUsers: async (parent: any, args: { userId?: string }, context: any, info: any): Promise<UserType[]> => {
         const _method = "GET";
         try {
             const response = await fetch("http://prisma:3000/users", {
@@ -78,7 +78,7 @@ export const Query = {
     },
 };
 
-function isValidUser(user: any): user is User {
+function isValidUser(user: any): user is UserType {
     return typeof user.id === 'string' &&
         typeof user.name === 'string' &&
         typeof user.email === 'string' &&

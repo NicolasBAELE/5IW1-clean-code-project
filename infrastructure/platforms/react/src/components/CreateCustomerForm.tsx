@@ -1,15 +1,16 @@
 import {ChangeEvent, FormEvent, useState} from "react";
-import {createStock} from "../services/api.ts";
+import {register} from "../services/api.ts";
 
-interface CreateStockFormProps {
-    onStockCreated: () => void;
+interface CreateCustomerFormProps {
+    onCustomerCreated: () => void;
 }
 
-const CreateStockForm: React.FC<CreateStockFormProps> = ({onStockCreated}) => {
+const CreateCustomerForm: React.FC<CreateCustomerFormProps> = ({onCustomerCreated}) => {
     const [formData, setFormData] = useState({
         name: "",
-        cost: "",
-        quantity: "",
+        email: "",
+        password: "CUSTOMER",
+        role: "CUSTOMER",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,21 +22,26 @@ const CreateStockForm: React.FC<CreateStockFormProps> = ({onStockCreated}) => {
             [e.target.id]: e.target.value,
         });
     };
-    const disabled = !formData.name || !formData.cost || !formData.quantity;
+    const disabled = !formData.name || !formData.email;
 
-    const createStockForm = async (e: FormEvent<HTMLFormElement>) => {
+    const createCustomerForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
         try {
-            await createStock(formData);
-            onStockCreated();
-            setFormData({
-                name: "",
-                cost: "",
-                quantity: "",
-            });
+            const registerReq = await register(formData);
+            if (registerReq.status === "error") {
+                setError("Cet utilisateur existe déjà")
+            } else {
+                onCustomerCreated();
+                setFormData({
+                    name: "",
+                    email: "",
+                    password: "CUSTOMER",
+                    role: "CUSTOMER",
+                });
+            }
         } catch (e) {
             setError("Erreur lors de la création de la moto. Veuillez réessayer.");
             console.log(e);
@@ -46,34 +52,29 @@ const CreateStockForm: React.FC<CreateStockFormProps> = ({onStockCreated}) => {
 
     return (
         <>
-            <form onSubmit={createStockForm} className="d-flex flex-direction-column">
+            <form onSubmit={createCustomerForm} className="d-flex flex-direction-column">
                 {error && <div className="text-red-500">{error}</div>}
 
                 <input
                     id="name"
                     type="text"
-                    placeholder="Nom du produit"
+                    placeholder="Nom du client"
                     value={formData.name}
+                    required
                     onChange={handleChange}
+                    pattern="[a-zA-Z\s]{3,20}"
                     className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
 
                 <input
-                    id="cost"
-                    type="number"
-                    step="0.01"
-                    placeholder="Prix"
-                    value={formData.cost}
-                    onChange={handleChange}
-                    className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
 
-                <input
-                    id="quantity"
-                    type="number"
-                    placeholder="Quantité"
-                    value={formData.quantity}
+                    id="email"
+                    type="text"
+                    placeholder="Email"
+                    value={formData.email}
                     onChange={handleChange}
+                    required
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                     className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
 
@@ -86,11 +87,11 @@ const CreateStockForm: React.FC<CreateStockFormProps> = ({onStockCreated}) => {
                             : "bg-blue-500 hover:bg-blue-700"
                     } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
                 >
-                    {isSubmitting ? "Création en cours..." : "Créer le produit"}
+                    {isSubmitting ? "Création en cours..." : "Créer le client"}
                 </button>
             </form>
         </>
     );
 };
 
-export default CreateStockForm;
+export default CreateCustomerForm;

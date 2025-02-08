@@ -1,10 +1,10 @@
 import { UserRepository } from "@projet-clean/prisma/src/repositories/UserRepository.js";
-import { User } from "../entities/User.js";
+import { UserType } from "../entities/UserType.js";
 
 export class GetUsers {
     constructor(private userRepository: UserRepository) {}
 
-    async execute(): Promise<User[]> {
+    async execute(): Promise<UserType[]> {
         return this.userRepository.getAllUsers();
     }
 }
