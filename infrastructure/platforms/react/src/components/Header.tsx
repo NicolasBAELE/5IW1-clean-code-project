@@ -5,6 +5,11 @@ import {Dispatch, SetStateAction} from "react";
 const Header = ({setPage}: {setPage: Dispatch<SetStateAction<string>>}) => {
   const { logout, isAuthenticated } = useAuth();
 
+  const navigate = (page: string) => {
+    setPage(page);
+    window.history.pushState({}, "", `/${page}`); // Met à jour l’URL
+  };
+
   return (
     <header className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-md">
       <div className="container mx-auto px-6 py-4">
@@ -24,7 +29,7 @@ const Header = ({setPage}: {setPage: Dispatch<SetStateAction<string>>}) => {
             <ul className="flex items-center space-x-8">
               <li>
                 <a
-                  onClick={() => setPage('motos')}
+                  onClick={() => navigate('motos')}
                   className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                 >
                   Motos
@@ -32,7 +37,7 @@ const Header = ({setPage}: {setPage: Dispatch<SetStateAction<string>>}) => {
               </li>
               <li>
                 <a
-                  onClick={() => setPage('maintenances')}
+                  onClick={() => navigate('maintenances')}
                   className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                 >
                   Entretiens
@@ -40,11 +45,19 @@ const Header = ({setPage}: {setPage: Dispatch<SetStateAction<string>>}) => {
               </li>
               <li>
                 <a
-                  onClick={() => setPage('stocks')}
+                  onClick={() => navigate('stocks')}
                   className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                 >
                   Pièces Détachées
                 </a>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate("register")}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out"
+                >
+                  Pas encore inscrit ?
+                </button>
               </li>
               {!isAuthenticated && (
                 <li className="flex items-center">
@@ -52,6 +65,7 @@ const Header = ({setPage}: {setPage: Dispatch<SetStateAction<string>>}) => {
                 </li>
               )}
               {isAuthenticated && (
+                
                 <li>
                   <button
                     onClick={() => logout()}

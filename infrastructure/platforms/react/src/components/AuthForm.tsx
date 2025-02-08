@@ -56,11 +56,7 @@ const AuthForm = () => {
         </button>
       </form>
       {/* Bouton "Pas encore inscrit ?" */}
-      <Link to="/register">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
-          Pas encore inscrit ?
-        </button>
-      </Link>
+    
     </div>
   );
 };
