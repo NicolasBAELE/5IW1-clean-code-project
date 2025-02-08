@@ -1,7 +1,6 @@
-import {createContext, useContext, useEffect, useState, ReactNode} from "react";
-import {useNavigate} from "react-router";
-import {UserType} from "@projet-clean/domain/entities/UserType.js";
-
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { useNavigate } from "react-router";
+import { UserType } from "@projet-clean/domain/entities/UserType.js";
 
 interface AuthContextType {
     user: UserType | null;
@@ -12,13 +11,13 @@ interface AuthContextType {
     loading: boolean;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
     children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<UserType | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -47,7 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
                 } else if (decodedToken) {
                     setUser(decodedToken);
                     setIsAuthenticated(true);
-                    setIsAdmin(decodedToken.role === 'ADMIN')
+                    setIsAdmin(decodedToken.role === "ADMIN");
                 }
             } catch (error) {
                 console.error("Error verifying token:", error);
@@ -73,7 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, login, logout, loading, isAdmin}}>
+        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading, isAdmin }}>
             {children}
         </AuthContext.Provider>
     );
