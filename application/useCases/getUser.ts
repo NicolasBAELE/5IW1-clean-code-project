@@ -1,5 +1,5 @@
 import UserRepository from "@projet-clean/domain/repositories/UserRepository.js";
-import { User } from "@projet-clean/domain/entities/User.js";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
 
 interface PayloadUser {
     id?: string;
@@ -11,7 +11,7 @@ interface PayloadUser {
 export default class GetUsersUseCase {
     constructor(private userRepository: UserRepository) {}
 
-    async execute(payloadUser: PayloadUser): Promise<User[]> {
+    async execute(payloadUser: PayloadUser): Promise<UserType[]> {
         return this.userRepository.getUsers(payloadUser);
     }
 }

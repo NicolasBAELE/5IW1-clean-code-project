@@ -6,7 +6,7 @@ import {UserType} from "@projet-clean/domain/entities/UserType.js";
 const SECRET_KEY_JWT = process.env.SECRET_KEY_JWT!;
 const SALT_ROUNDS = 5;
 
-export default class CreateUserUseCase {
+export default class ResetPasswordUseCase {
     constructor(private userRepository: UserRepository) {
     }
 

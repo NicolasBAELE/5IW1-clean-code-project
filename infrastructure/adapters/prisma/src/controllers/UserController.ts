@@ -3,11 +3,13 @@ import prismaUserRepository from "../repositories/prismaUserRepository.js";
 import CreateUserUseCase from "@projet-clean/application/useCases/createUser.js";
 import GetUserUseCase from "@projet-clean/application/useCases/getUser.js";
 import LoginUserUseCase from "@projet-clean/application/useCases/loginUser.js";
+import ResetPasswordUseCase from "@projet-clean/application/useCases/resetPassword.js";
 
 const userRepository = new prismaUserRepository();
 const createUserUseCase = new CreateUserUseCase(userRepository);
 const getUsersUseCase = new GetUserUseCase(userRepository);
 const loginUserUseCase = new LoginUserUseCase(userRepository);
+const resetPasswordUseCase = new ResetPasswordUseCase(userRepository);
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
@@ -36,6 +38,17 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
         const tokenAndMessage = await loginUserUseCase.execute(email, password);
+        res.status(200).json(tokenAndMessage);
+    } catch (error) {
+        const errMessage = error instanceof Error ? error.message : "Une erreur est survenue";
+        res.status(400).json({ status: "error", message: errMessage });
+    }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body;
+        const tokenAndMessage = await resetPasswordUseCase.execute(email, password);
         res.status(200).json(tokenAndMessage);
     } catch (error) {
         const errMessage = error instanceof Error ? error.message : "Une erreur est survenue";

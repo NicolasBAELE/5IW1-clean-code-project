@@ -1,16 +1,13 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
-import { createUser, getUsers, loginUser, resetPassword } from "../repositories/users";
-import { authMiddleware } from "./middleware/verifyToken";
+import {PrismaClient} from "@prisma/client";
 import cors from "cors";
-import { PrismaClient } from "@prisma/client";
 
-import { authMiddleware } from "./middleware/verifyToken.js";
-import { getUsers, createUser, loginUser } from "./controllers/UserController.js";
-import { createMaintenance, validateMaintenance } from "./repositories/maintenance.js";
-import { createMoto, getAllMotos } from "./repositories/moto.js";
-import { createStock, getAllStocks } from "./repositories/stock.js";
-import { withPrisma } from "./utils/handlePrisma.js";
+import {authMiddleware} from "./middleware/verifyToken.js";
+import {createUser, getUsers, loginUser, resetPassword} from "./controllers/UserController.js";
+import {createMaintenance, validateMaintenance} from "./repositories/maintenance.js";
+import {createMoto, getAllMotos} from "./repositories/moto.js";
+import {createStock, getAllStocks} from "./repositories/stock.js";
+import {withPrisma} from "./utils/handlePrisma.js";
 
 const app = express();
 app.use(express.json());
@@ -40,7 +37,7 @@ app.post("/users", async (req, res, next) => {
     } else if (_method === "DELETE") {
         // return deleteUser(req, res, data);
     } else if (_method === "RESET_PASSWORD") {
-        return withPrisma(prisma, resetPassword, req, res, next);
+        return resetPassword(req, res);
     } else {
         return res.status(400).json({ message: "Méthode invalide" });
     }

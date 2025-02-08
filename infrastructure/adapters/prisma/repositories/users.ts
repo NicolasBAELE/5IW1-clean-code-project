@@ -62,47 +62,47 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     });
 }
 
-export const resetPassword = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
-    const { email, password} = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({
-            status: "error",
-            message: "Email et mot de passe requis"
-        });
-    }
-    const existingUser = await prisma.user.findUnique({
-        where: {email}
-    });
-
-    if (!existingUser) {
-        return res.status(400).json({
-            status: "error",
-            message: "Cet utilisateur n'existe pas"
-        })
-    }
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const user = await prisma.user.update({
-        where: {
-            email: email
-        },
-        data: {
-            password: hashedPassword,
-        }
-    });
-    const token = jwt.sign(
-        {id: user.id, name: user.name, email: user.email, role: user.role},
-        SECRET_KEY_JWT,
-        {expiresIn: '1h'}
-    );
-
-    res.status(201).json({
-        user,
-        token,
-        message: "Compte créé avec succès",
-        status: "created",
-    });
-}
+// export const resetPassword = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
+//     const { email, password} = req.body;
+//
+//     if (!email || !password) {
+//         return res.status(400).json({
+//             status: "error",
+//             message: "Email et mot de passe requis"
+//         });
+//     }
+//     const existingUser = await prisma.user.findUnique({
+//         where: {email}
+//     });
+//
+//     if (!existingUser) {
+//         return res.status(400).json({
+//             status: "error",
+//             message: "Cet utilisateur n'existe pas"
+//         })
+//     }
+//     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+//     const user = await prisma.user.update({
+//         where: {
+//             email: email
+//         },
+//         data: {
+//             password: hashedPassword,
+//         }
+//     });
+//     const token = jwt.sign(
+//         {id: user.id, name: user.name, email: user.email, role: user.role},
+//         SECRET_KEY_JWT,
+//         {expiresIn: '1h'}
+//     );
+//
+//     res.status(201).json({
+//         user,
+//         token,
+//         message: "Compte créé avec succès",
+//         status: "created",
+//     });
+// }
 
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {

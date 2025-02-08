@@ -1,4 +1,4 @@
-import { User } from "@projet-clean/domain/entities/User.js";
+import {UserType} from "../entities/UserType.js";
 
 interface payloadUser {
     id?: string;
@@ -8,7 +8,7 @@ interface payloadUser {
 }
 
 export default interface UserRepository {
-    getUsers(payloadUser: payloadUser): Promise<User[]>;
-    createUser(data: { name: string; email: string; password: string }): Promise<User>;
-    findByEmail(email: string): Promise<User | null>;
+    getUsers(payloadUser: payloadUser): Promise<UserType[]>;
+    createUser(data: { name: string; email: string; password: string, role?: string }): Promise<UserType>;
+    findByEmail(email: string): Promise<UserType | null>;
 }
