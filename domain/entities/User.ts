@@ -1,4 +1,4 @@
-import {Moto} from "./Moto.js";
+import {MotoType} from "./MotoType.js";
 
 export interface User {
   id: string;
@@ -7,7 +7,7 @@ export interface User {
   password: string;
   role: string;
   phone?: string;
-  motos: Moto[];
+  motos: MotoType[];
   createdAt: Date;
   updatedAt: Date;
 }

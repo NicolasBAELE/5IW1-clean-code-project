@@ -1,17 +1,19 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import {NextFunction, Request, Response} from "express";
+import {PrismaClient} from '@prisma/client';
 
 const SECRET_KEY_JWT = process.env.SECRET_KEY_JWT;
 const SALT_ROUNDS = 5
 
-export const getUsers = async (req, res, next, prisma) => {
+export const getUsers = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
     const allUsers = await prisma.user.findMany(
-        {where: req.body.payloadUser}
+        {where: {id: req.body.userId}}
     )
     res.status(200).json(allUsers);
 };
 
-export const createUser = async (req, res, next, prisma) => {
+export const createUser = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
     const {name, email, password} = req.body;
 
     if (!email || !password || !name) {
@@ -52,7 +54,7 @@ export const createUser = async (req, res, next, prisma) => {
 }
 
 
-export const loginUser = async (req, res, next, prisma) => {
+export const loginUser = async (req: Request, res: Response, next: NextFunction, prisma: PrismaClient) => {
     const {email, password} = req.body;
 
     if (!email || !password) {

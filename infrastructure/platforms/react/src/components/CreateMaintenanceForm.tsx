@@ -1,6 +1,7 @@
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {getAllStocks} from "../services/api.ts";
-import {Maintenance, Stock} from "../types/Moto.ts";
+import {Stock} from "@projet-clean/domain/entities/StockType.ts";
+import {Maintenance} from "@projet-clean/domain/entities/MaintenanceType.ts";
 
 export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreateMaintenance, lastMaintenance}: {
     setOpenCreateMaintenanceForm: Dispatch<SetStateAction<boolean>>,
