@@ -3,10 +3,11 @@ import {useAuth} from "./context/AuthContext.tsx";
 import {Motos} from "./pages/Motos.tsx";
 import {useState} from "react";
 import {Stocks} from "./pages/Stocks.tsx";
+import {Customers} from "./pages/Customers.tsx";
 
 const App = () => {
     const {user} = useAuth();
-    const [page, setPage] = useState('motos')
+    const [page, setPage] = useState('')
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -25,6 +26,7 @@ const App = () => {
                 <main className="bg-white p-6 rounded-lg shadow-md">
                     {page === 'motos' && <Motos/>}
                     {page === 'stocks' && <Stocks/>}
+                    {page === 'customers' && <Customers/>}
                 </main>
             </div>
         </div>

@@ -29,7 +29,8 @@ const typeDefs = `
     }
 
   type Mutation {
-    createUser(name: String! email: String!, password: String!):AuthPayload
+    createUser(name: String!, email: String!, password: String!, role: String): AuthPayload
+    resetPassword(email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
     createMoto(model: String!, registrationNumber: String!, mileage: Int!, ownerId: String): Moto
     createMaintenance(motoId: String!, year: String!, type:MaintenanceType!, mileage: Int!, products: [ProductInput!]!): Maintenance

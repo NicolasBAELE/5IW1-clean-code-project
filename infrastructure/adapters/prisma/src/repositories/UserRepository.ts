@@ -1,6 +1,7 @@
-import { User } from "@projet-clean/domain/entities/User";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
 
 export interface UserRepository {
-    getAllUsers(): Promise<User[]>;
-    createUser(data: { name: string; email: string }): Promise<User>;
+    getAllUsers(): Promise<UserType[]>;
+
+    createUser(data: { name: string; email: string }): Promise<UserType>;
 }

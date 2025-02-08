@@ -1,11 +1,12 @@
 import {createContext, useContext, useEffect, useState, ReactNode} from "react";
 import {useNavigate} from "react-router";
-import {User} from "@projet-clean/domain/entities/User.ts";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
 
 
 interface AuthContextType {
-    user: User | null;
+    user: UserType | null;
     isAuthenticated: boolean;
+    isAdmin: boolean;
     login: (token: string) => void;
     logout: () => void;
     loading: boolean;
@@ -18,8 +19,9 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserType | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
@@ -39,12 +41,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                const decodedToken: User | null = await response.json();
+                const decodedToken: UserType | null = await response.json();
                 if (response.status === 401) {
                     logout();
                 } else if (decodedToken) {
                     setUser(decodedToken);
                     setIsAuthenticated(true);
+                    setIsAdmin(decodedToken.role === 'ADMIN')
                 }
             } catch (error) {
                 console.error("Error verifying token:", error);
@@ -70,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, isAuthenticated, login, logout, loading}}>
+        <AuthContext.Provider value={{user, isAuthenticated, login, logout, loading, isAdmin}}>
             {children}
         </AuthContext.Provider>
     );

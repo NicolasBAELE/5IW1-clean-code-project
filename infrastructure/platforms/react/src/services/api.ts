@@ -18,7 +18,30 @@ export const getAllUsers = async (userId?: string) => {
                         id,
                         name,
                         email,
-                        role
+                        role,
+                        phone,
+                        motos {
+                            id, 
+                            model,
+                            registrationNumber,
+                            mileage,
+                            ownerId,
+                            owner {
+                                id,
+                                email,
+                                name,
+                                role
+                            }
+                            maintenances {
+                              id,
+                              scheduledDate,
+                              completedDate,
+                              mileageAtService,
+                              type,
+                              cost,
+                              notes
+                            },
+                        }
                       }
                     }`,
                 variables: userId ? {userId} : {}
@@ -37,16 +60,16 @@ export const getAllUsers = async (userId?: string) => {
     }
 };
 
-export const register = async (formData: { name: string, email: string, password: string }) => {
-    const {name, email, password} = formData;
+export const register = async (formData: { name: string, email: string, password: string, role?: string }) => {
+    const {name, email, password, role} = formData;
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            query: `mutation ($name: String!, $email: String!, $password: String!) {
-                      createUser(name: $name, email: $email, password: $password) {
+            query: `mutation ($name: String!, $email: String!, $password: String!, $role: String) {
+                      createUser(name: $name, email: $email, password: $password, role: $role) {
                         token,
                         message,
                         status,
@@ -56,10 +79,39 @@ export const register = async (formData: { name: string, email: string, password
                 name: name,
                 email: email,
                 password: password,
+                role: role,
             }
         })
     });
-    return response.json()
+
+    const result = await response.json();
+    return result.data.createUser;
+};
+
+export const resetPassword = async (formData: { email: string, password: string }) => {
+    const {email, password} = formData;
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `mutation ($email: String!, $password: String!) {
+                      resetPassword(email: $email, password: $password) {
+                        token,
+                        message,
+                        status,
+                      }
+                    }`,
+            variables: {
+                email: email,
+                password: password,
+            }
+        })
+    });
+
+    const result = await response.json();
+    return result.data.resetPassword;
 };
 
 export const loginUser = async (formData: { login: string, password: string }) => {
@@ -143,8 +195,6 @@ export const getAllMotos = async (motoId?: string) => {
                             name,
                             role
                         }
-                        createdAt,
-                        updatedAt,
                         maintenances {
                           id,
                           scheduledDate,

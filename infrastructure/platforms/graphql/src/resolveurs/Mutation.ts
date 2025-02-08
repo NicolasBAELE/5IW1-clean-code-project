@@ -1,16 +1,17 @@
-import {User} from "@projet-clean/domain/entities/User.js";
-import {MotoType} from "domain/entities/MotoType.js";
-import {Maintenance} from "@projet-clean/domain/entities/Maintenance.js";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
+import {MotoType} from "@projet-clean/domain/entities/MotoType.js";
+import {Maintenance} from "@projet-clean/domain/entities/MaintenanceType.js";
+
 
 interface LoginResponse {
     token: string;
-    user: User;
+    user: UserType;
 }
 
 export const Mutation = {
     createUser: async (
         parent: any,
-        {name, email, password}: { name: string; email: string; password: string }
+        {name, email, password, role}: { name: string; email: string; password?: string, role?: string }
     ): Promise<unknown> => {
         const _method = "POST_REGISTER";
         try {
@@ -19,18 +20,36 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({name, email, password, _method}),
+                body: JSON.stringify({name, email, password, role, _method}),
             });
-
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP : ${response.status}`);
-            }
 
             return await response.json();
 
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de créer l'utilisateur");
+        }
+    },
+
+    resetPassword: async (
+        parent: any,
+        {email, password}: { email: string; password?: string }
+    ): Promise<unknown> => {
+        const _method = "RESET_PASSWORD";
+        try {
+            const response = await fetch("http://prisma:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({email, password, _method}),
+            });
+
+            return await response.json();
+
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de réinitialiser le mot de passe");
         }
     },
 
@@ -102,14 +121,14 @@ export const Mutation = {
     createMaintenance: async (
         parent: any,
         {
-            year, 
-            motoId, 
+            year,
+            motoId,
             type,
             mileage,
             products,
-        }: { 
+        }: {
             motoId: string;
-            year: Date; 
+            year: Date;
             type: string;
             mileage: number
             products: { id: string, quantity: number }[]

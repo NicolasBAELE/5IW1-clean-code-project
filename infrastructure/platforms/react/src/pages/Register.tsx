@@ -1,8 +1,10 @@
 import {ChangeEvent, FormEvent, useState} from "react";
-import {register} from "../services/api.ts";
+import {register, resetPassword} from "../services/api.ts";
 import {useAuth} from "../context/AuthContext.tsx";
 
 const Register = () => {
+    const [error, setError] = useState<string>("")
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -21,11 +23,21 @@ const Register = () => {
     const submit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const {data} = await register(formData);
-            if (!data) {
-                return console.error("Error durant la soumission du formulaire");
+            const registerReq = await register(formData);
+            if (registerReq.status === "error") {
+                setError(registerReq.message)
+            } else {
+                const {token} = registerReq.data.createUser;
+                login(token);
             }
-            const {token} = data.createUser;
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const handleResetPassword = async () => {
+        try {
+            const {token} = await resetPassword(formData);
             login(token);
         } catch (e) {
             console.log(e);
@@ -39,6 +51,12 @@ const Register = () => {
                     Inscrivez-vous 🏍️
                 </h2>
                 <form onSubmit={submit} className="flex flex-col space-y-4">
+                    {error && <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        onClick={() => handleResetPassword()}
+                    >
+                        {error}
+                    </button>}
                     <input
                         id="name"
                         type="text"
@@ -59,6 +77,7 @@ const Register = () => {
                         required
                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                     />
+                    <p className="text-xs text-gray-500">Si votre compte à été créé par un administrateur, veuillez entrer un nouveau mot de passe.</p>
                     <input
                         id="password"
                         type="password"

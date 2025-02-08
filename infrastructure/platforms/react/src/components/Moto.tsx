@@ -26,11 +26,8 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
     if (!moto) return <div className="p-4 text-center">Pas de données à afficher.</div>;
 
     return (
-        // Overlay de la modal
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            {/* Conteneur de la modal */}
             <div className="bg-white w-full max-w-fit p-6 rounded-lg shadow-lg relative">
-                {/* Bouton de fermeture */}
                 <button
                     onClick={() => {
                         onClose();
@@ -54,7 +51,6 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                     </svg>
                 </button>
 
-                {/* Formulaire pour renseigner ou créer une maintenance */}
                 {!nextMaintenanceScheduled && !openCreateMaintenanceForm && <button
                     className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded w-full"
                     onClick={() => setOpenCreateMaintenanceForm(true)}
@@ -62,8 +58,8 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                     {lastMaintenance?.id
                         ? "Ajouter un entretien"
                         : "Renseigner le dernier entretien en date"}
-                </button>
-                }
+                </button>}
+
                 {openCreateMaintenanceForm && <CreateMaintenanceForm
                     setOpenCreateMaintenanceForm={setOpenCreateMaintenanceForm}
                     handleCreateMaintenance={handleCreateMaintenance}
@@ -71,7 +67,6 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                 />}
 
                 {!openCreateMaintenanceForm && <div className="flex flex-row p-4 space-x-4 h-[90vh] gap-4">
-                    {/* Historique des maintenances */}
                     <div className="mb-6 h-full">
                         <h4 className="text-lg font-semibold text-gray-800 mb-2">
                             Historique des maintenances
@@ -80,39 +75,38 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                             {moto.maintenances
                                 .sort((a, b) => new Date(b.scheduledDate).getTime() - new Date(a.scheduledDate).getTime())
                                 .map((maintenance, index) => (
-                                <div
-                                    key={index}
-                                    className="border border-gray-200 rounded-md p-4 mb-2"
-                                >
-                                    <p className="text-gray-700">
-                                        <strong>Prévue :</strong>{" "}
-                                        {maintenance.scheduledDate || "Pas prévue"}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Effectué :</strong>{" "}
-                                        {maintenance.completedDate || "Pas effectué"}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Kilométrage :</strong> {maintenance.mileageAtService}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Type :</strong>{" "}
-                                        {maintenance.type === "CURATIVE" ? "Curatif" : "Préventif"}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Coût :</strong>{" "}
-                                        {maintenance.cost || "-"}€
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Notes :</strong>{" "}
-                                        <pre>{maintenance.notes || "-"}</pre>
-                                    </p>
-                                </div>
-                            ))}
+                                    <div
+                                        key={index}
+                                        className="border border-gray-200 rounded-md p-4 mb-2"
+                                    >
+                                        <p className="text-gray-700">
+                                            <strong>Prévue :</strong>{" "}
+                                            {maintenance.scheduledDate || "Pas prévue"}
+                                        </p>
+                                        <p className="text-gray-700">
+                                            <strong>Effectué :</strong>{" "}
+                                            {maintenance.completedDate || "Pas effectué"}
+                                        </p>
+                                        <p className="text-gray-700">
+                                            <strong>Kilométrage :</strong> {maintenance.mileageAtService}
+                                        </p>
+                                        <p className="text-gray-700">
+                                            <strong>Type :</strong>{" "}
+                                            {maintenance.type === "CURATIVE" ? "Curatif" : "Préventif"}
+                                        </p>
+                                        <p className="text-gray-700">
+                                            <strong>Coût :</strong>{" "}
+                                            {maintenance.cost || "-"}€
+                                        </p>
+                                        <p className="text-gray-700">
+                                            <strong>Notes :</strong>{" "}
+                                            <pre>{maintenance.notes || "-"}</pre>
+                                        </p>
+                                    </div>
+                                ))}
                         </div>
                     </div>
 
-                    {/* Détails de la moto */}
                     <div>
                         <div className="mb-6">
                             <h3 className="text-xl font-bold text-gray-800 mb-2">
@@ -130,7 +124,6 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                         </div>
 
 
-                        {/* Dernier entretien */}
                         {
                             lastMaintenance && (
                                 <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-md">
@@ -161,74 +154,68 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                             )
                         }
 
-                        {/* Prochain entretien programmé */}
-                        {
-                            nextMaintenanceScheduled && (
-                                <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-                                    <h4 className="text-lg font-semibold text-gray-800 mb-1">
-                                        Prochain entretien programmé
-                                    </h4>
-                                    <p className="text-gray-700">
-                                        <strong>Prévue :</strong>{" "}
-                                        {nextMaintenanceScheduled.scheduledDate || "Pas prévue"}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Effectué :</strong>{" "}
-                                        {nextMaintenanceScheduled.completedDate || "Pas effectué"}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Type :</strong>{" "}
-                                        {nextMaintenanceScheduled.type === "CURATIVE" ? "Curatif" : "Préventif"}
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Coût :</strong>{" "}
-                                        {nextMaintenanceScheduled.cost || "-"}€
-                                    </p>
-                                    <p className="text-gray-700">
-                                        <strong>Notes :</strong>{" "}
-                                        <pre>{nextMaintenanceScheduled.notes || "-"}</pre>
-                                    </p>
-                                    <button
-                                        onClick={() => {
-                                            const mileageInput = window.prompt(
-                                                "Veuillez entrer le kilométrage actuel :"
-                                            );
-                                            if (mileageInput) {
-                                                const mileage = parseInt(mileageInput, 10);
-                                                if (!isNaN(mileage) && mileage > 0) {
-                                                    handleCompleteMaintenance(nextMaintenanceScheduled.id, mileage);
-                                                } else {
-                                                    alert("Veuillez entrer un kilométrage valide.");
-                                                }
+                        {nextMaintenanceScheduled && (
+                            <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+                                <h4 className="text-lg font-semibold text-gray-800 mb-1">
+                                    Prochain entretien programmé
+                                </h4>
+                                <p className="text-gray-700">
+                                    <strong>Prévue :</strong>{" "}
+                                    {nextMaintenanceScheduled.scheduledDate || "Pas prévue"}
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Effectué :</strong>{" "}
+                                    {nextMaintenanceScheduled.completedDate || "Pas effectué"}
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Type :</strong>{" "}
+                                    {nextMaintenanceScheduled.type === "CURATIVE" ? "Curatif" : "Préventif"}
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Coût :</strong>{" "}
+                                    {nextMaintenanceScheduled.cost || "-"}€
+                                </p>
+                                <p className="text-gray-700">
+                                    <strong>Notes :</strong>{" "}
+                                    <pre>{nextMaintenanceScheduled.notes || "-"}</pre>
+                                </p>
+                                <button
+                                    onClick={() => {
+                                        const mileageInput = window.prompt(
+                                            "Veuillez entrer le kilométrage actuel :"
+                                        );
+                                        if (mileageInput) {
+                                            const mileage = parseInt(mileageInput, 10);
+                                            if (!isNaN(mileage) && mileage > 0) {
+                                                handleCompleteMaintenance(nextMaintenanceScheduled.id, mileage);
+                                            } else {
+                                                alert("Veuillez entrer un kilométrage valide.");
                                             }
-                                        }}
-                                        className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
-                                    >
-                                        Entretien effectué ce jour
-                                    </button>
-                                </div>
-                            )
-                        }
+                                        }
+                                    }}
+                                    className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
+                                >
+                                    Entretien effectué ce jour
+                                </button>
+                            </div>
+                        )}
 
-                        {/* Informations complémentaires sur la prochaine maintenance */}
-                        {
-                            nextMaintenanceDatas && (
-                                <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-                                    <p className="text-gray-700">{nextMaintenanceDatas.message}</p>
-                                    {nextMaintenanceDatas.nextScheduledMileage && (
-                                        <p className="text-gray-700">
-                                            <strong>Kilométrage suivant
-                                                :</strong> {nextMaintenanceDatas.nextScheduledMileage}
-                                        </p>
-                                    )}
-                                    {nextMaintenanceDatas.nextScheduledDate && (
-                                        <p className="text-gray-700">
-                                            <strong>Date suivante :</strong> {nextMaintenanceDatas.nextScheduledDate}
-                                        </p>
-                                    )}
-                                </div>
-                            )
-                        }
+                        {nextMaintenanceDatas && (
+                            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+                                <p className="text-gray-700">{nextMaintenanceDatas.message}</p>
+                                {nextMaintenanceDatas.nextScheduledMileage && (
+                                    <p className="text-gray-700">
+                                        <strong>Kilométrage suivant
+                                            :</strong> {nextMaintenanceDatas.nextScheduledMileage}
+                                    </p>
+                                )}
+                                {nextMaintenanceDatas.nextScheduledDate && (
+                                    <p className="text-gray-700">
+                                        <strong>Date suivante :</strong> {nextMaintenanceDatas.nextScheduledDate}
+                                    </p>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>}
             </div>
