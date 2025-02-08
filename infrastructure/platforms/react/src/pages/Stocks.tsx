@@ -1,6 +1,7 @@
 import CreateStockForm from "../components/CreateStockForm.tsx";
 import {useEffect, useState} from "react";
 import {getAllStocks} from "../services/api.ts";
+import { toast } from "react-toastify";
 
 export const Stocks = () => {
     const [stocks, setStocks] = useState<any[]>([])
@@ -10,7 +11,8 @@ export const Stocks = () => {
             const data = await getAllStocks();
             setStocks(data);
         } catch (error) {
-            console.error("Erreur lors de la récupération des motos:", error);
+            console.error("Erreur lors de la récupération des Stocks:", error);
+            toast.error("Erreur lors de la récupération des stocks.");  
         }
     };
 
@@ -20,6 +22,7 @@ export const Stocks = () => {
 
     const onStockCreated = () => {
         fetchStocks();
+        toast.success("Stock ajoutée avec succès !");
     };
 
     return <>
