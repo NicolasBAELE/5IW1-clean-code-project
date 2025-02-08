@@ -1,9 +1,9 @@
-import {Moto} from "../types/Moto.ts";
+import { MotoType } from "@projet-clean/domain/entities/MotoType";
 
 export const motoModels: string[] = ["Triumph Street Triple", "Triumph Speed Triple", "Triumph Rocket 3"]
 
 export const nextMaintenance = (
-    moto: Moto,
+    moto: MotoType,
     lastMaintenance?: {
         mileageAtService: number;
         completedDate: string;

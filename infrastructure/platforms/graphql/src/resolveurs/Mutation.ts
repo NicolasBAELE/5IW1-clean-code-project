@@ -1,8 +1,7 @@
 import {User} from "@projet-clean/domain/entities/User.js";
-import {Moto} from "@projet-clean/react/src/types/Moto.js";
-import {Maintenance} from "@projet-clean/react/src/types/Moto.js";
+import {MotoType} from "domain/entities/MotoType.js";
+import {Maintenance} from "@projet-clean/domain/entities/Maintenance.js";
 
-// Définir les interfaces pour les types manquants
 interface LoginResponse {
     token: string;
     user: User;
@@ -12,7 +11,7 @@ export const Mutation = {
     createUser: async (
         parent: any,
         {name, email, password}: { name: string; email: string; password: string }
-    ): Promise<User> => {
+    ): Promise<unknown> => {
         const _method = "POST_REGISTER";
         try {
             const response = await fetch("http://prisma:3000/users", {
@@ -73,7 +72,7 @@ export const Mutation = {
             mileage: number;
             ownerId: string
         }
-    ): Promise<Moto> => {
+    ): Promise<MotoType> => {
         const _method = "CREATE_MOTO";
         try {
             const response = await fetch("http://prisma:3000/moto", {
@@ -207,12 +206,11 @@ export const Mutation = {
     },
 };
 
-// Gardes de type pour vérifier les structures des objets
 function isLoginResponse(data: any): data is LoginResponse {
     return typeof data.token === 'string' && data.user && typeof data.user === 'object';
 }
 
-function isMoto(data: any): data is Moto {
+function isMoto(data: any): data is MotoType {
     return typeof data.id === 'string' && typeof data.model === 'string' && typeof data.registrationNumber === 'string' && typeof data.mileage === 'number' && typeof data.ownerId === 'string';
 }
 

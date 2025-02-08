@@ -1,12 +1,12 @@
 import express from "express";
 import {PrismaClient} from '@prisma/client'
-import {withPrisma} from "../utils/handlePrisma";
 import {createUser, getUsers, loginUser} from "../repositories/users";
 import {authMiddleware} from "./middleware/verifyToken";
 import cors from "cors";
 import {createMaintenance, validateMaintenance} from "../repositories/maintenance";
 import {createMoto, getAllMotos} from "../repositories/moto";
 import {createStock, getAllStocks} from "../repositories/stock";
+import {withPrisma} from "../utils/handlePrisma";
 
 const app = express();
 app.use(express.json());

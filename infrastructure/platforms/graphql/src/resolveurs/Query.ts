@@ -1,15 +1,15 @@
 import {User} from "@projet-clean/domain/entities/User.js";
 
 export const Query = {
-    getUsers: async (parent: any, {payloadUser}: { payloadUser: User }, context: any, info: any): Promise<User[]> => {
-        const _method = "POST";
+    getUsers: async (parent: any, args: { userId?: string }, context: any, info: any): Promise<User[]> => {
+        const _method = "GET";
         try {
             const response = await fetch("http://prisma:3000/users", {
-                method: _method,
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({payloadUser, _method})
+                body: JSON.stringify({userId: args.userId, _method})
             });
 
             if (!response.ok) {
@@ -82,7 +82,5 @@ function isValidUser(user: any): user is User {
     return typeof user.id === 'string' &&
         typeof user.name === 'string' &&
         typeof user.email === 'string' &&
-        typeof user.password === 'string' &&
-        user.createdAt instanceof Date &&
-        user.updatedAt instanceof Date;
+        typeof user.password === 'string'
 }

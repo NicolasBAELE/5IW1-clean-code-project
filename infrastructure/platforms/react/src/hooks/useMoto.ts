@@ -1,10 +1,11 @@
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {getAllMotos, createMaintenance, validateMaintenance} from "../services/api";
 import {nextMaintenance} from "../utils/motoUtils";
-import {Moto, Maintenance, NextMaintenanceDatas} from "../types/Moto.ts";
+import {MotoType} from "@projet-clean/domain/entities/MotoType.ts";
+import {Maintenance, NextMaintenanceDatas} from "@projet-clean/domain/entities/MaintenanceType.ts";
 
 export const useMoto = (motoId: string) => {
-    const [moto, setMoto] = useState<Moto | null>(null);
+    const [moto, setMoto] = useState<MotoType | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [lastMaintenance, setLastMaintenance] = useState<Maintenance | undefined>(undefined);

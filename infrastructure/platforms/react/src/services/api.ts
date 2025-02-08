@@ -5,30 +5,36 @@ export interface Moto {
 
 const API_URL = "http://localhost:4000";
 
-export const fetchMotos = async () => {
-    return "fetchMotos function used"
-};
+export const getAllUsers = async (userId?: string) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: `query GetUsers($userId: String) {
+                       getUsers(userId: $userId) {
+                        id,
+                        name,
+                        email,
+                        role
+                      }
+                    }`,
+                variables: userId ? {userId} : {}
+            })
+        });
 
-export const fetchUsers = async () => {
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            query: `query ($where: UserFilterInput) {
-                  getUsers(payloadUser: $where) {
-                    id
-                    name
-                    email
-                  }
-                }`,
-            variables: {
-                where: {"name": "pierre"}
-            }
-        })
-    });
-    return response.json()
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result.data.getUsers;
+    } catch (error) {
+        console.error("❌ Erreur API:", error);
+        throw new Error("Impossible de récupérer les utilisateurs");
+    }
 };
 
 export const register = async (formData: { name: string, email: string, password: string }) => {
@@ -40,12 +46,12 @@ export const register = async (formData: { name: string, email: string, password
         },
         body: JSON.stringify({
             query: `mutation ($name: String!, $email: String!, $password: String!) {
-  createUser(name: $name, email: $email, password: $password) {
-    token,
-    message,
-    status,
-  }
-}`,
+                      createUser(name: $name, email: $email, password: $password) {
+                        token,
+                        message,
+                        status,
+                      }
+                    }`,
             variables: {
                 name: name,
                 email: email,
@@ -133,7 +139,9 @@ export const getAllMotos = async (motoId?: string) => {
                         ownerId,
                         owner {
                             id,
-                            email
+                            email,
+                            name,
+                            role
                         }
                         createdAt,
                         updatedAt,

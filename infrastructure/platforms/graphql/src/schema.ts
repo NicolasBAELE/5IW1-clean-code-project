@@ -10,15 +10,9 @@ const typeDefs = `
     createdAt: String
     updatedAt: String
   }
-  
-  input UserFilterInput {
-        id: ID
-        name: String
-        email: String
-    }
 
   type Query {
-      getUsers(payloadUser: UserFilterInput): [User]
+      getUsers(userId: String): [User]
       getAllMotos(motoId: String): [Moto]
       getAllStocks: [Stock]
     }
