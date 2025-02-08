@@ -44,8 +44,8 @@ export const getAllUsers = async (userId?: string) => {
                         }
                       }
                     }`,
-                variables: userId ? {userId} : {}
-            })
+                variables: userId ? { userId } : {},
+            }),
         });
 
         if (!response.ok) {
@@ -60,8 +60,8 @@ export const getAllUsers = async (userId?: string) => {
     }
 };
 
-export const register = async (formData: { name: string, email: string, password: string, role?: string }) => {
-    const {name, email, password, role} = formData;
+export const register = async (formData: { name: string; email: string; password: string; role?: string }) => {
+    const { name, email, password, role } = formData;
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -80,16 +80,16 @@ export const register = async (formData: { name: string, email: string, password
                 email: email,
                 password: password,
                 role: role,
-            }
-        })
+            },
+        }),
     });
 
     const result = await response.json();
     return result.data.createUser;
 };
 
-export const resetPassword = async (formData: { email: string, password: string }) => {
-    const {email, password} = formData;
+export const resetPassword = async (formData: { email: string; password: string }) => {
+    const { email, password } = formData;
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -106,71 +106,67 @@ export const resetPassword = async (formData: { email: string, password: string 
             variables: {
                 email: email,
                 password: password,
-            }
-        })
+            },
+        }),
     });
 
     const result = await response.json();
     return result.data.resetPassword;
 };
 
-export const loginUser = async (formData: { login: string, password: string }) => {
-    const {login: email, password} = formData;
+export const loginUser = async (formData: { login: string; password: string }) => {
+    const { login: email, password } = formData;
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            query:
-                `mutation Login($email: String!, $password: String!) {
+            query: `mutation Login($email: String!, $password: String!) {
                     login(email: $email, password: $password) {
                     token,
                     user {name},
                     }
-                }`
-            ,
+                }`,
             variables: {
                 email: email,
                 password: password,
-            }
-        })
+            },
+        }),
     });
-    return response.json()
+    return response.json();
 };
 
 export const createMoto = async (formData: {
-    model: string,
-    registrationNumber: string,
-    mileage: number,
-    ownerId: string
+    model: string;
+    registrationNumber: string;
+    mileage: number;
+    ownerId: string;
 }) => {
-    const {model, registrationNumber, mileage, ownerId} = formData;
+    const { model, registrationNumber, mileage, ownerId } = formData;
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            query:
-                `mutation CreateMoto($model: String!, $registrationNumber: String!, $mileage: Int!, $ownerId: String) {
+            query: `mutation CreateMoto($model: String!, $registrationNumber: String!, $mileage: Int!, $ownerId: String) {
                   createMoto(model: $model, registrationNumber: $registrationNumber, mileage: $mileage, ownerId: $ownerId) {
                     model,
                     registrationNumber,
                     mileage, 
                     ownerId
                   }
-                }`
-            ,
+                }`,
             variables: {
                 model: model,
                 registrationNumber: registrationNumber,
                 mileage: Number(mileage),
                 ownerId: ownerId,
-            }
-        })
+            },
+        }),
     });
-    return response.json()
+    return response.json();
 };
 
 export const getAllMotos = async (motoId?: string) => {
@@ -207,7 +203,7 @@ export const getAllMotos = async (motoId?: string) => {
                       }
                     }
                 `,
-                variables: motoId ? {motoId} : {},
+                variables: motoId ? { motoId } : {},
             }),
         });
 
@@ -223,24 +219,23 @@ export const getAllMotos = async (motoId?: string) => {
     }
 };
 
-export const createMaintenance = async (
-    {
-        year,
-        type,
-        motoId,
-        mileage,
-        products,
-    }: {
-        year: string;
-        type: "PREVENTIVE" | "CURATIVE";
-        motoId: string;
-        mileage: number,
-        products: { id: string, quantity: number }[],
-    }) => {
+export const createMaintenance = async ({
+    year,
+    type,
+    motoId,
+    mileage,
+    products,
+}: {
+    year: string;
+    type: "PREVENTIVE" | "CURATIVE";
+    motoId: string;
+    mileage: number;
+    products: { id: string; quantity: number }[];
+}) => {
     try {
         const response = await fetch(API_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 query: `
                     mutation CreateMaintenance($motoId: String!, $year: String!, $type: MaintenanceType!, $mileage: Int!, $products: [ProductInput!]!) {
@@ -253,8 +248,7 @@ export const createMaintenance = async (
                         type
                       }
                     }
-                    `
-                ,
+                    `,
                 variables: {
                     motoId: motoId,
                     year: year,
@@ -262,17 +256,16 @@ export const createMaintenance = async (
                     mileage: mileage,
                     products: products,
                 },
-            })
-        })
+            }),
+        });
 
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
         const result = await response.json();
-        return result
-    } catch
-        (error) {
+        return result;
+    } catch (error) {
         console.error("❌ Erreur API:", error);
         throw new Error("Impossible de récupérer les motos");
     }
@@ -282,7 +275,7 @@ export const validateMaintenance = async (maintenanceId: string, mileage: number
     try {
         const response = await fetch(API_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 query: `
                     mutation ValidateMaintenance($maintenanceId: String!, $mileage: Int!) {
@@ -295,14 +288,13 @@ export const validateMaintenance = async (maintenanceId: string, mileage: number
                         type
                       }
                     }
-                    `
-                ,
+                    `,
                 variables: {
                     maintenanceId: maintenanceId,
-                    mileage: mileage
+                    mileage: mileage,
                 },
-            })
-        })
+            }),
+        });
 
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
@@ -310,27 +302,17 @@ export const validateMaintenance = async (maintenanceId: string, mileage: number
 
         const result = await response.json();
         return result.data.getAllMotos;
-    } catch
-        (error) {
+    } catch (error) {
         console.error("❌ Erreur API:", error);
         throw new Error("Impossible de récupérer les motos");
     }
 };
 
-export const createStock = async (
-    {
-        name,
-        cost,
-        quantity,
-    }: {
-        name: string;
-        cost: string;
-        quantity: string;
-    }) => {
+export const createStock = async ({ name, cost, quantity }: { name: string; cost: string; quantity: string }) => {
     try {
         const response = await fetch(API_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 query: `
                     mutation CreateStock($name: String!, $cost: Float!, $quantity: Int!) {
@@ -341,24 +323,22 @@ export const createStock = async (
                         quantity
                       }
                     }
-                    `
-                ,
+                    `,
                 variables: {
                     name: name,
                     cost: parseFloat(cost),
                     quantity: parseInt(quantity),
                 },
-            })
-        })
+            }),
+        });
 
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
         const result = await response.json();
-        return result
-    } catch
-        (error) {
+        return result;
+    } catch (error) {
         console.error("❌ Erreur API:", error);
         throw new Error("Impossible de créer le produit");
     }
@@ -368,7 +348,7 @@ export const getAllStocks = async () => {
     try {
         const response = await fetch(API_URL, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 query: `
                     query GetAllStocks {
@@ -379,22 +359,19 @@ export const getAllStocks = async () => {
                         quantity
                       }
                     }
-                    `
-                ,
+                    `,
                 variables: {},
-            })
-        })
+            }),
+        });
 
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
         const result = await response.json();
-        return result.data.getAllStocks
-    } catch
-        (error) {
+        return result.data.getAllStocks;
+    } catch (error) {
         console.error("❌ Erreur API:", error);
         throw new Error("Impossible de créer le produit");
     }
 };
-

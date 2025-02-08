@@ -1,4 +1,6 @@
-export const withPrisma = async (prisma, handler, req, res, next) => {
+import { PrismaClient } from "@prisma/client";
+import { Request, Response, NextFunction } from "express";
+export const withPrisma = async (prisma: PrismaClient, handler, req: Request, res: Response, next: NextFunction) => {
     try {
         await handler(req, res, next, prisma);
     } catch (error) {

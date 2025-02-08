@@ -1,7 +1,6 @@
-import {UserType} from "@projet-clean/domain/entities/UserType.js";
-import {MotoType} from "@projet-clean/domain/entities/MotoType.js";
-import {Maintenance} from "@projet-clean/domain/entities/MaintenanceType.js";
-
+import { UserType } from "@projet-clean/domain/entities/UserType.js";
+import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
+import { Maintenance } from "@projet-clean/domain/entities/MaintenanceType.js";
 
 interface LoginResponse {
     token: string;
@@ -11,7 +10,7 @@ interface LoginResponse {
 export const Mutation = {
     createUser: async (
         parent: any,
-        {name, email, password, role}: { name: string; email: string; password?: string, role?: string }
+        { name, email, password, role }: { name: string; email: string; password?: string; role?: string }
     ): Promise<unknown> => {
         const _method = "POST_REGISTER";
         try {
@@ -20,21 +19,17 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({name, email, password, role, _method}),
+                body: JSON.stringify({ name, email, password, role, _method }),
             });
 
             return await response.json();
-
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de créer l'utilisateur");
         }
     },
 
-    resetPassword: async (
-        parent: any,
-        {email, password}: { email: string; password?: string }
-    ): Promise<unknown> => {
+    resetPassword: async (parent: any, { email, password }: { email: string; password?: string }): Promise<unknown> => {
         const _method = "RESET_PASSWORD";
         try {
             const response = await fetch("http://prisma:3000/users", {
@@ -42,21 +37,35 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({email, password, _method}),
+                body: JSON.stringify({ email, password, _method }),
             });
 
             return await response.json();
-
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de réinitialiser le mot de passe");
         }
     },
 
-    login: async (
-        parent: any,
-        {email, password}: { email: string; password: string }
-    ): Promise<LoginResponse> => {
+    resetPassword: async (parent: any, { email, password }: { email: string; password?: string }): Promise<unknown> => {
+        const _method = "RESET_PASSWORD";
+        try {
+            const response = await fetch("http://prisma:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password, _method }),
+            });
+
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de réinitialiser le mot de passe");
+        }
+    },
+
+    login: async (parent: User, { email, password }: { email: string; password: string }) => {
         const _method = "POST_LOGIN";
         try {
             const response = await fetch("http://prisma:3000/users", {
@@ -64,19 +73,9 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({email, password, _method}),
+                body: JSON.stringify({ email, password, _method }),
             });
-
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP : ${response.status}`);
-            }
-
-            const result: unknown = await response.json();
-            if (isLoginResponse(result)) {
-                return result;
-            } else {
-                throw new Error("Les données retournées ne sont pas dans le format attendu.");
-            }
+            return await response.json();
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de se connecter");
@@ -85,11 +84,16 @@ export const Mutation = {
 
     createMoto: async (
         parent: any,
-        {model, registrationNumber, mileage, ownerId}: {
+        {
+            model,
+            registrationNumber,
+            mileage,
+            ownerId,
+        }: {
             model: string;
             registrationNumber: string;
             mileage: number;
-            ownerId: string
+            ownerId: string;
         }
     ): Promise<MotoType> => {
         const _method = "CREATE_MOTO";
@@ -99,7 +103,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({model, registrationNumber, mileage, ownerId, _method}),
+                body: JSON.stringify({ model, registrationNumber, mileage, ownerId, _method }),
             });
 
             if (!response.ok) {
@@ -130,8 +134,8 @@ export const Mutation = {
             motoId: string;
             year: Date;
             type: string;
-            mileage: number
-            products: { id: string, quantity: number }[]
+            mileage: number;
+            products: { id: string; quantity: number }[];
         }
     ): Promise<Maintenance> => {
         const _method = "CREATE_MAINTENANCE";
@@ -141,7 +145,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({year, motoId, type, mileage, products, _method}),
+                body: JSON.stringify({ year, motoId, type, mileage, products, _method }),
             });
 
             if (!response.ok) {
@@ -162,7 +166,7 @@ export const Mutation = {
 
     validateMaintenance: async (
         parent: any,
-        {maintenanceId, mileage}: { maintenanceId: string; mileage: number }
+        { maintenanceId, mileage }: { maintenanceId: string; mileage: number }
     ): Promise<Maintenance> => {
         const _method = "VALIDATE_MAINTENANCE";
         try {
@@ -171,7 +175,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({maintenanceId, mileage, _method}),
+                body: JSON.stringify({ maintenanceId, mileage, _method }),
             });
 
             if (!response.ok) {
@@ -197,9 +201,9 @@ export const Mutation = {
             cost,
             quantity,
         }: {
-            name: string
-            cost: number
-            quantity: number
+            name: string;
+            cost: number;
+            quantity: number;
         }
     ): Promise<any> => {
         const _method = "CREATE_STOCK";
@@ -209,7 +213,7 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({name, cost, quantity, _method}),
+                body: JSON.stringify({ name, cost, quantity, _method }),
             });
 
             if (!response.ok) {
@@ -225,14 +229,21 @@ export const Mutation = {
     },
 };
 
-function isLoginResponse(data: any): data is LoginResponse {
-    return typeof data.token === 'string' && data.user && typeof data.user === 'object';
-}
-
 function isMoto(data: any): data is MotoType {
-    return typeof data.id === 'string' && typeof data.model === 'string' && typeof data.registrationNumber === 'string' && typeof data.mileage === 'number' && typeof data.ownerId === 'string';
+    return (
+        typeof data.id === "string" &&
+        typeof data.model === "string" &&
+        typeof data.registrationNumber === "string" &&
+        typeof data.mileage === "number" &&
+        typeof data.ownerId === "string"
+    );
 }
 
 function isMaintenance(data: any): data is Maintenance {
-    return typeof data.id === 'string' && typeof data.scheduledDate === 'string' && typeof data.motoId === 'string' && typeof data.type === 'string';
+    return (
+        typeof data.id === "string" &&
+        typeof data.scheduledDate === "string" &&
+        typeof data.motoId === "string" &&
+        typeof data.type === "string"
+    );
 }

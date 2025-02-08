@@ -8,7 +8,6 @@ export interface Maintenance {
     notes: string;
 }
 
-
 export interface NextMaintenanceDatas {
     message: string;
     nextScheduledDate?: string;

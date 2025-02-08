@@ -1,4 +1,4 @@
-import {Maintenance} from "./MaintenanceType.js";
+import { Maintenance } from "./Maintenance.js";
 
 export interface MotoType {
     id: string;
@@ -7,8 +7,8 @@ export interface MotoType {
     mileage: number;
     maintenances: Maintenance[];
     owner: {
-        id: string,
-        name: string,
-        email: string,
-    }
+        id: string;
+        name: string;
+        email: string;
+    };
 }
