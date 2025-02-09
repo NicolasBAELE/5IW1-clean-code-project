@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             }
         };
         verifyToken();
-    }, []);
+    }, [navigate]);
 
     const login = (token: string) => {
         localStorage.setItem("token", token);

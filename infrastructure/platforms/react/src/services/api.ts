@@ -207,11 +207,9 @@ export const getAllMotos = async (motoId?: string) => {
                 variables: motoId ? { motoId } : {},
             }),
         });
-
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
-
         const result = await response.json();
         return result.data.getAllMotos;
     } catch (error) {

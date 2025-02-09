@@ -14,5 +14,8 @@
     "infrastructure/adapters/prisma",
     "infrastructure/platforms/graphql",
     "infrastructure/platforms/react"
-  ]
+  ],
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
+  }
 }
