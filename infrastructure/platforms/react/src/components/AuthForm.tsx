@@ -1,10 +1,11 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router";
-import { loginUser } from "../services/api.ts";
-import { useAuth } from "../context/AuthContext.tsx";
+import {ChangeEvent, FormEvent, useState} from "react";
+import {loginUser, resetPassword} from "../services/api.ts";
+import {useAuth} from "../context/AuthContext.tsx";
 
 const AuthForm = () => {
-    const { login } = useAuth();
+    const {login} = useAuth();
+    const [error, setError] = useState<string>("")
+    const [reset, setReset] = useState<boolean>(false)
     const [formData, setFormData] = useState({
         login: "",
         password: "",
@@ -17,12 +18,32 @@ const AuthForm = () => {
         });
     };
 
+    const handleResetPassword = async () => {
+        try {
+            const reset = await resetPassword({email: formData.login, password: formData.password});
+            login(reset.token);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     const loginForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const { data } = await loginUser(formData);
-            const { token } = data.login;
-            login(token);
+            if (reset) {
+                handleResetPassword()
+            } else {
+                const {data} = await loginUser(formData);
+                if (data.login.status === "error") {
+                    if (data.login.message.includes("réinitialiser")) {
+                        setReset(true)
+                    }
+                    setError(data.login.message)
+                } else {
+                    const {token} = data.login;
+                    login(token);
+                }
+            }
         } catch (e) {
             console.log(e);
         }
@@ -30,7 +51,6 @@ const AuthForm = () => {
 
     return (
         <div className="flex items-center space-x-4">
-            {/* Formulaire de connexion en ligne */}
             <form
                 onSubmit={loginForm}
                 className="flex items-center space-x-2"
@@ -55,14 +75,11 @@ const AuthForm = () => {
                     type="submit"
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline"
                 >
-                    Se connecter
+                    {reset ? error : "Se connecter"}
                 </button>
             </form>
-            <Link to="/register">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
-                    Pas encore inscrit ?
-                </button>
-            </Link>
+
+            {!reset && error && <p className="text-xs text-red-500">{error}</p>}
         </div>
     );
 };

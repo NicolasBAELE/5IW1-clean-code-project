@@ -24,10 +24,10 @@ export default class CreateUserUseCase {
 
         const existingUser = await this.userRepository.findByEmail(email);
 
-
         if (existingUser) {
-            throw new Error("Souhaitez-vous réinitialiser votre mot de passe ?")
+            throw new Error("L'utilisateur existe déjà.")
         }
+
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
         const user = await this.userRepository.createUser({name, email, password: hashedPassword, role});
 

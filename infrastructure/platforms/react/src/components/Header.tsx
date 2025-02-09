@@ -50,6 +50,14 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                                         Clients
                                     </a>
                                 </li>
+                                <li>
+                                    <a
+                                        onClick={() => setPage('admin')}
+                                        className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
+                                    >
+                                        Administrateurs
+                                    </a>
+                                </li>
                             </>}
                             {!isAuthenticated && (
                                 <li className="flex items-center">

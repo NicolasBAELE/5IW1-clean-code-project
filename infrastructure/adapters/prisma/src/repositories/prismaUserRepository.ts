@@ -15,6 +15,14 @@ export default class PrismaUserRepository implements UserRepository {
     async getUsers(payloadUser: payloadUser): Promise<UserType[]> {
         const users = await prisma.user.findMany({
             where: payloadUser,
+            include: {
+                motos: {
+                    include: {
+                        owner: true,
+                        maintenances: true,
+                    },
+                },
+            },
         });
         return users;
     }
@@ -26,13 +34,13 @@ export default class PrismaUserRepository implements UserRepository {
         return user;
     }
 
-    // async resetPassword(data: { name: string; email: string; password: string }): Promise<UserType> {
-    //     const user = await prisma.user.update({
-    //         where: {email: data.email},
-    //         data : {password: data.password},
-    //     });
-    //     return user;
-    // }
+    async resetPassword(data: { email: string; password: string }): Promise<UserType> {
+        const user = await prisma.user.update({
+            where: {email: data.email},
+            data : {password: data.password},
+        });
+        return user;
+    }
 
     async findByEmail(email: string): Promise<UserType | null> {
         const user = await prisma.user.findUnique({

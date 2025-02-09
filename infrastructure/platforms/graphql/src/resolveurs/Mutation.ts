@@ -1,6 +1,6 @@
-import { UserType } from "@projet-clean/domain/entities/UserType.js";
-import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
-import { Maintenance } from "@projet-clean/domain/entities/Maintenance.js";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
+import {MotoType} from "@projet-clean/domain/entities/MotoType.js";
+import {Maintenance} from "@projet-clean/domain/entities/Maintenance.js";
 
 export const Mutation = {
     createUser: async (
@@ -52,7 +52,7 @@ export const Mutation = {
                 },
                 body: JSON.stringify({ email, password, _method }),
             });
-            return await response.json();
+            return await response.json()
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de se connecter");

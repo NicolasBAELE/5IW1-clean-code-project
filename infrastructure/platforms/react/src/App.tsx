@@ -5,6 +5,8 @@ import {useAuth} from "./context/AuthContext.tsx";
 import {Motos} from "./pages/Motos.tsx";
 import {useState} from "react";
 import {Stocks} from "./pages/Stocks.tsx";
+import {Customers} from "./pages/Customers.tsx";
+import {Admins} from "./pages/Admins.tsx";
 
 const App = () => {
     const {user} = useAuth();
@@ -27,10 +29,12 @@ const App = () => {
                 <main className="bg-white p-6 rounded-lg shadow-md">
                     {page === 'motos' && <Motos/>}
                     {page === 'stocks' && <Stocks/>}
+                    {page === 'customers' && <Customers/>}
+                    {page === 'admin' && <Admins/>}
                 </main>
             </div>
             <ToastContainer
-                position="bottom-right"  
+                position="bottom-right"
                 autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}
@@ -39,7 +43,7 @@ const App = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="light" 
+                theme="light"
             />
         </div>
     );

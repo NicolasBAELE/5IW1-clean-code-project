@@ -17,6 +17,11 @@ export default class LoginUserUseCase {
             throw new Error("Email ou mot de passe incorrect");
         }
 
+        if (user && await bcrypt.compare("CUSTOMER", user.password)) {
+            console.log("reset")
+            throw new Error("Souhaitez-vous réinitialiser votre mot de passe ?")
+        }
+
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             throw new Error("Email ou mot de passe incorrect");
