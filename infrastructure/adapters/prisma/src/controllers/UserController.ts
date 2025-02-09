@@ -13,8 +13,8 @@ const resetPasswordUseCase = new ResetPasswordUseCase(userRepository);
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
-        const where = req.body.payloadUser;
-        const users = await getUsersUseCase.execute(where);
+        const userId = req.body.userId;
+        const users = await getUsersUseCase.execute({id: userId});
         res.status(200).json(users);
     } catch (error) {
         const errMessage = error instanceof Error ? error.message : "Une erreur est survenue";

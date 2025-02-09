@@ -18,7 +18,6 @@ export default class LoginUserUseCase {
         }
 
         if (user && await bcrypt.compare("CUSTOMER", user.password)) {
-            console.log("reset")
             throw new Error("Souhaitez-vous réinitialiser votre mot de passe ?")
         }
 

@@ -53,7 +53,7 @@ export const Admins = () => {
                     users.filter(user => user.role === "ADMIN").map((user) => (
                         <div
                             key={user.id}
-                            className="p-4 border border-gray-200 rounded-lg mb-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                            className="p-4 border border-gray-200 rounded-lg mb-4 transition-colors"
                             onClick={() => setUser(user)}
                         >
                             <p>
