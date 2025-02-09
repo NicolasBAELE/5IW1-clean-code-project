@@ -1,5 +1,3 @@
-// src/infrastructure/adapters/prisma/PrismaMotoRepository.ts
-
 import { PrismaClient } from "@prisma/client";
 import MotoRepository from "@projet-clean/domain/repositories/MotoRepository.js";
 import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
@@ -9,7 +7,7 @@ export default class PrismaMotoRepository implements MotoRepository {
 
     async findByRegistrationNumber(registrationNumber: string): Promise<MotoType | null> {
         return await this.prisma.moto.findUnique({
-            where: { registrationNumber },
+            where: { registrationNumber: registrationNumber },
             include: { owner: true, maintenances: true },
         });
     }
@@ -32,15 +30,9 @@ export default class PrismaMotoRepository implements MotoRepository {
         });
     }
 
-    async getAllMotos(): Promise<MotoType[]> {
+    async getAllMotos(motoId: string): Promise<MotoType[]> {
         return await this.prisma.moto.findMany({
-            include: { owner: true, maintenances: true },
-        });
-    }
-
-    async getMotoById(id: string): Promise<MotoType | null> {
-        return await this.prisma.moto.findUnique({
-            where: { id },
+            where: {id: motoId},
             include: { owner: true, maintenances: true },
         });
     }

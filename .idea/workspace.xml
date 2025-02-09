@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb7e4137-9a5a-4185-ae9d-947f97bb87d9" name="Changes" comment="commit bizzar">
-      <change afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/pages/Home.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/context/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/useCases/moto/createMoto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/application/useCases/moto/createMoto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/useCases/moto/getMotos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/application/useCases/moto/getMotos.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/domain/repositories/MotoRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/domain/repositories/MotoRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/controllers/MotoController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/controllers/MotoController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/repositories/prismaMotoRepository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/repositories/prismaMotoRepository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/resolveurs/Mutation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/resolveurs/Mutation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/resolveurs/Query.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/resolveurs/Query.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/CreateMotoForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/CreateMotoForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/services/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/services/api.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,21 +43,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/nicolas/PycharmProjects/5IW1-clean-code-project/infrastructure/platforms/react/src/pages",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/home/nicolas/PycharmProjects/5IW1-clean-code-project/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/nicolas/PycharmProjects/5IW1-clean-code-project/infrastructure/platforms/react/src/pages&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/nicolas/PycharmProjects/5IW1-clean-code-project/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/infrastructure/platforms/react/src/pages" />

@@ -22,13 +22,14 @@ export const createMoto = async (req: Request, res: Response, next: NextFunction
         res.status(201).json({ moto, message });
     } catch (error) {
         console.error("❌ Error in createMoto:", error);
-        res.status(500).json({ message: "Error creating moto", error });
+        res.status(400).json({ status: "error", message: error.message });
     }
 };
 
 export const getAllMotos = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const motos = await getAllMotosUseCase.execute();
+        const {motoId} = req.body
+        const motos = await getAllMotosUseCase.execute(motoId);
         res.status(200).json(motos);
     } catch (error) {
         console.error("❌ Error in getAllMotos:", error);

@@ -153,10 +153,14 @@ export const createMoto = async (formData: {
         body: JSON.stringify({
             query: `mutation CreateMoto($model: String!, $registrationNumber: String!, $mileage: Int!, $ownerId: String) {
                   createMoto(model: $model, registrationNumber: $registrationNumber, mileage: $mileage, ownerId: $ownerId) {
-                    model,
-                    registrationNumber,
-                    mileage, 
-                    ownerId
+                    moto {
+                        model,
+                        registrationNumber,
+                        mileage, 
+                        ownerId,
+                    },
+                    status,
+                    message,
                   }
                 }`,
             variables: {

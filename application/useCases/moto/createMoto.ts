@@ -1,5 +1,3 @@
-// src/application/useCases/CreateMotoUseCase.ts
-
 import MotoRepository from "@projet-clean/domain/repositories/MotoRepository.js";
 import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
 
@@ -21,7 +19,7 @@ export default class CreateMotoUseCase {
         const existingMoto = await this.motoRepository.findByRegistrationNumber(registrationNumber);
 
         if (existingMoto) {
-            throw new Error("A moto with this registration number already exists.");
+            throw new Error("Ce numéro d'identification existe déjà.");
         }
 
         const moto = await this.motoRepository.createMoto({

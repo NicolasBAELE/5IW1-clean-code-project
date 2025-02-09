@@ -8,6 +8,5 @@ export default interface MotoRepository {
         mileage: number;
         ownerId: string;
     }): Promise<MotoType>;
-    getAllMotos(): Promise<MotoType[]>;
-    getMotoById(id: string): Promise<MotoType | null>;
+    getAllMotos(id?: string): Promise<MotoType[]>;
 }
