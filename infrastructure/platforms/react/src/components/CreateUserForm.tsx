@@ -45,7 +45,7 @@ const CreateUserForm: React.FC<CreateCustomerFormProps> = ({onUserCreated, isAdm
                     password: "CUSTOMER",
                     role: isAdmin ? "ADMIN" : "CUSTOMER",
                 });
-                toast.success("Client créé avec succès !");
+                toast.success("Utilisateur créé avec succès !");
             }
         } catch (e) {
             setError("Erreur lors de la création de l'utilisateur. Veuillez réessayer.");

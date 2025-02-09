@@ -28,7 +28,6 @@ export const Customers = () => {
     const onCustomerCreated = () => {
         fetchUsers()
         setOpenCreateUser(false)
-        toast.success("Client ajoutée avec succès !");
     }
 
     return <>
