@@ -2,7 +2,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {getAllStocks} from "../services/api.ts";
 import {Stock} from "@projet-clean/domain/entities/StockType.ts";
 import {Maintenance} from "@projet-clean/domain/entities/MaintenanceType.ts";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 
 export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreateMaintenance, lastMaintenance}: {
@@ -47,13 +47,13 @@ export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreat
         if (!wantedProduct) {
             toast.error(`veuillez remplir tout les champs)`, {
                 autoClose: 5000,
-              });
+            });
             return
         }
         if (wantedQuantity > wantedProduct.quantity) {
             toast.error(`La quantité maximum pour ce produit est de ${wantedProduct.quantity})`, {
                 autoClose: 5000,
-              });
+            });
             return
         }
         setProductQuantity(wantedQuantity)
@@ -67,7 +67,7 @@ export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreat
         if (!year || !type) {
             toast.error(`veuillez remplir tout les champs)`, {
                 autoClose: 5000,
-              });
+            });
         } else {
             handleCreateMaintenance(
                 year,
@@ -118,35 +118,38 @@ export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreat
                 <option value="CURATIVE">Curatif</option>
             </select>
 
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                Produit
-            </label>
-            <select
-                onChange={(e) => setProductId(e.target.value)}
-                className="block w-full border border-gray-300 rounded-md p-2 mb-4"
-                value={productId}
-            >
-                <option value="" disabled>
-                    Choisissez un produit
-                </option>
-                {stocks.map(stock => <option value={stock.id}>{stock.name}</option>)}
-            </select>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-                Quantité
-            </label>
-            <input
-                type="number"
-                value={productQuantity}
-                onChange={(e) => handleQuantity(parseInt(e.target.value))}
-                placeholder="Quantité"
-                className="block w-full border border-gray-300 rounded-md p-2 mb-4"
-            />
-            <button
-                onClick={handleAddProduct}
-                className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full mb-4"
-            >
-                Ajouter un produit
-            </button>
+            {lastMaintenance?.id && <>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Produit
+                </label>
+                <select
+                    onChange={(e) => setProductId(e.target.value)}
+                    className="block w-full border border-gray-300 rounded-md p-2 mb-4"
+                    value={productId}
+                >
+                    <option value="" disabled>
+                        Choisissez un produit
+                    </option>
+                    {stocks.map(stock => <option value={stock.id}>{stock.name}</option>)}
+                </select>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Quantité
+                </label>
+                <input
+                    type="number"
+                    value={productQuantity}
+                    onChange={(e) => handleQuantity(parseInt(e.target.value))}
+                    placeholder="Quantité"
+                    className="block w-full border border-gray-300 rounded-md p-2 mb-4"
+                />
+                <button
+                    onClick={handleAddProduct}
+                    className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full mb-4"
+                >
+                    Ajouter un produit
+                </button>
+            </>
+            }
 
             {products.length > 0 && (
                 <div className="mb-4">
