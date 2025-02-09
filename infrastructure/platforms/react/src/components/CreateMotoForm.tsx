@@ -1,13 +1,13 @@
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {createMoto, getAllUsers} from "../services/api.ts";
-import {motoModels} from "../utils/motoUtils.ts";
-import {UserType} from "@projet-clean/domain/entities/UserType.ts";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { createMoto, getAllUsers } from "../services/api.ts";
+import { motoModels } from "../utils/motoUtils.ts";
+import { UserType } from "@projet-clean/domain/entities/UserType.ts";
 
 interface CreateMotoFormProps {
     onMotoCreated: () => void;
 }
 
-const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
+const CreateMotoForm: React.FC<CreateMotoFormProps> = ({ onMotoCreated }) => {
     const [formData, setFormData] = useState({
         model: "",
         registrationNumber: "",
@@ -17,7 +17,7 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [users, setUsers] = useState<UserType[]>([])
+    const [users, setUsers] = useState<UserType[]>([]);
 
     const fetchUsers = async () => {
         try {
@@ -29,7 +29,7 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
     };
 
     useEffect(() => {
-        fetchUsers()
+        fetchUsers();
     }, []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -46,7 +46,11 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
         setError(null);
 
         try {
-            await createMoto(formData);
+            const response = await createMoto(formData);
+            if (response.errors) {
+                setError(response.errors[0].message);
+                return;
+            }
             onMotoCreated();
             setFormData({
                 model: "",
@@ -64,37 +68,68 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
 
     return (
         <>
-            <form onSubmit={createMotoForm} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+            <form
+                onSubmit={createMotoForm}
+                className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md"
+            >
                 {error && <div className="text-red-500 mb-4">{error}</div>}
 
                 <div className="mb-4">
-                    <label htmlFor="ownerId" className="block text-gray-700 font-bold mb-2">Propriétaire</label>
+                    <label
+                        htmlFor="ownerId"
+                        className="block text-gray-700 font-bold mb-2"
+                    >
+                        Propriétaire
+                    </label>
                     <select
                         id="ownerId"
                         value={formData.ownerId}
                         onChange={handleChange}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="" disabled>Choisissez un utilisateur</option>
-                        {users.filter(user => user.role === "CUSTOMER").map((user) => (
-                            <option key={user.id} value={user.id}>
-                                {user.name}: {user.email}
-                            </option>
-                        ))}
+                        <option
+                            value=""
+                            disabled
+                        >
+                            Choisissez un utilisateur
+                        </option>
+                        {users
+                            .filter((user) => user.role === "CUSTOMER")
+                            .map((user) => (
+                                <option
+                                    key={user.id}
+                                    value={user.id}
+                                >
+                                    {user.name}: {user.email}
+                                </option>
+                            ))}
                     </select>
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="model" className="block text-gray-700 font-bold mb-2">Modèle</label>
+                    <label
+                        htmlFor="model"
+                        className="block text-gray-700 font-bold mb-2"
+                    >
+                        Modèle
+                    </label>
                     <select
                         id="model"
                         value={formData.model}
                         onChange={handleChange}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="" disabled>Choisissez un modèle</option>
+                        <option
+                            value=""
+                            disabled
+                        >
+                            Choisissez un modèle
+                        </option>
                         {motoModels.map((motoModel) => (
-                            <option key={motoModel} value={motoModel}>
+                            <option
+                                key={motoModel}
+                                value={motoModel}
+                            >
                                 {motoModel}
                             </option>
                         ))}
@@ -102,8 +137,12 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="registrationNumber" className="block text-gray-700 font-bold mb-2">Numéro
-                        d'identification</label>
+                    <label
+                        htmlFor="registrationNumber"
+                        className="block text-gray-700 font-bold mb-2"
+                    >
+                        Numéro d'identification
+                    </label>
                     <input
                         id="registrationNumber"
                         type="text"
@@ -115,7 +154,12 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({onMotoCreated}) => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="mileage" className="block text-gray-700 font-bold mb-2">Kilométrage</label>
+                    <label
+                        htmlFor="mileage"
+                        className="block text-gray-700 font-bold mb-2"
+                    >
+                        Kilométrage
+                    </label>
                     <input
                         id="mileage"
                         type="number"

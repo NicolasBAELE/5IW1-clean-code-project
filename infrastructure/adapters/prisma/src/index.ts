@@ -46,8 +46,10 @@ app.post("/users", async (req, res, next) => {
 
 app.post("/moto", async (req, res, next) => {
     const { _method } = req.body;
-    if (_method === "CREATE_MOTO") return createMoto;
-    else if (_method === "GET_MOTOS") return getAllMotos;
+    if (_method === "POST") return createMoto(req, res, next);
+    else if (_method === "GET") {
+        return getAllMotos(req, res, next);
+    }
 });
 
 app.post("/stock", async (req, res, next) => {

@@ -1,8 +1,8 @@
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {getAllMotos, createMaintenance, validateMaintenance} from "../services/api";
-import {nextMaintenance} from "../utils/motoUtils";
-import {MotoType} from "@projet-clean/domain/entities/MotoType.ts";
-import {Maintenance, NextMaintenanceDatas} from "@projet-clean/domain/entities/MaintenanceType.ts";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { getAllMotos, createMaintenance, validateMaintenance } from "../services/api";
+import { nextMaintenance } from "../utils/motoUtils";
+import { MotoType } from "@projet-clean/domain/entities/MotoType.ts";
+import { Maintenance, NextMaintenanceDatas } from "@projet-clean/domain/entities/MaintenanceType.ts";
 
 export const useMoto = (motoId: string) => {
     const [moto, setMoto] = useState<MotoType | null>(null);
@@ -39,12 +39,12 @@ export const useMoto = (motoId: string) => {
     useEffect(() => {
         if (moto) {
             const lastMaintenance = moto.maintenances
-                .filter(m => m.completedDate)
+                .filter((m) => m.completedDate)
                 .sort((a, b) => new Date(b.completedDate).getTime() - new Date(a.completedDate).getTime())
                 .at(0);
 
             const nextMaintenanceScheduled = moto.maintenances
-                .filter(m => m.scheduledDate && !m.completedDate)
+                .filter((m) => m.scheduledDate && !m.completedDate)
                 .sort((a, b) => new Date(b.scheduledDate).getTime() - new Date(a.scheduledDate).getTime())
                 .at(0);
 
@@ -65,7 +65,7 @@ export const useMoto = (motoId: string) => {
         type: "PREVENTIVE" | "CURATIVE",
         mileageFirstMaintenance: number,
         setMileageFirstMaintenance: Dispatch<SetStateAction<number>>,
-        products: { id: string, quantity: number }[],
+        products: { id: string; quantity: number }[]
     ) => {
         try {
             await createMaintenance({
@@ -75,7 +75,7 @@ export const useMoto = (motoId: string) => {
                 mileage: mileageFirstMaintenance,
                 products: products,
             });
-            setMileageFirstMaintenance(0)
+            setMileageFirstMaintenance(0);
             fetchMoto();
         } catch (error) {
             console.error("Erreur lors de la création de la maintenance", error);
@@ -99,6 +99,6 @@ export const useMoto = (motoId: string) => {
         nextMaintenanceScheduled,
         nextMaintenanceDatas,
         handleCreateMaintenance,
-        handleCompleteMaintenance
+        handleCompleteMaintenance,
     };
 };
