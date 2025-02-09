@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = (token: string) => {
         localStorage.setItem("token", token);
-        navigate("/");
+        navigate("/profile");
         navigate(0);
     };
 
