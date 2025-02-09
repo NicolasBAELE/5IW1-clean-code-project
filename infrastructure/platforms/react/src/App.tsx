@@ -1,40 +1,36 @@
-import Header from "./components/Header";
-import { ToastContainer} from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
-import {useAuth} from "./context/AuthContext.tsx";
-import {Motos} from "./pages/Motos.tsx";
-import {useState} from "react";
-import {Stocks} from "./pages/Stocks.tsx";
-import {Customers} from "./pages/Customers.tsx";
-import {Admins} from "./pages/Admins.tsx";
-import {Profile} from "./pages/Profile.tsx";
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useAuth} from './context/AuthContext.tsx';
+import {Motos} from './pages/Motos.tsx';
+import {Stocks} from './pages/Stocks.tsx';
+import {Customers} from './pages/Customers.tsx';
+import {Admins} from './pages/Admins.tsx';
+import {Profile} from './pages/Profile.tsx';
+import Header from './components/Header.tsx';
+import {Home} from './pages/Home.tsx';
+import {Route, Routes} from "react-router";
 
 const App = () => {
-    const {user} = useAuth();
-    const [page, setPage] = useState('profile')
+    const {isAuthenticated} = useAuth();
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Header setPage={setPage}/>
-            <div className="max-w-4xl mx-auto px-4 py-6">
-                {user && (
-                    <div className="mb-6 p-4 bg-white rounded-lg shadow-md">
-                        <h2 className="text-2xl font-bold text-gray-800">Bienvenue {user.name} !</h2>
-                        <p className="text-gray-600">{user.email}</p>
-                        <span
-                            className="inline-block mt-2 px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
-              {user.role}
-            </span>
-                    </div>
-                )}
-                <main className="bg-white p-6 rounded-lg shadow-md">
-                    {page === 'motos' && <Motos/>}
-                    {page === 'stocks' && <Stocks/>}
-                    {page === 'customers' && <Customers/>}
-                    {page === 'admin' && <Admins/>}
-                    {page === 'profile' && <Profile/>}
+        <div className="flex flex-col min-h-screen bg-gray-100">
+            <Header/>
+            <div className="flex-grow max-w-4xl mx-auto px-4 py-6">
+                <main className="w-[80vw] bg-white p-6 rounded-lg shadow-md">
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        {isAuthenticated && <Route path="/motos" element={<Motos/>}/>}
+                        {isAuthenticated && <Route path="/stocks" element={<Stocks/>}/>}
+                        {isAuthenticated && <Route path="/customers" element={<Customers/>}/>}
+                        {isAuthenticated && <Route path="/admins" element={<Admins/>}/>}
+                        {isAuthenticated && <Route path="/profile" element={<Profile/>}/>}
+                    </Routes>
                 </main>
             </div>
+            <footer className="bg-white shadow-md w-full p-4 text-center mt-auto">
+                <p className="text-gray-600">&copy; 2025 Triumph Motorcycles. Tous droits réservés.</p>
+            </footer>
             <ToastContainer
                 position="bottom-right"
                 autoClose={3000}
