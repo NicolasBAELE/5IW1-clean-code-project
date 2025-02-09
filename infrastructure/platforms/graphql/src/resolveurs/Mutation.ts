@@ -1,10 +1,10 @@
-import {UserType} from "@projet-clean/domain/entities/UserType.js";
-import {MotoType} from "@projet-clean/domain/entities/MotoType.js";
-import {Maintenance} from "@projet-clean/domain/entities/Maintenance.js";
+import { UserType } from "@projet-clean/domain/entities/UserType.js";
+import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
+import { Maintenance } from "@projet-clean/domain/entities/Maintenance.js";
 
 export const Mutation = {
     createUser: async (
-        parent: any,
+        parent: UserType,
         { name, email, password, role }: { name: string; email: string; password?: string; role?: string }
     ): Promise<unknown> => {
         const _method = "POST_REGISTER";
@@ -52,7 +52,7 @@ export const Mutation = {
                 },
                 body: JSON.stringify({ email, password, _method }),
             });
-            return await response.json()
+            return await response.json();
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de se connecter");
@@ -60,7 +60,7 @@ export const Mutation = {
     },
 
     createMoto: async (
-        parent: any,
+        parent: MotoType,
         {
             model,
             registrationNumber,
@@ -73,7 +73,7 @@ export const Mutation = {
             ownerId: string;
         }
     ): Promise<MotoType> => {
-        const _method = "CREATE_MOTO";
+        const _method = "POST";
         try {
             const response = await fetch("http://prisma:3000/moto", {
                 method: "POST",
@@ -82,7 +82,6 @@ export const Mutation = {
                 },
                 body: JSON.stringify({ model, registrationNumber, mileage, ownerId, _method }),
             });
-
             if (!response.ok) {
                 throw new Error(`Erreur HTTP : ${response.status}`);
             }

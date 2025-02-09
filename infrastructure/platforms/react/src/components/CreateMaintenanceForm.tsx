@@ -2,6 +2,8 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {getAllStocks} from "../services/api.ts";
 import {Stock} from "@projet-clean/domain/entities/StockType.ts";
 import {Maintenance} from "@projet-clean/domain/entities/MaintenanceType.ts";
+import { toast } from "react-toastify";
+
 
 export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreateMaintenance, lastMaintenance}: {
     setOpenCreateMaintenanceForm: Dispatch<SetStateAction<boolean>>,
@@ -43,11 +45,15 @@ export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreat
     const handleQuantity = (wantedQuantity: number) => {
         const wantedProduct = stocks.find(stock => stock.id === productId)
         if (!wantedProduct) {
-            alert("Veuillez choisir un produit.");
+            toast.error(`veuillez remplir tout les champs)`, {
+                autoClose: 5000,
+              });
             return
         }
         if (wantedQuantity > wantedProduct.quantity) {
-            alert(`La quantité maximum pour ce produit est de ${wantedProduct.quantity}`);
+            toast.error(`La quantité maximum pour ce produit est de ${wantedProduct.quantity})`, {
+                autoClose: 5000,
+              });
             return
         }
         setProductQuantity(wantedQuantity)
@@ -59,7 +65,9 @@ export const CreateMaintenanceForm = ({setOpenCreateMaintenanceForm, handleCreat
 
     function HandleCreationClick() {
         if (!year || !type) {
-            alert("Veuillez remplir tous les champs.");
+            toast.error(`veuillez remplir tout les champs)`, {
+                autoClose: 5000,
+              });
         } else {
             handleCreateMaintenance(
                 year,

@@ -1,13 +1,14 @@
 import express from "express";
-import {PrismaClient} from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 
-import {authMiddleware} from "./middleware/verifyToken.js";
-import {createUser, getUsers, loginUser, resetPassword} from "./controllers/UserController.js";
-import {createMaintenance, validateMaintenance} from "./repositories/maintenance.js";
-import {createMoto, getAllMotos} from "./repositories/moto.js";
-import {createStock, getAllStocks} from "./repositories/stock.js";
-import {withPrisma} from "./utils/handlePrisma.js";
+import { authMiddleware } from "./middleware/verifyToken.js";
+import { createUser, getUsers, loginUser, resetPassword } from "./controllers/UserController.js";
+import { createMoto, getAllMotos } from "./controllers/MotoController.js";
+
+import { createMaintenance, validateMaintenance } from "./repositories/maintenance.js";
+import { createStock, getAllStocks } from "./repositories/stock.js";
+import { withPrisma } from "./utils/handlePrisma.js";
 
 const app = express();
 app.use(express.json());
@@ -23,7 +24,7 @@ const port = 3000;
 const prisma = new PrismaClient({ log: ["query", "info", "warn", "error"] });
 
 app.get("/verify-token", authMiddleware, (req, res) => {
-    res.json(req.user);
+    res.json(req.body.user);
 });
 
 app.post("/users", async (req, res, next) => {
@@ -35,7 +36,7 @@ app.post("/users", async (req, res, next) => {
     } else if (_method === "POST_REGISTER") {
         return createUser(req, res);
     } else if (_method === "DELETE") {
-        // return deleteUser(req, res, data);
+        // return deleteUser(req, res);
     } else if (_method === "RESET_PASSWORD") {
         return resetPassword(req, res);
     } else {
@@ -45,8 +46,10 @@ app.post("/users", async (req, res, next) => {
 
 app.post("/moto", async (req, res, next) => {
     const { _method } = req.body;
-    if (_method === "CREATE_MOTO") return withPrisma(prisma, createMoto, req, res, next);
-    else if (_method === "GET_MOTOS") return withPrisma(prisma, getAllMotos, req, res, next);
+    if (_method === "POST") return createMoto(req, res, next);
+    else if (_method === "GET") {
+        return getAllMotos(req, res, next);
+    }
 });
 
 app.post("/stock", async (req, res, next) => {
