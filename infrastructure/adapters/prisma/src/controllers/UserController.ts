@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import prismaUserRepository from "../repositories/prismaUserRepository.js";
-import CreateUserUseCase from "@projet-clean/application/useCases/createUser.js";
-import GetUserUseCase from "@projet-clean/application/useCases/getUser.js";
-import LoginUserUseCase from "@projet-clean/application/useCases/loginUser.js";
-import ResetPasswordUseCase from "@projet-clean/application/useCases/resetPassword.js";
+import CreateUserUseCase from "@projet-clean/application/useCases/user/createUser.js";
+import GetUserUseCase from "@projet-clean/application/useCases/user/getUser.js";
+import LoginUserUseCase from "@projet-clean/application/useCases/user/loginUser.js";
+import ResetPasswordUseCase from "@projet-clean/application/useCases/user/resetPassword.js";
 
 const userRepository = new prismaUserRepository();
 const createUserUseCase = new CreateUserUseCase(userRepository);
