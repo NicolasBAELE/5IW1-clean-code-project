@@ -1,15 +1,19 @@
 import AuthForm from "./AuthForm.tsx";
 import {useAuth} from "../context/AuthContext.tsx";
-import {Dispatch, SetStateAction} from "react";
+import {useNavigate} from "react-router";
 
-const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
+const Header = () => {
     const {logout, isAuthenticated, isAdmin} = useAuth();
+    const navigate = useNavigate();
 
     return (
         <header className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-md">
             <div className="container mx-auto px-6 py-4">
                 <div className="flex flex-col items-center md:flex-row md:justify-between">
-                    <div className="text-center md:text-left">
+                    <div
+                        className="text-center md:text-left"
+                        onClick={() => navigate('/')}
+                    >
                         <h1 className="text-white text-3xl font-extrabold">
                             Triumph Motorcycles
                         </h1>
@@ -20,7 +24,7 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                             {isAdmin && <>
                                 <li>
                                     <a
-                                        onClick={() => setPage('motos')}
+                                        onClick={() => navigate('/motos')}
                                         className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                     >
                                         Motos
@@ -28,7 +32,7 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => setPage('maintenances')}
+                                        onClick={() => navigate('/maintenances')}
                                         className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                     >
                                         Entretiens
@@ -36,7 +40,7 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => setPage('stocks')}
+                                        onClick={() => navigate('/stocks')}
                                         className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                     >
                                         Pièces Détachées
@@ -44,7 +48,7 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => setPage('customers')}
+                                        onClick={() => navigate('/customers')}
                                         className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                     >
                                         Clients
@@ -52,7 +56,7 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => setPage('admin')}
+                                        onClick={() => navigate('/admins')}
                                         className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                     >
                                         Administrateurs
@@ -61,7 +65,7 @@ const Header = ({setPage}: { setPage: Dispatch<SetStateAction<string>> }) => {
                             </>}
                             {isAuthenticated && <li>
                                 <a
-                                    onClick={() => setPage('profile')}
+                                    onClick={() => navigate('/profile')}
                                     className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                 >
                                     Profil
