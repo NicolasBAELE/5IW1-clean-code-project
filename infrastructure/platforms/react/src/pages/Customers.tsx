@@ -4,6 +4,8 @@ import {useAuth} from "../context/AuthContext.tsx";
 import {Customer} from "../components/Customer.tsx";
 import {UserType} from "@projet-clean/domain/entities/UserType.ts";
 import CreateCustomerForm from "../components/CreateCustomerForm.tsx";
+import { toast } from "react-toastify";
+
 
 export const Customers = () => {
     const {isAuthenticated} = useAuth()
@@ -27,6 +29,7 @@ export const Customers = () => {
     const onCustomerCreated = () => {
         fetchUsers()
         setOpenCreateUser(false)
+        toast.success("Client ajoutée avec succès !");
     }
 
     return <>

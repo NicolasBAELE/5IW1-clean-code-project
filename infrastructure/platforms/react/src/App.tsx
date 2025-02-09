@@ -1,13 +1,14 @@
 import Header from "./components/Header";
+import { ToastContainer} from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import {useAuth} from "./context/AuthContext.tsx";
 import {Motos} from "./pages/Motos.tsx";
 import {useState} from "react";
 import {Stocks} from "./pages/Stocks.tsx";
-import {Customers} from "./pages/Customers.tsx";
 
 const App = () => {
     const {user} = useAuth();
-    const [page, setPage] = useState('')
+    const [page, setPage] = useState('motos')
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -26,9 +27,20 @@ const App = () => {
                 <main className="bg-white p-6 rounded-lg shadow-md">
                     {page === 'motos' && <Motos/>}
                     {page === 'stocks' && <Stocks/>}
-                    {page === 'customers' && <Customers/>}
                 </main>
             </div>
+            <ToastContainer
+                position="bottom-right"  
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" 
+            />
         </div>
     );
 };
