@@ -67,7 +67,7 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                 </button>
 
                 {/* Bouton Ajouter un entretien (en haut) */}
-                {!openCreateMaintenanceForm && isAdmin && (
+                {!nextMaintenanceScheduled && !openCreateMaintenanceForm && isAdmin && (
                     <div className="mb-4">
                         <button
                             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded w-full"
@@ -162,7 +162,8 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                         <strong>Coût :</strong> {lastMaintenance.cost || "-"}€
                                     </p>
                                     <p className="text-gray-700">
-                                        <strong>Notes :</strong> <pre>{lastMaintenance.notes || "-"}</pre>
+                                        <strong>Notes :</strong>
+                                        <pre>{lastMaintenance.notes || "-"}</pre>
                                     </p>
                                 </div>
                             )}
@@ -187,8 +188,27 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                         <strong>Coût :</strong> {nextMaintenanceScheduled.cost || "-"}€
                                     </p>
                                     <p className="text-gray-700">
-                                        <strong>Notes :</strong> <pre>{nextMaintenanceScheduled.notes || "-"}</pre>
+                                        <strong>Notes :</strong>
+                                        <pre>{nextMaintenanceScheduled.notes || "-"}</pre>
                                     </p>
+                                    <button
+                                        onClick={() => {
+                                            const mileageInput = window.prompt(
+                                                "Veuillez entrer le kilométrage actuel :"
+                                            );
+                                            if (mileageInput) {
+                                                const mileage = parseInt(mileageInput, 10);
+                                                if (!isNaN(mileage) && mileage > 0) {
+                                                    handleCompleteMaintenance(nextMaintenanceScheduled.id, mileage);
+                                                } else {
+                                                    alert("Veuillez entrer un kilométrage valide.");
+                                                }
+                                            }
+                                        }}
+                                        className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
+                                    >
+                                        Entretien effectué ce jour
+                                    </button>
                                 </div>
                             )}
 

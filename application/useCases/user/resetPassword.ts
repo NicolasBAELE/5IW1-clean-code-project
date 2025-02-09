@@ -11,25 +11,22 @@ export default class ResetPasswordUseCase {
     }
 
     async execute(data: {
-        name: string;
         email: string;
         password: string;
-        role?: string;
     }): Promise<{ user: UserType; token: string; message: string }> {
-        const {name, email, password, role} = data;
+        const {email, password} = data;
 
-        if (!email || !password || !name) {
-            throw new Error("Email, nom et mot de passe requis.");
+        if (!email || !password) {
+            throw new Error("Email et mot de passe requis");
+        }
+        const existingUser = this.userRepository.findByEmail(email);
+
+        if (!existingUser) {
+            throw new Error("Cet utilisateur n'existe pas")
         }
 
-        const existingUser = await this.userRepository.findByEmail(email);
-
-
-        if (existingUser) {
-            throw new Error("Souhaitez-vous réinitialiser votre mot de passe ?")
-        }
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-        const user = await this.userRepository.createUser({name, email, password: hashedPassword, role});
+        const user = await this.userRepository.resetPassword({email, password: hashedPassword})
 
         const token = jwt.sign(
             {id: user.id, name: user.name, email: user.email, role: user.role},
@@ -40,7 +37,7 @@ export default class ResetPasswordUseCase {
         return {
             user,
             token,
-            message: "Compte créé avec succès",
+            message: "Mot de passe modifié avec succès",
         };
     }
 }

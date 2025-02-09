@@ -13,8 +13,8 @@ export const Customers = () => {
 
     const fetchUsers = async () => {
         try {
-            const data = await getAllUsers();
-            setUsers(data);
+            const data: UserType[] = await getAllUsers();
+            setUsers(data.filter(user => user.role === "CUSTOMER"));
         } catch (error) {
             console.error("Erreur lors de la récupération des users:", error);
         }
@@ -51,7 +51,7 @@ export const Customers = () => {
                 Clients :
             </h2>
             {users.length > 0 ? (
-                    users.filter(user => user.role === "CUSTOMER").map((user) => (
+                    users.map((user) => (
                         <div
                             key={user.id}
                             className="p-4 border border-gray-200 rounded-lg mb-4 cursor-pointer hover:bg-gray-50 transition-colors"

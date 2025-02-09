@@ -32,18 +32,10 @@ const Header = () => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => navigate('/maintenances')}
-                                        className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
-                                    >
-                                        Entretiens
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
                                         onClick={() => navigate('/stocks')}
                                         className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                     >
-                                        Pièces Détachées
+                                        Pièces Détachées
                                     </a>
                                 </li>
                                 <li>
