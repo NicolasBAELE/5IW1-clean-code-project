@@ -1,6 +1,7 @@
 import {useMoto} from "../hooks/useMoto";
 import {CreateMaintenanceForm} from "./CreateMaintenanceForm.tsx";
 import {useState} from "react";
+import {useAuth} from "../context/AuthContext.tsx";
 
 interface MotoProps {
     motoId: string;
@@ -20,6 +21,7 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
     } = useMoto(motoId);
 
     const [openCreateMaintenanceForm, setOpenCreateMaintenanceForm] = useState(false)
+    const {isAdmin} = useAuth()
 
     if (loading) return <div className="p-4 text-center">Chargement...</div>;
     if (error) return <div className="p-4 text-center text-red-600">{error}</div>;
@@ -51,7 +53,7 @@ export const Moto = ({motoId, onClose}: MotoProps) => {
                     </svg>
                 </button>
 
-                {!nextMaintenanceScheduled && !openCreateMaintenanceForm && <button
+                {!nextMaintenanceScheduled && !openCreateMaintenanceForm && isAdmin && <button
                     className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded w-full"
                     onClick={() => setOpenCreateMaintenanceForm(true)}
                 >
