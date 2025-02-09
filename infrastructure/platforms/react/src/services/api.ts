@@ -100,7 +100,6 @@ export const resetPassword = async (formData: { email: string; password: string 
                       resetPassword(email: $email, password: $password) {
                         token,
                         message,
-                        status,
                       }
                     }`,
             variables: {
@@ -126,6 +125,8 @@ export const loginUser = async (formData: { login: string; password: string }) =
                     login(email: $email, password: $password) {
                     token,
                     user {name},
+                    message,
+                    status,
                     }
                 }`,
             variables: {

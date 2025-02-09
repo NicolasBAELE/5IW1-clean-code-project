@@ -20,8 +20,8 @@ const typeDefs = `
   type AuthPayload {
       user: User
       token: String
-      message: String!
-      status: String!
+      message: String
+      status: String
     }
     input ProductInput {
         id: String!

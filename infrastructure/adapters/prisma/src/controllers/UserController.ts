@@ -24,8 +24,8 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
-        const { name, email, password } = req.body;
-        const { token, message } = await createUserUseCase.execute({ name, email, password });
+        const { name, email, password, role } = req.body;
+        const { token, message } = await createUserUseCase.execute({ name, email, password, role });
         res.status(201).json({ token, message, status: "created" });
     } catch (error) {
         const errMessage =
@@ -48,7 +48,7 @@ export const loginUser = async (req: Request, res: Response) => {
 export const resetPassword = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-        const tokenAndMessage = await resetPasswordUseCase.execute(email, password);
+        const tokenAndMessage = await resetPasswordUseCase.execute({email, password});
         res.status(200).json(tokenAndMessage);
     } catch (error) {
         const errMessage = error instanceof Error ? error.message : "Une erreur est survenue";
