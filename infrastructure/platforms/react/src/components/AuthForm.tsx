@@ -34,12 +34,12 @@ const AuthForm = () => {
                 handleResetPassword()
             } else {
                 const {data} = await loginUser(formData);
-                if (data.login.status === "error") {
-                    if (data.login.message.includes("réinitialiser")) {
+                if (data.login?.status === "error") {
+                    if (data.login?.message.includes("réinitialiser")) {
                         setReset(true)
                     }
-                    setError(data.login.message)
-                } else {
+                    setError(data.login?.message)
+                } else if (data.login) {
                     const {token} = data.login;
                     login(token);
                 }
