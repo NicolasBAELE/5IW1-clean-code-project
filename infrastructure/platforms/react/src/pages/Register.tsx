@@ -1,6 +1,6 @@
-import {ChangeEvent, FormEvent, useState} from "react";
-import {register} from "../services/api.ts";
-import {useAuth} from "../context/AuthContext.tsx";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { register } from "../services/api.ts";
+import { useAuth } from "../context/AuthContext.tsx";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -16,16 +16,16 @@ const Register = () => {
         });
     };
 
-    const {login} = useAuth();
+    const { login } = useAuth();
 
     const submit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const {data} = await register(formData);
-            if (!data) {
-                return console.error("Error durant la soumission du formulaire");
+            const result = await register(formData);
+            const { token } = result;
+            if (!token) {
+                return console.error(result.message);
             }
-            const {token} = data.createUser;
             login(token);
         } catch (e) {
             console.log(e);
@@ -35,10 +35,11 @@ const Register = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
-                <h2 className="text-center text-2xl font-bold mb-6 underline">
-                    Inscrivez-vous 🏍️
-                </h2>
-                <form onSubmit={submit} className="flex flex-col space-y-4">
+                <h2 className="text-center text-2xl font-bold mb-6 underline">Inscrivez-vous 🏍️</h2>
+                <form
+                    onSubmit={submit}
+                    className="flex flex-col space-y-4"
+                >
                     <input
                         id="name"
                         type="text"

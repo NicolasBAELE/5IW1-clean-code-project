@@ -1,11 +1,6 @@
 import { UserType } from "@projet-clean/domain/entities/UserType.js";
 import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
-import { Maintenance } from "@projet-clean/domain/entities/MaintenanceType.js";
-
-interface LoginResponse {
-    token: string;
-    user: UserType;
-}
+import { Maintenance } from "@projet-clean/domain/entities/Maintenance.js";
 
 export const Mutation = {
     createUser: async (
@@ -29,7 +24,7 @@ export const Mutation = {
         }
     },
 
-    resetPassword: async (parent: any, { email, password }: { email: string; password?: string }): Promise<unknown> => {
+    resetPassword: async (parent: UserType, { email, password }: { email: string; password?: string }) => {
         const _method = "RESET_PASSWORD";
         try {
             const response = await fetch("http://prisma:3000/users", {
@@ -47,25 +42,7 @@ export const Mutation = {
         }
     },
 
-    resetPassword: async (parent: any, { email, password }: { email: string; password?: string }): Promise<unknown> => {
-        const _method = "RESET_PASSWORD";
-        try {
-            const response = await fetch("http://prisma:3000/users", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password, _method }),
-            });
-
-            return await response.json();
-        } catch (error) {
-            console.error(error);
-            throw new Error("Impossible de réinitialiser le mot de passe");
-        }
-    },
-
-    login: async (parent: User, { email, password }: { email: string; password: string }) => {
+    login: async (parent: UserType, { email, password }: { email: string; password: string }) => {
         const _method = "POST_LOGIN";
         try {
             const response = await fetch("http://prisma:3000/users", {
