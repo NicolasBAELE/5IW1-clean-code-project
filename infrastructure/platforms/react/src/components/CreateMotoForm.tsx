@@ -38,7 +38,7 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({ onMotoCreated }) => {
             [e.target.id]: e.target.value,
         });
     };
-    const disabled = !formData.model || !formData.mileage || !formData.registrationNumber;
+    const disabled = !formData.model || !formData.mileage || !formData.registrationNumber || !formData.ownerId;
 
     const createMotoForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,9 +46,9 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({ onMotoCreated }) => {
         setError(null);
 
         try {
-            const response = await createMoto(formData);
-            if (response.errors) {
-                setError(response.errors[0].message);
+            const {data} = await createMoto(formData);
+            if (data.createMoto.status == "error") {
+                setError(data.createMoto.message);
                 return;
             }
             onMotoCreated();

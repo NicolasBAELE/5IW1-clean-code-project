@@ -23,6 +23,12 @@ const typeDefs = `
       message: String
       status: String
     }
+    
+  type MotoPayload {
+      moto: Moto
+      message: String
+      status: String
+    }
     input ProductInput {
         id: String!
         quantity: Int!
@@ -32,7 +38,7 @@ const typeDefs = `
     createUser(name: String!, email: String!, password: String!, role: String): AuthPayload
     resetPassword(email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
-    createMoto(model: String!, registrationNumber: String!, mileage: Int!, ownerId: String): Moto
+    createMoto(model: String!, registrationNumber: String!, mileage: Int!, ownerId: String): MotoPayload
     createMaintenance(motoId: String!, year: String!, type:MaintenanceType!, mileage: Int!, products: [ProductInput!]!): Maintenance
     validateMaintenance(maintenanceId: String!, mileage: Int!): Maintenance
     createStock(name: String!, cost: Float!, quantity: Int!): Stock

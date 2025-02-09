@@ -1,6 +1,6 @@
-import { UserType } from "@projet-clean/domain/entities/UserType.js";
-import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
-import { Maintenance } from "@projet-clean/domain/entities/Maintenance.js";
+import {UserType} from "@projet-clean/domain/entities/UserType.js";
+import {MotoType} from "@projet-clean/domain/entities/MotoType.js";
+import {Maintenance} from "@projet-clean/domain/entities/Maintenance.js";
 
 export const Mutation = {
     createUser: async (
@@ -72,7 +72,7 @@ export const Mutation = {
             mileage: number;
             ownerId: string;
         }
-    ): Promise<MotoType> => {
+    ): Promise<unknown> => {
         const _method = "POST";
         try {
             const response = await fetch("http://prisma:3000/moto", {
@@ -82,16 +82,8 @@ export const Mutation = {
                 },
                 body: JSON.stringify({ model, registrationNumber, mileage, ownerId, _method }),
             });
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP : ${response.status}`);
-            }
 
-            const result: unknown = await response.json();
-            if (isMoto(result)) {
-                return result;
-            } else {
-                throw new Error("Les données retournées ne sont pas dans le format attendu.");
-            }
+            return await response.json()
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de créer la moto");
@@ -204,16 +196,6 @@ export const Mutation = {
         }
     },
 };
-
-function isMoto(data: any): data is MotoType {
-    return (
-        typeof data.id === "string" &&
-        typeof data.model === "string" &&
-        typeof data.registrationNumber === "string" &&
-        typeof data.mileage === "number" &&
-        typeof data.ownerId === "string"
-    );
-}
 
 function isMaintenance(data: any): data is Maintenance {
     return (
