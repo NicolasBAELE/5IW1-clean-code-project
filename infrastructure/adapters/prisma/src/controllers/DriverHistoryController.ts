@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from "express";
 import DriverRepository from "../repositories/prismaDriverRepository.js";
-import CreateDriverUseCase from "@projet-clean/application/usecases/driver/CreateDriver.js";
-import { PrismaClient } from "@prisma/client";
+import CreateDriverUseCase from "@projet-clean/application/useCases/driver/createDriver.js";
+import {PrismaClient} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
