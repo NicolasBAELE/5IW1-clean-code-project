@@ -1,3 +1,4 @@
+import { DriverType } from "@projet-clean/domain/entities/DriverType.js";
 import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
 import { UserType } from "@projet-clean/domain/entities/UserType.js";
 
@@ -73,6 +74,22 @@ export const Query = {
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de récupérer les produits");
+        }
+    },
+    getAllDrivers: async (): Promise<DriverType[]> => {
+        const _method = "GET";
+        try {
+            const response = await fetch("http://prisma:3000/driver", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ _method }),
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de récupérer les utilisateurs");
         }
     },
 };

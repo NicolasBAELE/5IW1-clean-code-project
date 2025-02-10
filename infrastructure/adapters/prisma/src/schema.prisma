@@ -36,6 +36,8 @@ model Maintenance {
   notes            String?
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
+
+  @@index([motoId])
 }
 
 model Stock {
@@ -72,6 +74,8 @@ model Driver {
   updatedAt       DateTime          @updatedAt
   motoTests       MotoTest[]
   incidentHistory IncidentHistory[]
+
+  @@index([userId])
 }
 
 model MotoTest {
@@ -84,6 +88,9 @@ model MotoTest {
   moto      Moto      @relation(fields: [motoId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@index([driverId])
+  @@index([motoId])
 }
 
 model IncidentHistory {
@@ -96,6 +103,9 @@ model IncidentHistory {
   moto        Moto     @relation(fields: [motoId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([driverId])
+  @@index([motoId])
 }
 
 enum MaintenanceType {

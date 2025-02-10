@@ -46,7 +46,7 @@ const CreateMotoForm: React.FC<CreateMotoFormProps> = ({ onMotoCreated }) => {
         setError(null);
 
         try {
-            const {data} = await createMoto(formData);
+            const { data } = await createMoto(formData);
             if (data.createMoto.status == "error") {
                 setError(data.createMoto.message);
                 return;

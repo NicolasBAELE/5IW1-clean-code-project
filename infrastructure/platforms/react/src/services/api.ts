@@ -88,6 +88,87 @@ export const register = async (formData: { name: string; email: string; password
     return result.data.createUser;
 };
 
+export const registerDriver = async (formData: { licenseNumber: string; experienceYears: string; userId: string }) => {
+    const { licenseNumber, experienceYears, userId } = formData;
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `mutation CreateDriver($userId: String!, $licenseNumber: String!, $experienceYears: Int!) {
+  createDriver(userId: $userId, licenseNumber: $licenseNumber, experienceYears: $experienceYears) {
+    driver {
+      licenseNumber
+      experienceYears
+      user {
+        email
+      }
+      motoTests {
+        moto {
+          model
+          registrationNumber
+        }
+      }
+    }
+    message
+    status
+  }
+}`,
+            variables: {
+                licenseNumber: licenseNumber,
+                experienceYears: parseInt(experienceYears),
+                userId: userId,
+            },
+        }),
+    });
+    const result = await response.json();
+    return result;
+};
+
+export const getAllDrivers = async () => {
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `query GetAllDrivers {
+  getAllDrivers {
+    experienceYears
+    id
+    createdAt
+    licenseNumber
+    updatedAt
+    userId
+    motoTests {
+      moto {
+        model
+        mileage
+        registrationNumber
+      }
+    }
+    incidentHistory {
+      description
+      date
+      createdAt
+      id
+      updatedAt
+    }
+    user {
+      email
+      name
+      phone
+      role
+    }
+  }
+}`,
+        }),
+    });
+    const result = await response.json();
+    return result;
+};
+
 export const resetPassword = async (formData: { email: string; password: string }) => {
     const { email, password } = formData;
     const response = await fetch(API_URL, {

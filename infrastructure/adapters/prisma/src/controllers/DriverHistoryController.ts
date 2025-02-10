@@ -15,6 +15,23 @@ export const createDriver = async (req: Request, res: Response, next: NextFuncti
         const result = await createDriverUseCase.execute({ userId, licenseNumber, experienceYears });
         res.status(201).json(result);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        const err = error as Error;
+        res.status(400).json({ status: "error", message: err.message });
+    }
+};
+
+export const getDrivers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const drivers = await prisma.driver.findMany({
+            include: {
+                user: true,
+                motoTests: true,
+                incidentHistory: true,
+            },
+        });
+        res.status(200).json(drivers);
+    } catch (error) {
+        const err = error as Error;
+        res.status(400).json({ status: "error", message: err.message });
     }
 };

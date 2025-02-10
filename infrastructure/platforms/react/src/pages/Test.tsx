@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { getAllDrivers } from "../services/api";
+import { getAllDrivers } from "../services/api";
 import { DriverType } from "@projet-clean/domain/entities/DriverType";
 import { CreateDriverForm } from "../components/CreateDriverForm";
 
@@ -9,8 +9,8 @@ export const Test = () => {
 
     const fetchDrivers = async () => {
         try {
-            // const data = await getAllDrivers();
-            setDrivers(data);
+            const { data } = await getAllDrivers();
+            setDrivers(data.getAllDrivers);
         } catch (error) {
             console.error("Erreur lors de la récupération des conducteurs:", error);
         }

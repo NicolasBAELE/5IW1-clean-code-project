@@ -9,6 +9,7 @@ import { createMoto, getAllMotos } from "./controllers/MotoController.js";
 import { createMaintenance, validateMaintenance } from "./repositories/maintenance.js";
 import { createStock, getAllStocks } from "./repositories/stock.js";
 import { withPrisma } from "./utils/handlePrisma.js";
+import { createDriver, getDrivers } from "./controllers/DriverHistoryController.js";
 
 const app = express();
 app.use(express.json());
@@ -62,6 +63,12 @@ app.post("/maintenance", async (req, res, next) => {
     const { _method } = req.body;
     if (_method === "CREATE_MAINTENANCE") return withPrisma(prisma, createMaintenance, req, res, next);
     if (_method === "VALIDATE_MAINTENANCE") return withPrisma(prisma, validateMaintenance, req, res, next);
+});
+
+app.post("/driver", async (req, res, next) => {
+    const { _method } = req.body;
+    if (_method === "POST") return createDriver(req, res, next);
+    else if (_method == "GET") return getDrivers(req, res, next);
 });
 
 app.listen(port, () => {

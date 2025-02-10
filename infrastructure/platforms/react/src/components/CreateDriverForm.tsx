@@ -1,13 +1,17 @@
 import { toast } from "react-toastify";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { register } from "../services/api";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { getAllUsers, registerDriver } from "../services/api";
+import { UserType } from "@projet-clean/domain/entities/UserType";
 
-export const CreateDriverForm = ({ onDriverCreated, isAdmin = false }) => {
+interface CreateMotoFormProps {
+    onDriverCreated: () => void;
+}
+
+export const CreateDriverForm: React.FC<CreateMotoFormProps> = ({ onDriverCreated }) => {
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "CUSTOMER",
-        role: isAdmin ? "ADMIN" : "CUSTOMER",
+        licenseNumber: "",
+        experienceYears: "",
+        userId: "",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,31 +24,46 @@ export const CreateDriverForm = ({ onDriverCreated, isAdmin = false }) => {
         });
     };
 
-    const disabled = !formData.name || !formData.email;
+    const disabled = !formData.licenseNumber || !formData.experienceYears;
+    const [users, setUsers] = useState<UserType[]>([]);
 
-    const createUser = async (e: FormEvent<HTMLFormElement>) => {
+    const fetchUsers = async () => {
+        try {
+            const data = await getAllUsers();
+            setUsers(data);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des users:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const createDriver = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
         try {
-            const registerReq = await register(formData);
-            if (registerReq.status === "error") {
-                setError("Cet utilisateur existe déjà");
-                toast.error("Cet utilisateur existe déjà");
+            const { data } = await registerDriver(formData);
+            const { status, message } = data.createDriver;
+
+            if (status === "error") {
+                setError(message);
+                toast.error(message);
             } else {
-                onUserCreated();
+                onDriverCreated();
                 setFormData({
-                    name: "",
-                    email: "",
-                    password: "CUSTOMER",
-                    role: isAdmin ? "ADMIN" : "CUSTOMER",
+                    licenseNumber: "",
+                    experienceYears: "",
+                    userId: "",
                 });
-                toast.success("Utilisateur créé avec succès !");
+                toast.success("Conducteur créé avec succès !");
             }
         } catch (e) {
-            setError("Erreur lors de la création de l'utilisateur. Veuillez réessayer.");
-            toast.error("Erreur lors de la création du client. Veuillez réessayer.");
+            setError("Erreur lors de la création du conducteur. Veuillez réessayer.");
+            toast.error("Erreur lors de la création du conducteur. Veuillez réessayer.");
             console.log(e);
         } finally {
             setIsSubmitting(false);
@@ -54,30 +73,61 @@ export const CreateDriverForm = ({ onDriverCreated, isAdmin = false }) => {
     return (
         <>
             <form
-                onSubmit={createUser}
+                onSubmit={createDriver}
                 className="d-flex flex-direction-column"
             >
                 {error && <div className="text-red-500">{error}</div>}
+                <div className="mb-4">
+                    <label
+                        htmlFor="userId"
+                        className="block text-gray-700 font-bold mb-2"
+                    >
+                        Client
+                    </label>
+                    <select
+                        id="userId"
+                        value={formData.userId}
+                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option
+                            value=""
+                            disabled
+                        >
+                            Choisissez un utilisateur
+                        </option>
+                        {users
+                            .filter((user) => user.role === "CUSTOMER")
+                            .map((user) => (
+                                <option
+                                    key={user.id}
+                                    value={user.id}
+                                >
+                                    {user.name}: {user.email}
+                                </option>
+                            ))}
+                    </select>
+                </div>
 
                 <input
-                    id="name"
+                    id="licenseNumber"
                     type="text"
-                    placeholder="Nom de l'utilisateur"
-                    value={formData.name}
+                    placeholder="Numéro de permis"
+                    value={formData.licenseNumber}
                     required
                     onChange={handleChange}
-                    pattern="[a-zA-Z\s]{3,20}"
+                    pattern="\w{1,10}"
                     className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
 
                 <input
-                    id="email"
-                    type="text"
-                    placeholder="Email"
-                    value={formData.email}
+                    id="experienceYears"
+                    type="number"
+                    placeholder="Année d'expériences"
+                    value={parseInt(formData.experienceYears)}
                     onChange={handleChange}
                     required
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                    pattern="\d{1,2}"
                     className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
 

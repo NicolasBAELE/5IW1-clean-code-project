@@ -8,7 +8,7 @@ export default class CreateDriverUseCase {
         userId: string;
         licenseNumber: string;
         experienceYears: number;
-    }): Promise<{ driver: DriverType; message: string }> {
+    }): Promise<{ driver: DriverType; message: string; status: string }> {
         const { userId, licenseNumber, experienceYears } = data;
 
         if (!userId || !licenseNumber || experienceYears === undefined) {
@@ -16,15 +16,26 @@ export default class CreateDriverUseCase {
         }
 
         const existingDriver = await this.driverRepository.getDriverById(userId);
+        const existingLicenceNumber = await this.driverRepository.getLicenseNumber(licenseNumber);
+
         if (existingDriver) {
             throw new Error("Ce conducteur existe déjà.");
         }
 
-        const driver = await this.driverRepository.createDriver({ userId, licenseNumber, experienceYears });
+        if (existingLicenceNumber) {
+            throw new Error("Numéro de permis existe déjà.");
+        }
+
+        const driver = await this.driverRepository.createDriver({
+            licenseNumber,
+            experienceYears,
+            userId,
+        });
 
         return {
             driver,
             message: "Conducteur créé avec succès",
+            status: "created",
         };
     }
 }
