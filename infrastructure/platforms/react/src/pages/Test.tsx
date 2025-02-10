@@ -26,12 +26,12 @@ export const Test = () => {
     };
 
     return (
-        <div className="p-6">
+        <div>
             {openCreateDriver ? (
                 <CreateDriverForm onDriverCreated={onDriverCreated} />
             ) : (
                 <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     onClick={() => setOpenCreateDriver(true)}
                 >
                     Ajouter un conducteur
