@@ -54,10 +54,44 @@ app.post("/moto", async (req, res, next) => {
 });
 
 app.post("/stock", async (req, res, next) => {
-    const { _method } = req.body;
-    if (_method === "CREATE_STOCK") return withPrisma(prisma, createStock, req, res, next);
-    else if (_method == "GET_STOCKS") return withPrisma(prisma, getAllStocks, req, res, next);
+    const { _method, id, name, cost, quantity } = req.body;  // ✅ Extraire les variables ici
+
+    if (_method === "CREATE_STOCK") {
+        return withPrisma(prisma, createStock, req, res, next);
+    } 
+    else if (_method == "GET_STOCKS") {
+        return withPrisma(prisma, getAllStocks, req, res, next);
+    } 
+    else if (_method === "UPDATE_STOCK") {
+        try {
+            // 🔍 Vérifions les variables extraites
+            console.log("🔍 Mise à jour du stock avec : ", { id, name, cost, quantity });
+
+            const updatedStock = await prisma.stock.update({
+                where: { id },  // ✅ Vérifie que 'id' n'est pas undefined ici
+                data: { name, cost, quantity },
+            });
+            res.json(updatedStock);
+        } catch (error) {
+            console.error("❌ Erreur lors de la mise à jour du stock:", error);
+            next(error);
+        }
+    } 
+    else if (_method === "DELETE_STOCK") {
+        try {
+            // 🔍 Vérifions l’ID avant de le passer à Prisma
+            console.log("🔍 Suppression du stock avec l'ID : ", id);
+
+            await prisma.stock.delete({ where: { id } });
+            res.json({ id, message: "Produit supprimé avec succès" });
+        } catch (error) {
+            console.error("❌ Erreur lors de la suppression du stock:", error);
+            next(error);
+        }
+    }
 });
+
+
 
 app.post("/maintenance", async (req, res, next) => {
     const { _method } = req.body;

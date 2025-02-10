@@ -212,6 +212,17 @@ export const Mutation = {
         const _method = "POST";
         try {
             const response = await fetch("http://prisma:3000/driver", {
+    updateStock: async (
+        parent: any,
+        { id, name, cost, quantity }: { id: string; name: string; cost: number; quantity: number }
+    ): Promise<any> => {
+        const _method = "UPDATE_STOCK";
+    
+        // 🔍 Ajout des logs pour vérifier les variables avant l'appel
+        console.log("🔍 Variables envoyées à l'API REST:", { id, name, cost, quantity, _method });
+    
+        try {
+            const response = await fetch("http://prisma:3000/stock", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -224,6 +235,44 @@ export const Mutation = {
             throw new Error("Impossible de créer le conducteur");
         }
     },
+                body: JSON.stringify({ id, name, cost, quantity, _method }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+    
+            const result: unknown = await response.json();
+            return result;
+        } catch (error) {
+            console.error("❌ Erreur dans updateStock :", error);
+            throw new Error("Impossible de modifier le produit");
+        }
+    },
+    
+    deleteStock: async (parent: any, { id }: { id: string }): Promise<any> => {
+        const _method = "DELETE_STOCK";
+        try {
+            const response = await fetch("http://prisma:3000/stock", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id, _method }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+    
+            const result: unknown = await response.json();
+            return { id, message: "Produit supprimé avec succès" };
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de supprimer le produit");
+        }
+    },
+    
 };
 
 function isMaintenance(data: any): data is Maintenance {

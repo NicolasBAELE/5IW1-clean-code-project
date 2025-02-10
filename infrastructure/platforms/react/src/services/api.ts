@@ -459,3 +459,69 @@ export const getAllStocks = async () => {
         throw new Error("Impossible de créer le produit");
     }
 };
+export const updateStock = async (id: string, updatedData: { name: string; cost: number; quantity: number }) => {
+    try {
+        const response = await fetch(`${API_URL}/stock`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: `
+                    mutation UpdateStock($id: String!, $name: String!, $cost: Float!, $quantity: Int!) {
+                        updateStock(id: $id, name: $name, cost: $cost, quantity: $quantity) {
+                            id,
+                            name,
+                            cost,
+                            quantity
+                        }
+                    }
+                `,
+                variables: { id, ...updatedData },
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result.data.updateStock;
+    } catch (error) {
+        console.error("❌ Erreur lors de la mise à jour du stock :", error);
+        throw new Error("Impossible de modifier le stock");
+    }
+};
+
+export const deleteStock = async (id: string) => {
+    try {
+        const response = await fetch(`${API_URL}/stock`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: `
+                    mutation DeleteStock($id: String!) {
+                        deleteStock(id: $id) {
+                            id,
+                            message
+                        }
+                    }
+                `,
+                variables: { id },
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result.data.deleteStock;
+    } catch (error) {
+        console.error("❌ Erreur lors de la suppression du stock :", error);
+        throw new Error("Impossible de supprimer le stock");
+    }
+};
+
