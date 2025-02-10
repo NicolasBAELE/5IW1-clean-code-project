@@ -31,14 +31,6 @@ const Header = () => {
                                     </li>
                                     <li>
                                         <NavLink
-                                            to={"/maintenances"}
-                                            className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
-                                        >
-                                            Entretiens
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink
                                             to={"/stocks"}
                                             className="text-white text-lg hover:text-gray-300 transition-colors duration-200"
                                         >
