@@ -1,6 +1,7 @@
-import {UserType} from "@projet-clean/domain/entities/UserType.js";
-import {MotoType} from "@projet-clean/domain/entities/MotoType.js";
-import {Maintenance} from "@projet-clean/domain/entities/Maintenance.js";
+import { UserType } from "@projet-clean/domain/entities/UserType.js";
+import { MotoType } from "@projet-clean/domain/entities/MotoType.js";
+import { Maintenance } from "@projet-clean/domain/entities/Maintenance.js";
+import { DriverType } from "@projet-clean/domain/entities/DriverType.js";
 
 export const Mutation = {
     createUser: async (
@@ -83,7 +84,7 @@ export const Mutation = {
                 body: JSON.stringify({ model, registrationNumber, mileage, ownerId, _method }),
             });
 
-            return await response.json()
+            return await response.json();
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de créer la moto");
@@ -193,6 +194,34 @@ export const Mutation = {
         } catch (error) {
             console.error(error);
             throw new Error("Impossible de créer le produit");
+        }
+    },
+
+    createDriver: async (
+        parent: DriverType,
+        {
+            userId,
+            licenseNumber,
+            experienceYears,
+        }: {
+            userId: string;
+            licenseNumber: string;
+            experienceYears: number;
+        }
+    ): Promise<DriverType> => {
+        const _method = "POST";
+        try {
+            const response = await fetch("http://prisma:3000/driver", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId, licenseNumber, experienceYears, _method }),
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de créer le conducteur");
         }
     },
 };

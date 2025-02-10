@@ -15,6 +15,7 @@ const typeDefs = `
       getUsers(userId: String): [User]
       getAllMotos(motoId: String): [Moto]
       getAllStocks: [Stock]
+      getAllDrivers: [Driver]
     }
     
   type AuthPayload {
@@ -29,6 +30,13 @@ const typeDefs = `
       message: String
       status: String
     }
+  
+    type DriverPayload {
+      driver: Driver
+      message: String
+      status: String
+    }
+
     input ProductInput {
         id: String!
         quantity: Int!
@@ -42,6 +50,7 @@ const typeDefs = `
     createMaintenance(motoId: String!, year: String!, type:MaintenanceType!, mileage: Int!, products: [ProductInput!]!): Maintenance
     validateMaintenance(maintenanceId: String!, mileage: Int!): Maintenance
     createStock(name: String!, cost: Float!, quantity: Int!): Stock
+    createDriver(userId:String!, licenseNumber:String!, experienceYears:Int!):DriverPayload
   }
       
   type Moto {
@@ -83,6 +92,43 @@ enum MaintenanceType {
       createdAt: String!   
       updatedAt: String!  
     }
+
+  type Driver {
+  id: ID!
+  userId: String
+  user: User          
+  licenseNumber: String          
+  experienceYears: Int
+  createdAt :      String
+  updatedAt:       String   
+  motoTests:       [MotoTest]
+  incidentHistory: [IncidentHistory]
+}
+
+type MotoTest {
+  id: ID!
+  driverId: String!
+  motoId: String!
+  startDate: String!
+  endDate: String
+  driver: Driver!
+  moto: Moto!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type IncidentHistory {
+  id: ID!
+  driverId: String!
+  motoId: String!
+  description: String!
+  date: String!
+  driver: Driver!
+  moto: Moto!
+  createdAt: String!
+  updatedAt: String!
+}
+
 `;
 
 export default typeDefs;
