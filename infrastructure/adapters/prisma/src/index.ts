@@ -10,6 +10,7 @@ import { createMaintenance, validateMaintenance } from "./repositories/maintenan
 import { createStock, getAllStocks } from "./repositories/stock.js";
 import { withPrisma } from "./utils/handlePrisma.js";
 import { createDriver, getDrivers } from "./controllers/DriverHistoryController.js";
+import {createMotoTest} from "./repositories/motoTest.js";
 
 const app = express();
 app.use(express.json());
@@ -36,8 +37,6 @@ app.post("/users", async (req, res, next) => {
         return loginUser(req, res);
     } else if (_method === "POST_REGISTER") {
         return createUser(req, res);
-    } else if (_method === "DELETE") {
-        // return deleteUser(req, res);
     } else if (_method === "RESET_PASSWORD") {
         return resetPassword(req, res);
     } else {
@@ -58,10 +57,10 @@ app.post("/stock", async (req, res, next) => {
 
     if (_method === "CREATE_STOCK") {
         return withPrisma(prisma, createStock, req, res, next);
-    } 
+    }
     else if (_method == "GET_STOCKS") {
         return withPrisma(prisma, getAllStocks, req, res, next);
-    } 
+    }
     else if (_method === "UPDATE_STOCK") {
         try {
             // 🔍 Vérifions les variables extraites
@@ -76,7 +75,7 @@ app.post("/stock", async (req, res, next) => {
             console.error("❌ Erreur lors de la mise à jour du stock:", error);
             next(error);
         }
-    } 
+    }
     else if (_method === "DELETE_STOCK") {
         try {
             // 🔍 Vérifions l’ID avant de le passer à Prisma
@@ -92,6 +91,11 @@ app.post("/stock", async (req, res, next) => {
 });
 
 
+
+app.post("/motoTest", async (req, res, next) => {
+    const { _method } = req.body;
+    if (_method === "POST") return withPrisma(prisma, createMotoTest, req, res, next);
+});
 
 app.post("/maintenance", async (req, res, next) => {
     const { _method } = req.body;

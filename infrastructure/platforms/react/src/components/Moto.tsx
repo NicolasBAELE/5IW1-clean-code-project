@@ -3,8 +3,7 @@ import { CreateMaintenanceForm } from "./CreateMaintenanceForm.tsx";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.tsx";
 
-// Fonction utilitaire pour formater les dates
-const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string) => {
     if (!dateString) return "Non défini";
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {
@@ -44,7 +43,6 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white w-full max-w-5xl p-8 rounded-lg shadow-xl relative">
-                {/* Bouton de fermeture */}
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
@@ -66,7 +64,6 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                     </svg>
                 </button>
 
-                {/* Bouton Ajouter un entretien (en haut) */}
                 {!nextMaintenanceScheduled && !openCreateMaintenanceForm && isAdmin && (
                     <div className="mb-4">
                         <button
@@ -86,10 +83,8 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                     />
                 )}
 
-                {/* Contenu de la modale */}
                 {!openCreateMaintenanceForm && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Historique des maintenances */}
                         <div>
                             <h4 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
                                 Historique des maintenances
@@ -129,7 +124,6 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                             </div>
                         </div>
 
-                        {/* Détails de la moto */}
                         <div>
                             <div className="mb-6">
                                 <h3 className="text-xl font-bold text-gray-800 mb-2">Détails de la moto</h3>
@@ -144,7 +138,6 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                 </p>
                             </div>
 
-                            {/* Dernier entretien */}
                             {lastMaintenance && (
                                 <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-md shadow-sm">
                                     <h4 className="text-lg font-semibold text-gray-800 mb-1">Dernier entretien</h4>
@@ -168,7 +161,6 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                 </div>
                             )}
 
-                            {/* Prochain entretien */}
                             {nextMaintenanceScheduled && (
                                 <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md shadow-sm">
                                     <h4 className="text-lg font-semibold text-gray-800 mb-1">

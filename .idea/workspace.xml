@@ -4,17 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb7e4137-9a5a-4185-ae9d-947f97bb87d9" name="Changes" comment="commit bizzar">
+    <list default="true" id="eb7e4137-9a5a-4185-ae9d-947f97bb87d9" name="Changes" comment="fix styles">
+      <change afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/repositories/motoTest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/CreateTestForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Driver.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/useCases/createUser.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/useCases/loginUser.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/useCases/resetPassword.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/useCases/user/loginUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/application/useCases/user/loginUser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/useCases/user/resetPassword.ts" beforeDir="false" afterPath="$PROJECT_DIR$/application/useCases/user/resetPassword.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/CreateMaintenanceForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/CreateMaintenanceForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/controllers/MotoTestController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/controllers/MotoTestController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/middleware/verifyToken.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/middleware/verifyToken.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/repositories/maintenance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/repositories/maintenance.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/adapters/prisma/src/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/resolveurs/Mutation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/resolveurs/Mutation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/graphql/src/schema.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Moto.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/components/Moto.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/pages/Customers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/pages/Customers.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/pages/Test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/pages/Test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/services/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/services/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/platforms/react/src/utils/motoUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/platforms/react/src/utils/motoUtils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,23 +47,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/nicolas/PycharmProjects/5IW1-clean-code-project/infrastructure/platforms/react/src/pages&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/nicolas/PycharmProjects/5IW1-clean-code-project/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/nicolas/PycharmProjects/5IW1-clean-code-project/infrastructure/platforms/react/src/components",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/home/nicolas/PycharmProjects/5IW1-clean-code-project/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/infrastructure/platforms/react/src/components" />
       <recent name="$PROJECT_DIR$/infrastructure/platforms/react/src/pages" />
       <recent name="$PROJECT_DIR$/application/useCases" />
     </key>
@@ -138,7 +144,23 @@
       <option name="project" value="LOCAL" />
       <updated>1739118681144</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix imports">
+      <option name="closed" value="true" />
+      <created>1739217691735</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1739217691735</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix styles">
+      <option name="closed" value="true" />
+      <created>1739217934522</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1739217934522</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +187,19 @@
     <MESSAGE value="on a maintenance une page profil" />
     <MESSAGE value="commit bizzar" />
     <MESSAGE value="fix tout motos" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix tout motos" />
+    <MESSAGE value="fix imports" />
+    <MESSAGE value="fix styles" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix styles" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/application/useCases/driver/createDriver.ts</url>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

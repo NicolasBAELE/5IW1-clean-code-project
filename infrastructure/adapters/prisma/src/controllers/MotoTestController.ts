@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import MotoTestRepository from "../repositories/prismaMotoTestRepository.js";
-import { CreateMotoTestUseCase } from "@projet-clean/application/usecases/motoTest/createMotoTest.js";
+import { CreateMotoTestUseCase } from "@projet-clean/application/useCases/motoTest/createMotoTest.js";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

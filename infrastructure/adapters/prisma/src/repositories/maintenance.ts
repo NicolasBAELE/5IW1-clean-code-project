@@ -61,7 +61,6 @@ export const validateMaintenance = async (req: Request, res: Response, next: Nex
     try {
         const {maintenanceId, mileage} = req.body as ValidateMaintenanceRequestBody;
 
-        // Vérifier si la maintenance existe
         const existingMaintenance = await prisma.maintenance.findUnique({
             where: {id: maintenanceId},
         });
@@ -70,7 +69,6 @@ export const validateMaintenance = async (req: Request, res: Response, next: Nex
             return res.status(404).json({message: "Maintenance non trouvée"});
         }
 
-        // Mettre à jour la completedDate avec la date actuelle
         const updatedMaintenance = await prisma.maintenance.update({
             where: {id: maintenanceId},
             data: {completedDate: new Date(), mileageAtService: mileage},
