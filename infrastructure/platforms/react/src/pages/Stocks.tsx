@@ -1,10 +1,12 @@
 import CreateStockForm from "../components/CreateStockForm";
+import EditStockForm from "../components/EditStockForm";
 import { useEffect, useState, useRef } from "react";
-import { getAllStocks } from "../services/api";
+import { getAllStocks, deleteStock } from "../services/api";
 import { toast } from "react-toastify";
 
 export const Stocks = () => {
   const [stocks, setStocks] = useState<any[]>([]);
+  const [editStock, setEditStock] = useState<any | null>(null);
   const displayedToasts = useRef(new Set()); 
 
   const fetchStocks = async () => {
@@ -12,26 +14,16 @@ export const Stocks = () => {
       const data = await getAllStocks();
       setStocks(data);
 
-      const criticalStockItems = data.filter((stock: any) => stock.quantity <= 1);
-      criticalStockItems.forEach((item: any) => {
-        if (!displayedToasts.current.has(item.id)) {
-          displayedToasts.current.add(item.id);
-          toast.error(`Stock critique : ${item.name} (Quantité : ${item.quantity})`, {
-            autoClose: 5000,
-          });
+      data.forEach((stock: any) => {
+        if (stock.quantity < 3 && !displayedToasts.current.has(stock.id + "_low")) {
+          toast.error(`⚠️ Rupture imminente pour "${stock.name}" (${stock.quantity} restant)`, { autoClose: 5000 });
+          displayedToasts.current.add(stock.id + "_low");
+        } else if (stock.quantity >= 3 && stock.quantity < 5 && !displayedToasts.current.has(stock.id + "_medium")) {
+          toast.warn(`⚠️ Stock faible pour "${stock.name}" (${stock.quantity} restant)`, { autoClose: 5000 });
+          displayedToasts.current.add(stock.id + "_medium");
         }
       });
 
-      const lowStockItems = data.filter(
-        (stock: any) => stock.quantity > 1 && stock.quantity < 5 && !displayedToasts.current.has(stock.id)
-      );
-
-      lowStockItems.forEach((item: any) => {
-        if (!displayedToasts.current.has(item.id)) {
-          displayedToasts.current.add(item.id); 
-          toast.warning(`Stock faible : ${item.name} (Quantité : ${item.quantity})`);
-        }
-      });
     } catch (error) {
       console.error("Erreur lors de la récupération des Stocks:", error);
       toast.error("Erreur lors de la récupération des stocks.");
@@ -47,8 +39,27 @@ export const Stocks = () => {
     toast.success("Stock ajouté avec succès !");
   };
 
+  const handleDelete = async (id: string) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce stock ?")) {
+      try {
+        await deleteStock(id);
+        fetchStocks();
+        toast.success("Stock supprimé avec succès !");
+      } catch (error) {
+        toast.error("Erreur lors de la suppression du stock.");
+      }
+    }
+  };
+
   return (
     <>
+      {editStock && (
+        <EditStockForm
+          stock={editStock}
+          onStockUpdated={fetchStocks}
+          onClose={() => setEditStock(null)}
+        />
+      )}
       <CreateStockForm onStockCreated={onStockCreated} />
       {stocks.length > 0 ? (
         stocks.map((stock) => (
@@ -71,6 +82,20 @@ export const Stocks = () => {
             <p>
               <span className="font-semibold">Quantité disponible :</span> {stock.quantity}
             </p>
+            <div className="flex space-x-4 mt-2">
+              <button
+                onClick={() => setEditStock(stock)}
+                className="bg-yellow-500 text-white px-3 py-1 rounded"
+              >
+                Modifier
+              </button>
+              <button
+                onClick={() => handleDelete(stock.id)}
+                className="bg-red-500 text-white px-3 py-1 rounded"
+              >
+                Supprimer
+              </button>
+            </div>
           </div>
         ))
       ) : (

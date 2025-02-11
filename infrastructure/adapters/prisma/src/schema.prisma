@@ -9,17 +9,15 @@ generator client {
 }
 
 model Moto {
-  id                 String            @id @default(cuid())
+  id                 String        @id @default(cuid())
   model              String
-  registrationNumber String            @unique
+  registrationNumber String        @unique
   mileage            Int
   ownerId            String
-  owner              User              @relation(fields: [ownerId], references: [id])
+  owner              User          @relation(fields: [ownerId], references: [id])
   maintenances       Maintenance[]
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
-  motoTests          MotoTest[]
-  IncidentHistory    IncidentHistory[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
 
   @@index([ownerId])
 }
@@ -81,31 +79,26 @@ model Driver {
 model MotoTest {
   id        String    @id @default(cuid())
   driverId  String
-  motoId    String
   startDate DateTime
   endDate   DateTime?
   driver    Driver    @relation(fields: [driverId], references: [id])
-  moto      Moto      @relation(fields: [motoId], references: [id])
+  moto      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   @@index([driverId])
-  @@index([motoId])
 }
 
 model IncidentHistory {
   id          String   @id @default(cuid())
   driverId    String
-  motoId      String
   description String
   date        DateTime
   driver      Driver   @relation(fields: [driverId], references: [id])
-  moto        Moto     @relation(fields: [motoId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([driverId])
-  @@index([motoId])
 }
 
 enum MaintenanceType {
