@@ -51,6 +51,8 @@ const typeDefs = `
     validateMaintenance(maintenanceId: String!, mileage: Int!): Maintenance
     createStock(name: String!, cost: Float!, quantity: Int!): Stock
     createDriver(userId:String!, licenseNumber:String!, experienceYears:Int!):DriverPayload
+    updateStock(id: String!, name: String!, cost: Float!, quantity: Int!): Stock
+    deleteStock(id: String!): DeletionResponse
   }
       
   type Moto {
@@ -129,6 +131,10 @@ type IncidentHistory {
   updatedAt: String!
 }
 
+    type DeletionResponse {
+    id: ID!
+    message: String!
+  }
 `;
 
 export default typeDefs;
