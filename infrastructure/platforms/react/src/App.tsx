@@ -17,8 +17,8 @@ const App = () => {
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <Header />
-            <div className="flex-grow max-w-4xl mx-auto px-4 py-6">
-                <main className="w-[80vw] bg-white p-6 rounded-lg shadow-md">
+            <div className="flex-grow w-[80vw] mx-auto px-4 py-6">
+                <main className="w-full bg-white p-6 rounded-lg shadow-md">
                     <Routes>
                         <Route
                             path="/"
