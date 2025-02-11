@@ -42,9 +42,6 @@ export const Profile = () => {
                 <span className="font-semibold">Email :</span> {profile?.email}
             </p>
             <p>
-                <span className="font-semibold">Phone :</span> {profile?.phone}
-            </p>
-            <p>
                 <span className="font-semibold">Role :</span> {profile?.role}
             </p>
             {!isAdmin && <p>

@@ -105,10 +105,7 @@ export const registerDriver = async (formData: { licenseNumber: string; experien
         email
       }
       motoTests {
-        moto {
-          model
-          registrationNumber
-        }
+        moto 
       }
     }
     message

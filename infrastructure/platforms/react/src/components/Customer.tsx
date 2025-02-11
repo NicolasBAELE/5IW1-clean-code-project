@@ -51,9 +51,6 @@ export const Customer = ({user, onClose}: CustomerProps) => {
                         <span className="font-semibold">Email :</span> {user.email}
                     </p>
                     <p>
-                        <span className="font-semibold">Téléphone :</span> {user.phone}
-                    </p>
-                    <p>
                         <span className="font-semibold">Motos :</span>
                         {user.motos.map((moto) => (
                             <div

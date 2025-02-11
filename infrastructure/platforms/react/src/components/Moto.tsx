@@ -1,7 +1,7 @@
-import { useMoto } from "../hooks/useMoto";
-import { CreateMaintenanceForm } from "./CreateMaintenanceForm.tsx";
-import { useState } from "react";
-import { useAuth } from "../context/AuthContext.tsx";
+import {useMoto} from "../hooks/useMoto";
+import {CreateMaintenanceForm} from "./CreateMaintenanceForm.tsx";
+import {useState} from "react";
+import {useAuth} from "../context/AuthContext.tsx";
 
 export const formatDate = (dateString: string) => {
     if (!dateString) return "Non défini";
@@ -21,7 +21,7 @@ interface MotoProps {
     onClose: () => void;
 }
 
-export const Moto = ({ motoId, onClose }: MotoProps) => {
+export const Moto = ({motoId, onClose}: MotoProps) => {
     const {
         moto,
         loading,
@@ -34,7 +34,7 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
     } = useMoto(motoId);
 
     const [openCreateMaintenanceForm, setOpenCreateMaintenanceForm] = useState(false);
-    const { isAdmin } = useAuth();
+    const {isAdmin} = useAuth();
 
     if (loading) return <div className="p-4 text-center">Chargement...</div>;
     if (error) return <div className="p-4 text-center text-red-600">{error}</div>;
@@ -117,7 +117,8 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                                 <strong>Coût :</strong> {maintenance.cost || "-"}€
                                             </p>
                                             <p className="text-gray-700">
-                                                <strong>Notes :</strong> <pre>{maintenance.notes || "-"}</pre>
+                                                <strong>Notes :</strong>
+                                                <pre>{maintenance.notes || "-"}</pre>
                                             </p>
                                         </div>
                                     ))}
@@ -183,7 +184,7 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                         <strong>Notes :</strong>
                                         <pre>{nextMaintenanceScheduled.notes || "-"}</pre>
                                     </p>
-                                    <button
+                                    {isAdmin && <button
                                         onClick={() => {
                                             const mileageInput = window.prompt(
                                                 "Veuillez entrer le kilométrage actuel :"
@@ -200,7 +201,7 @@ export const Moto = ({ motoId, onClose }: MotoProps) => {
                                         className="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded w-full"
                                     >
                                         Entretien effectué ce jour
-                                    </button>
+                                    </button>}
                                 </div>
                             )}
 
