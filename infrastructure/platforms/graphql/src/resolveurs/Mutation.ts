@@ -212,6 +212,20 @@ export const Mutation = {
         const _method = "POST";
         try {
             const response = await fetch("http://prisma:3000/driver", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId, licenseNumber, experienceYears, _method }),
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw new Error("Impossible de créer le conducteur");
+        }
+    },
+
+
     updateStock: async (
         parent: any,
         { id, name, cost, quantity }: { id: string; name: string; cost: number; quantity: number }
@@ -227,14 +241,6 @@ export const Mutation = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ userId, licenseNumber, experienceYears, _method }),
-            });
-            return await response.json();
-        } catch (error) {
-            console.error(error);
-            throw new Error("Impossible de créer le conducteur");
-        }
-    },
                 body: JSON.stringify({ id, name, cost, quantity, _method }),
             });
     
@@ -249,6 +255,7 @@ export const Mutation = {
             throw new Error("Impossible de modifier le produit");
         }
     },
+    
     
     deleteStock: async (parent: any, { id }: { id: string }): Promise<any> => {
         const _method = "DELETE_STOCK";
