@@ -9,7 +9,7 @@ export const authMiddleware = (req: any, res: any, next: any) => {
         return res.status(401).json({ message: "Accès non autorisé, token manquant." });
     }
 
-    const token = authHeader.split(" ")[1]; // Extraction du token
+    const token = authHeader.split(" ")[1];
     try {
         if (!JWT_SECRET) {
             throw new Error("No vérification possible");

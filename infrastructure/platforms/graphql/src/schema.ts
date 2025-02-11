@@ -53,6 +53,7 @@ const typeDefs = `
     createDriver(userId:String!, licenseNumber:String!, experienceYears:Int!):DriverPayload
     updateStock(id: String!, name: String!, cost: Float!, quantity: Int!): Stock
     deleteStock(id: String!): DeletionResponse
+    createMotoTest(moto: String!, startDate: String!, endDate: String!, driverId: String!): MotoTest
   }
       
   type Moto {
@@ -110,11 +111,10 @@ enum MaintenanceType {
 type MotoTest {
   id: ID!
   driverId: String!
-  motoId: String!
   startDate: String!
   endDate: String
   driver: Driver!
-  moto: Moto!
+  moto: String!
   createdAt: String!
   updatedAt: String!
 }
@@ -122,11 +122,9 @@ type MotoTest {
 type IncidentHistory {
   id: ID!
   driverId: String!
-  motoId: String!
   description: String!
   date: String!
   driver: Driver!
-  moto: Moto!
   createdAt: String!
   updatedAt: String!
 }
