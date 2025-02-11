@@ -52,7 +52,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ./infrastructure/db/db-data:/var/lib/postgresql/data
 
   adminer:
     container_name: adminer
@@ -74,3 +74,16 @@ services:
       - ./application:/app/application
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
+  
+  mongodb:
+    container_name: mongodb
+    image: mongo:noble
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./infrastructure/db/db-mongo:/data/db
+
